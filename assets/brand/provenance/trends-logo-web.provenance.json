@@ -1,0 +1,67 @@
+{
+  "asset": "Trends dimensional logo",
+  "status": "accepted-web-prototype",
+  "source": {
+    "path": "assets/brand/source/trends-logo-3d.ai-export.gltf",
+    "bytes": 179864354,
+    "sha256": "4E469D0CCA17A6BC338CCC01A512A2C1CF6A36C5D5D2FC43A64CF64496988E19",
+    "generator": "Adobe Illustrator",
+    "immutable": true,
+    "gitLfs": true
+  },
+  "production": {
+    "path": "public/models/trends-logo-web.glb",
+    "bytes": 3151996,
+    "sha256": "F9CBD38053BD6595F89451EA3C848D90C516EF7280AFDC00C348C68F5796372D",
+    "meshObjects": 1,
+    "meshPrimitives": 1,
+    "triangles": 167519,
+    "materials": 1,
+    "textures": 3,
+    "textureEncoding": "lossless WebP",
+    "extensionsRequired": [
+      "EXT_meshopt_compression",
+      "EXT_texture_webp",
+      "KHR_mesh_quantization"
+    ]
+  },
+  "cleanup": {
+    "zeroAreaFacesRemoved": 251,
+    "validNormalsRecalculated": false,
+    "duplicateSourceImages": 78,
+    "uniqueProductionTextures": 3,
+    "sourceMaterials": 26,
+    "productionMaterials": 1,
+    "joinedStaticMeshes": true,
+    "uprightTransformBaked": true,
+    "silhouetteDecimated": false
+  },
+  "tools": {
+    "blender": "5.2.0 LTS",
+    "gltfTransform": "4.4.2",
+    "sharp": "0.34.5"
+  },
+  "validation": {
+    "khronosErrors": 0,
+    "khronosWarnings": 0,
+    "report": "assets/brand/reports/trends-logo-khronos-validation.md",
+    "fourAnglePreviews": [
+      "assets/brand/previews/trends-logo-front.png",
+      "assets/brand/previews/trends-logo-right.png",
+      "assets/brand/previews/trends-logo-back.png",
+      "assets/brand/previews/trends-logo-left.png"
+    ]
+  },
+  "posters": [
+    {
+      "path": "public/images/brand/trends-logo-poster.avif",
+      "bytes": 15146,
+      "sha256": "E52D08521981B4F5729CEDB1FBD9FF3BA6FC82F5C9D0C833095B9B5AB2113FC3"
+    },
+    {
+      "path": "public/images/brand/trends-logo-poster.webp",
+      "bytes": 37242,
+      "sha256": "1524D8A31AADA8AB2B9ADEB3BDB37B986E30EAD6BBD6A3BBF7C21D2B53702452"
+    }
+  ]
+}

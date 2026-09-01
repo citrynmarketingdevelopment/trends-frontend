@@ -1,0 +1,9 @@
+[data-theme="midnight"] {
+  color-scheme: dark;
+  --surface-canvas: var(--color-midnight);
+  --surface-raised: var(--color-midnight-raised);
+  --text-primary: var(--color-warm-bone);
+  --text-secondary: var(--color-bone-muted);
+  --accent-primary: var(--color-champagne);
+  --accent-strong: var(--color-racing-red);
+}

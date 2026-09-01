@@ -1,0 +1,45 @@
+{
+  "assetClass": "HERO PROP",
+  "blenderVersion": "5.2.0 LTS",
+  "source": {
+    "path": "C:\\Users\\citry\\OneDrive\\Desktop\\trends-frontend\\assets\\brand\\source\\trends-logo-3d.ai-export.gltf",
+    "bytes": 179864354,
+    "sha256": "4E469D0CCA17A6BC338CCC01A512A2C1CF6A36C5D5D2FC43A64CF64496988E19",
+    "postProcessSha256": "4E469D0CCA17A6BC338CCC01A512A2C1CF6A36C5D5D2FC43A64CF64496988E19"
+  },
+  "before": {
+    "meshObjects": 26,
+    "vertices": 99088,
+    "triangles": 167770,
+    "materials": 26,
+    "images": 78
+  },
+  "cleanup": {
+    "zeroAreaFacesRemoved": 251,
+    "validNormalsRecalculated": false,
+    "joinedStaticMeshes": true,
+    "uprightTransformBaked": true
+  },
+  "candidate": {
+    "path": "C:\\Users\\citry\\OneDrive\\Desktop\\trends-frontend\\assets\\brand\\working\\trends-logo-web-candidate.glb",
+    "bytes": 12290540,
+    "sha256": "2A9A050B71BD6F46B52596615E8C4BD72B0C5AD8184D698F88D00D48C71FBFB9",
+    "meshObjects": 1,
+    "vertices": 99002,
+    "triangles": 167519,
+    "materials": 1,
+    "dimensionsBlenderXYZ": [
+      0.432583064,
+      0.050163757,
+      0.731466472
+    ]
+  },
+  "workingBlend": "C:\\Users\\citry\\OneDrive\\Desktop\\trends-frontend\\assets\\brand\\working\\trends-logo-web-working.blend",
+  "previews": {
+    "hero": "C:\\Users\\citry\\OneDrive\\Desktop\\trends-frontend\\assets\\brand\\previews\\trends-logo-hero.png",
+    "front": "C:\\Users\\citry\\OneDrive\\Desktop\\trends-frontend\\assets\\brand\\previews\\trends-logo-front.png",
+    "right": "C:\\Users\\citry\\OneDrive\\Desktop\\trends-frontend\\assets\\brand\\previews\\trends-logo-right.png",
+    "back": "C:\\Users\\citry\\OneDrive\\Desktop\\trends-frontend\\assets\\brand\\previews\\trends-logo-back.png",
+    "left": "C:\\Users\\citry\\OneDrive\\Desktop\\trends-frontend\\assets\\brand\\previews\\trends-logo-left.png"
+  }
+}

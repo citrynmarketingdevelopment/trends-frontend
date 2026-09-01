@@ -1,0 +1,30 @@
+# dependencies
+/node_modules
+
+# next.js
+/.next/
+/out/
+
+# production and test artifacts
+/coverage/
+/playwright-report/
+/storybook-static/
+/test-results/
+
+# local environment values
+.env*
+!.env.example
+
+# logs and local editor files
+*.log
+.DS_Store
+Thumbs.db
+
+# TypeScript cache
+*.tsbuildinfo
+next-env.d.ts
+
+# large Blender working files (exceed GitHub's 100MB limit)
+assets/brand/working/*.blend
+assets/brand/working/*.blend1
+

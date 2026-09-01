@@ -1,0 +1,14 @@
+.next/
+coverage/
+node_modules/
+playwright-report/
+storybook-static/
+test-results/
+
+# Preserve handoff documents and source art exactly as supplied.
+assets/
+docs/
+lamborghini/
+public/brand/trends-logo.svg
+pnpm-lock.yaml
+

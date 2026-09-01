@@ -1,0 +1,566 @@
+.experience {
+  --background: #090a0c;
+  --surface: #111318;
+  --surface-strong: #171a20;
+  --foreground: #f2f4ef;
+  --muted: #a7aba4;
+  --hairline: rgba(242, 244, 239, 0.16);
+  --accent: #b6e23d;
+  --accent-ink: #111408;
+
+  position: relative;
+  isolation: isolate;
+  min-height: 100dvh;
+  overflow: hidden;
+  color: var(--foreground);
+  background:
+    radial-gradient(circle at 54% 48%, rgba(94, 103, 120, 0.14), transparent 34%), var(--background);
+  font-family: var(--font-showroom-display), Arial, sans-serif;
+  line-height: normal;
+}
+
+.experience p {
+  text-wrap: wrap;
+}
+
+.experience::selection,
+.experience ::selection {
+  color: var(--accent-ink);
+  background: var(--accent);
+}
+
+.experience::after {
+  position: fixed;
+  z-index: 8;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  opacity: 0.14;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+}
+
+.header {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  display: flex;
+  width: 100%;
+  height: 76px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 44px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.brand {
+  display: inline-flex;
+  flex-direction: column;
+  color: var(--foreground);
+  line-height: 0.84;
+  text-decoration: none;
+  transition: opacity 180ms ease;
+}
+
+.brand:hover {
+  opacity: 0.7;
+}
+
+.brand:focus-visible,
+.viewNav button:focus-visible,
+.primaryAction:focus-visible,
+.errorState button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.brand span {
+  margin-bottom: 5px;
+  font-family: var(--font-showroom-mono), monospace;
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+}
+
+.brand strong {
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -0.055em;
+}
+
+.viewNav {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  gap: 26px;
+  font-family: var(--font-showroom-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+
+.viewLabel {
+  color: var(--muted);
+}
+
+.viewNav button {
+  position: relative;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+  transition: color 180ms ease;
+}
+
+.viewNav button::after {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  content: "";
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.viewNav button:hover,
+.viewNav .activeView {
+  color: var(--foreground);
+}
+
+.viewNav .activeView::after {
+  transform: scaleX(1);
+}
+
+.canvasWrap {
+  position: absolute;
+  z-index: 2;
+  inset: 76px 0 0;
+  cursor: grab;
+  touch-action: none;
+  animation: canvasEntrance 900ms 180ms both cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.canvasWrap:active {
+  cursor: grabbing;
+}
+
+.backdropWord {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  width: max-content;
+  margin: 0;
+  color: transparent;
+  font-size: clamp(108px, 18vw, 310px);
+  font-weight: 650;
+  letter-spacing: -0.08em;
+  line-height: 0.8;
+  opacity: 0.6;
+  transform: translate(-49%, -58%);
+  -webkit-text-stroke: 1px var(--hairline);
+  user-select: none;
+}
+
+.heroCopy {
+  position: absolute;
+  z-index: 4;
+  bottom: 42px;
+  left: 44px;
+  max-width: 480px;
+  animation: copyEntrance 780ms 100ms both cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.eyebrow {
+  margin: 0 0 13px;
+  color: var(--accent);
+  font-family: var(--font-showroom-mono), monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+}
+
+.heroCopy h1 {
+  margin: 0;
+  font-family: var(--font-showroom-display), Arial, sans-serif;
+  font-size: clamp(52px, 7vw, 112px);
+  font-weight: 590;
+  letter-spacing: -0.075em;
+  line-height: 0.82;
+}
+
+.intro {
+  max-width: 34ch;
+  margin: 22px 0 25px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.primaryAction {
+  display: inline-flex;
+  min-width: 164px;
+  height: 49px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 19px;
+  border: 1px solid var(--accent);
+  border-radius: 0;
+  color: var(--accent-ink);
+  background: var(--accent);
+  font-family: var(--font-showroom-mono), monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.11em;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color 180ms ease,
+    background 180ms ease,
+    transform 180ms ease;
+}
+
+.primaryAction:hover {
+  color: var(--accent);
+  background: transparent;
+}
+
+.primaryAction:active {
+  transform: translateY(1px) scale(0.985);
+}
+
+.interactionNote {
+  position: absolute;
+  z-index: 4;
+  right: 44px;
+  bottom: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 7px;
+  color: var(--muted);
+  font-family: var(--font-showroom-mono), monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  line-height: 1.2;
+}
+
+.powertrain {
+  position: absolute;
+  z-index: 4;
+  right: 44px;
+  top: 106px;
+  display: flex;
+  gap: 12px;
+  color: var(--foreground);
+  font-family: var(--font-showroom-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+}
+
+.powertrain span + span {
+  padding-left: 12px;
+  border-left: 1px solid var(--hairline);
+}
+
+.paintSelector {
+  position: absolute;
+  z-index: 4;
+  top: 143px;
+  right: 44px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  color: var(--muted);
+  font-family: var(--font-showroom-mono), monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+}
+
+.paintSelector > span {
+  margin-right: 3px;
+}
+
+.paintSelector button {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.28);
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    outline-color 160ms ease;
+}
+
+.paintSelector button:hover {
+  transform: scale(1.09);
+}
+
+.paintSelector .activePaint {
+  outline: 1px solid var(--foreground);
+  outline-offset: 3px;
+}
+
+.paintSelector button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.loader {
+  position: absolute;
+  z-index: 7;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 44px 42px;
+  background: var(--background);
+  animation: loaderArrival 180ms both ease;
+}
+
+.loaderTopline {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 13px;
+  color: var(--foreground);
+  font-family: var(--font-showroom-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+}
+
+.loaderTrack {
+  position: relative;
+  width: 100%;
+  height: 2px;
+  overflow: hidden;
+  background: var(--hairline);
+}
+
+.loaderTrack span {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform-origin: left;
+  transition: transform 180ms ease-out;
+}
+
+.errorState {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 18px;
+  color: var(--foreground);
+  background: var(--surface);
+  font-family: var(--font-showroom-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-align: center;
+}
+
+.errorState p {
+  margin: 0;
+}
+
+.errorState button {
+  height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--accent);
+  border-radius: 0;
+  color: var(--accent-ink);
+  background: var(--accent);
+  font-family: inherit;
+  font-size: 10px;
+  letter-spacing: inherit;
+  cursor: pointer;
+}
+
+@keyframes canvasEntrance {
+  from {
+    opacity: 0;
+    transform: scale(1.025);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes copyEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes loaderArrival {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .experience {
+    --background: #d9dde0;
+    --surface: #cbd0d4;
+    --surface-strong: #bec4c8;
+    --foreground: #111316;
+    --muted: #515860;
+    --hairline: rgba(17, 19, 22, 0.18);
+    --accent: #8db321;
+    --accent-ink: #111408;
+
+    background:
+      radial-gradient(circle at 54% 48%, rgba(255, 255, 255, 0.68), transparent 34%),
+      var(--background);
+  }
+}
+
+@media (max-width: 767px) {
+  .experience {
+    min-height: 100dvh;
+  }
+
+  .header {
+    height: 64px;
+    padding: 0 18px;
+  }
+
+  .brand span {
+    font-size: 7px;
+  }
+
+  .brand strong {
+    font-size: 13px;
+  }
+
+  .viewNav {
+    position: absolute;
+    top: 64px;
+    right: 18px;
+    left: 18px;
+    height: 44px;
+    justify-content: flex-end;
+    gap: 18px;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .viewLabel {
+    margin-right: auto;
+  }
+
+  .viewNav button {
+    height: 44px;
+  }
+
+  .canvasWrap {
+    inset: 64px -19vw 152px;
+  }
+
+  .backdropWord {
+    top: 41%;
+    font-size: clamp(86px, 29vw, 150px);
+    transform: translate(-49%, -50%);
+  }
+
+  .heroCopy {
+    right: 18px;
+    bottom: 26px;
+    left: 18px;
+    max-width: none;
+  }
+
+  .eyebrow {
+    margin-bottom: 9px;
+    font-size: 9px;
+  }
+
+  .heroCopy h1 {
+    font-size: clamp(47px, 15vw, 74px);
+    line-height: 0.86;
+  }
+
+  .intro {
+    max-width: 29ch;
+    margin: 14px 0 18px;
+    font-size: 13px;
+    line-height: 1.42;
+  }
+
+  .primaryAction {
+    min-width: 151px;
+    height: 44px;
+  }
+
+  .interactionNote {
+    display: none;
+  }
+
+  .powertrain {
+    top: 124px;
+    right: auto;
+    left: 18px;
+    font-size: 9px;
+  }
+
+  .paintSelector {
+    top: 124px;
+    right: 18px;
+  }
+
+  .paintSelector > span {
+    display: none;
+  }
+
+  .loader {
+    padding: 0 18px 28px;
+  }
+}
+
+@media (max-height: 700px) and (min-width: 768px) {
+  .heroCopy {
+    bottom: 24px;
+  }
+
+  .heroCopy h1 {
+    font-size: clamp(52px, 6vw, 84px);
+  }
+
+  .intro {
+    margin: 14px 0 17px;
+  }
+
+  .interactionNote {
+    bottom: 26px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .canvasWrap,
+  .heroCopy,
+  .loader {
+    animation: none;
+  }
+
+  .viewNav button::after,
+  .primaryAction,
+  .paintSelector button,
+  .loaderTrack span {
+    transition: none;
+  }
+}

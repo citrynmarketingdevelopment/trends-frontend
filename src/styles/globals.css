@@ -1,0 +1,19 @@
+@import "./reset.css";
+@import "./tokens.css";
+@import "./themes.css";
+@import "./typography.css";
+@import "./utilities.css";
+
+html {
+  background: var(--surface-canvas);
+}
+
+body {
+  color: var(--text-primary);
+  background: var(--surface-canvas);
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}

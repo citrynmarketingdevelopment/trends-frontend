@@ -1,0 +1,36 @@
+.status {
+  display: grid;
+  min-height: 100dvh;
+  place-content: center;
+  gap: var(--space-5);
+  padding: var(--content-gutter);
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 35%, rgb(84 17 24 / 38%), transparent 35%), var(--surface-canvas);
+}
+
+.status h1 {
+  max-width: 13ch;
+  font-size: clamp(3rem, 9vw, 7rem);
+  line-height: 0.9;
+}
+
+.status p {
+  max-width: 32rem;
+  color: var(--text-secondary);
+}
+
+.status a,
+.status button {
+  min-height: 3rem;
+  padding: 0.75rem 1rem;
+  color: var(--color-midnight);
+  background: var(--accent-primary);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
