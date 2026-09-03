@@ -36,6 +36,38 @@ const trackingFeatures = [
   },
 ] as const;
 
+const repairServices = [
+  {
+    title: ["Body &", "Structure"],
+    items: ["Dent repair & removal", "Auto body repair", "Aluminum repair"],
+    image: "/images/repair-services/body-structure.webp",
+  },
+  {
+    title: ["Paint &", "Finish"],
+    items: ["Auto paint repair", "Paint scratch repair", "Fender repair"],
+    image: "/images/repair-services/paint-finish.webp",
+  },
+  {
+    title: ["Glass &", "Weather"],
+    items: ["Auto glass repair", "Windshield replacement", "Hail damage repair"],
+    image: "/images/repair-services/glass-weather.webp",
+  },
+  {
+    title: ["Finishing", "& Safety"],
+    items: ["Paintless dent repair", "Bumper repair", "ADAS calibrations"],
+    image: "/images/repair-services/finishing-safety.webp",
+  },
+] as const;
+
+const serviceHighlights = [
+  "All makes & models",
+  "Certified parts",
+  "Payment options",
+  "All insurers",
+  "Waterborne paints",
+  "Towing & rental",
+] as const;
+
 export function RepairTrackingSection() {
   return (
     <section className={styles.trackingSection} id="quality" aria-labelledby="tracking-heading">
@@ -46,16 +78,24 @@ export function RepairTrackingSection() {
 
       <div className={styles.trackingLayout}>
         <div className={styles.trackingIntroduction}>
-          <p>Repair progress preview</p>
+          <p>The software we&apos;re building</p>
           <h2 id="tracking-heading" aria-label="Full visibility. Zero guesswork.">
             Full visibility.
             <span>Zero guesswork.</span>
           </h2>
           <span className={styles.trackingRule} aria-hidden="true" />
-          <p>
-            This process preview shows how intake, repair planning, refinishing, and final review
-            fit together. It does not display a live customer file.
-          </p>
+          <div className={styles.trackingBody}>
+            <p>
+              We&apos;re building a shop workflow platform that gives every vehicle one secure
+              repair record. Intake photos, stages, approvals, supplements, assignments, documents,
+              and update history stay connected from check-in through delivery.
+            </p>
+            <p>
+              Staff can see the current owner and next action. Customers receive a private view of
+              approved milestones, the latest public update, and any requested documents. This
+              concept uses sample data, not a live customer file.
+            </p>
+          </div>
         </div>
 
         <div className={styles.trackingPanel} aria-label="Example repair progress">
@@ -113,6 +153,71 @@ export function RepairTrackingSection() {
   );
 }
 
+export function RepairServicesSection() {
+  return (
+    <section className={styles.repairServicesSection} aria-labelledby="repair-services-heading">
+      <div className={styles.repairServicesInner}>
+        <header className={styles.repairServicesHeader}>
+          <div>
+            <p>Four bays / Twelve services</p>
+            <h2 id="repair-services-heading">Everything we do, under one roof.</h2>
+          </div>
+          <p>
+            Insurance or cash, dealer or daily driver. The same standard and the same repair record
+            follow every vehicle.
+          </p>
+        </header>
+
+        <div className={styles.repairServicesRail}>
+          {repairServices.map((service, index) => (
+            <article className={styles.repairServiceCard} key={service.title.join(" ")}>
+              <Image
+                alt=""
+                className={styles.repairServiceImage}
+                fill
+                sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 25vw"
+                src={service.image}
+              />
+              <div className={styles.repairServiceGrade} aria-hidden="true" />
+              <span className={styles.repairServiceNumber} aria-hidden="true">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <div className={styles.repairServiceCopy}>
+                <span className={styles.repairServiceAccent} aria-hidden="true" />
+                <h3>
+                  {service.title.map((line) => (
+                    <span key={line}>{line}</span>
+                  ))}
+                </h3>
+                <ul>
+                  {service.items.map((item) => (
+                    <li key={item}>
+                      <span aria-hidden="true" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <footer className={styles.repairServicesFooter}>
+          <p>
+            Every service opens the same repair record. Photos, approvals, and sign-off travel with
+            the vehicle.
+          </p>
+          <ul aria-label="Service capabilities">
+            {serviceHighlights.map((highlight) => (
+              <li key={highlight}>{highlight}</li>
+            ))}
+          </ul>
+        </footer>
+      </div>
+    </section>
+  );
+}
+
 export function RepairStartPoster() {
   return (
     <section className={styles.repairPoster} id="start" aria-labelledby="start-heading">
@@ -147,7 +252,6 @@ export function RepairStartPoster() {
 export function PostProcessSections() {
   return (
     <>
-      <RepairTrackingSection />
       <QuestionsSection />
       <RepairStartPoster />
     </>

@@ -58,7 +58,7 @@ test("homepage loads the new dimensional logo without requesting the Revuelto at
   await expect(
     page.getByRole("heading", {
       level: 1,
-      name: "The art of restoration.",
+      name: "Trends Auto Collision",
     }),
   ).toBeVisible();
   await expect(page.getByAltText("Trends logo").first()).toBeVisible();
@@ -177,8 +177,65 @@ test("service cards expand on desktop hover and return to the default reel", asy
   );
   await dealerViewport.hover();
   expect(await dealerRail.evaluate((element) => getComputedStyle(element).animationPlayState)).toBe(
-    "paused",
+    "running",
   );
+});
+
+test("service imagery and homepage section order match the current launch layout", async ({
+  page,
+}) => {
+  await disableWebGL(page);
+  await page.goto("/");
+
+  await expect(page.locator('img[src*="collision-repair-crashed-car.webp"]').first()).toBeVisible();
+  await expect(page.locator('img[src*="roadside-tow-truck.webp"]').first()).toBeVisible();
+  await expect(page.locator('img[src*="repair-services"]')).toHaveCount(4);
+
+  const sections = page.locator("#main-content > section");
+  await expect(sections.nth(2)).toContainText("Full visibility.");
+  const trackingIndex = await sections.evaluateAll((items) =>
+    items.findIndex((item) => item.textContent?.includes("Full visibility.")),
+  );
+  const certificationIndex = await sections.evaluateAll((items) =>
+    items.findIndex((item) => item.textContent?.includes("Credentials behind the repair.")),
+  );
+  const repairServicesIndex = await sections.evaluateAll((items) =>
+    items.findIndex((item) => item.textContent?.includes("Everything we do, under one roof.")),
+  );
+  expect(trackingIndex).toBe(2);
+  expect(certificationIndex).toBeGreaterThan(trackingIndex);
+  expect(repairServicesIndex).toBe(certificationIndex + 1);
+});
+
+test("supplied certifications filter and update their detail panel", async ({ page }) => {
+  await useCapableDesktop(page);
+  await page.goto("/");
+
+  const section = page.locator("#certifications");
+  await section.scrollIntoViewIfNeeded();
+  await expect(
+    section.getByRole("heading", { level: 2, name: "Credentials behind the repair." }),
+  ).toBeVisible();
+  await expect(section.locator("[data-certification-grid] button")).toHaveCount(6);
+  await expect(
+    section.getByRole("button", { name: "OEM certifications", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await expect(section.locator('img[src*="training-industry-03.webp"]')).toHaveCount(2);
+
+  await section.getByRole("button", { name: "OEM certifications", exact: true }).click();
+  await expect(section.locator("[data-certification-grid] button")).toHaveCount(6);
+  await section
+    .getByRole("button", {
+      name: "Kia Recognized Collision Repair Center. OEM certifications.",
+    })
+    .click();
+  await expect(
+    section.locator("[data-selected-certificate='kia-recognized-collision-repair-center']"),
+  ).toBeVisible();
+  await expect(
+    section.getByRole("heading", { level: 3, name: "Kia Recognized Collision Repair Center" }),
+  ).toBeVisible();
+  await expect(section.getByText("No validity date shown on the supplied artwork")).toBeVisible();
 });
 
 test("the car request begins near the process and the live scene becomes ready", async ({
@@ -285,6 +342,20 @@ test("scroll intent advances one locked sequence at a time in both directions", 
   await expect(process).not.toHaveAttribute("data-sequence-playing", "true", { timeout: 4000 });
   await page.waitForTimeout(450);
 
+  const nextChapter = page.getByRole("button", {
+    name: "Next process chapter (Page Down)",
+  });
+  const previousChapter = page.getByRole("button", {
+    name: "Previous process chapter (Page Up)",
+  });
+  await clickAtCenter(page, nextChapter);
+  await expect(process).toHaveAttribute("data-sequence-index", "2");
+  await expect(process).not.toHaveAttribute("data-sequence-playing", "true", { timeout: 4000 });
+  await clickAtCenter(page, previousChapter);
+  await expect(process).toHaveAttribute("data-sequence-index", "1");
+  await expect(process).not.toHaveAttribute("data-sequence-playing", "true", { timeout: 4000 });
+  await page.waitForTimeout(450);
+
   const advance = async (index: number, phase: string, direction: 1 | -1 = 1) => {
     await page.mouse.wheel(0, direction * 620);
     await expect(process).toHaveAttribute("data-sequence-index", String(index));
@@ -377,7 +448,7 @@ test.describe("without JavaScript", () => {
     await expect(
       page.getByRole("heading", {
         level: 1,
-        name: "The art of restoration.",
+        name: "Trends Auto Collision",
       }),
     ).toBeVisible();
     await expect(

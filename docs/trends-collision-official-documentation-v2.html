@@ -1,0 +1,2497 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trends Collision Workflow Platform | Official Architecture Documentation v2</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --paper: #ffffff;
+      --paper-2: #f8fafc;
+      --ink: #172033;
+      --muted: #5c667a;
+      --muted-2: #7b8596;
+      --line: #dfe5ef;
+      --line-2: #eef2f7;
+      --red: #d71920;
+      --red-2: #9d1118;
+      --blue: #2563eb;
+      --green: #15945f;
+      --yellow: #b7791f;
+      --purple: #6d28d9;
+      --orange: #dd6b20;
+      --radius: 16px;
+      --shadow: 0 22px 60px rgba(17, 24, 39, .08);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(215, 25, 32, .10), transparent 40rem),
+        linear-gradient(180deg, #fff 0%, var(--bg) 36rem);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.55;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    code, pre { font-family: var(--mono); }
+
+    .app {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: auto;
+      padding: 22px;
+      background: rgba(255, 255, 255, .86);
+      border-right: 1px solid var(--line);
+      backdrop-filter: blur(18px);
+      z-index: 20;
+    }
+
+    .brand {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .logo {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      color: white;
+      background: linear-gradient(135deg, var(--red), var(--red-2));
+      font-weight: 900;
+      letter-spacing: -.08em;
+      box-shadow: 0 12px 28px rgba(215, 25, 32, .22);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.08;
+      letter-spacing: -.02em;
+    }
+
+    .brand small {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .doc-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      color: var(--red-2);
+      background: rgba(215,25,32,.08);
+      border: 1px solid rgba(215,25,32,.16);
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .nav-label {
+      margin: 22px 0 8px;
+      color: var(--muted-2);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-weight: 900;
+    }
+
+    nav a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 9px 10px;
+      margin: 3px 0;
+      border-radius: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 650;
+      border: 1px solid transparent;
+      transition: .15s ease;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: var(--ink);
+      background: var(--paper-2);
+      border-color: var(--line-2);
+    }
+
+    .nav-num {
+      color: var(--muted-2);
+      font-size: 11px;
+      font-weight: 900;
+      font-family: var(--mono);
+    }
+
+    .side-card {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 16px;
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+    }
+
+    .side-card b {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+
+    .side-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    main {
+      min-width: 0;
+      padding: 30px 38px 80px;
+    }
+
+    section {
+      max-width: 1240px;
+      margin: 0 auto 34px;
+      scroll-margin-top: 30px;
+    }
+
+    .cover {
+      position: relative;
+      overflow: hidden;
+      border-radius: 28px;
+      padding: 44px;
+      background:
+        linear-gradient(135deg, rgba(23, 32, 51, .96), rgba(19, 28, 44, .92)),
+        radial-gradient(circle at 82% 20%, rgba(215,25,32,.45), transparent 28rem);
+      color: white;
+      box-shadow: var(--shadow);
+    }
+
+    .cover::after {
+      content: "";
+      position: absolute;
+      right: -150px;
+      bottom: -170px;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: rgba(215,25,32,.26);
+      filter: blur(24px);
+    }
+
+    .cover-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1.4fr .85fr;
+      gap: 30px;
+      align-items: end;
+    }
+
+    .cover h2 {
+      margin: 18px 0 0;
+      max-width: 900px;
+      font-size: clamp(36px, 6vw, 72px);
+      line-height: .96;
+      letter-spacing: -.062em;
+    }
+
+    .cover p {
+      margin: 22px 0 0;
+      max-width: 820px;
+      color: rgba(255,255,255,.76);
+      font-size: 18px;
+    }
+
+    .cover-meta {
+      border-radius: 22px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.13);
+      backdrop-filter: blur(12px);
+      overflow: hidden;
+    }
+
+    .meta-row {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 12px;
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+
+    .meta-row:last-child { border-bottom: 0; }
+    .meta-row span:first-child {
+      color: rgba(255,255,255,.55);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      font-weight: 900;
+    }
+
+    .meta-row span:last-child {
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .actions {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 11px 14px;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 850;
+      cursor: pointer;
+      transition: .15s ease;
+      user-select: none;
+    }
+
+    .cover .btn {
+      background: rgba(255,255,255,.10);
+      color: white;
+      border-color: rgba(255,255,255,.18);
+    }
+
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 14px 24px rgba(15,23,42,.08); }
+    .btn.primary { background: linear-gradient(135deg, var(--red), var(--red-2)); color: white; border-color: rgba(255,255,255,.1); }
+    .btn.small { padding: 8px 10px; font-size: 12px; }
+
+    .mobile-top { display: none; }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 24px;
+      align-items: end;
+      margin: 34px 0 16px;
+    }
+
+    .section-kicker {
+      margin: 0 0 8px;
+      color: var(--red);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+    }
+
+    h3 {
+      margin: 0;
+      font-size: clamp(26px, 4vw, 42px);
+      letter-spacing: -.045em;
+      line-height: .98;
+    }
+
+    .section-head p {
+      margin: 10px 0 0;
+      max-width: 800px;
+      color: var(--muted);
+    }
+
+    .card {
+      background: rgba(255,255,255,.92);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 32px rgba(15, 23, 42, .045);
+      overflow: hidden;
+    }
+
+    .card.pad { padding: 20px; }
+    .card h4 {
+      margin: 0 0 8px;
+      font-size: 19px;
+      letter-spacing: -.025em;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .grid { display: grid; gap: 16px; }
+    .cols-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .cols-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    .cols-4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
+
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .tag.red { color: var(--red-2); background: rgba(215,25,32,.07); border-color: rgba(215,25,32,.16); }
+    .tag.blue { color: #1744aa; background: rgba(37,99,235,.07); border-color: rgba(37,99,235,.16); }
+    .tag.green { color: #0d6f46; background: rgba(21,148,95,.07); border-color: rgba(21,148,95,.16); }
+    .tag.yellow { color: #815b13; background: rgba(183,121,31,.08); border-color: rgba(183,121,31,.18); }
+    .tag.purple { color: #5721b5; background: rgba(109,40,217,.07); border-color: rgba(109,40,217,.16); }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      color: #0d6f46;
+      background: rgba(21,148,95,.09);
+      border: 1px solid rgba(21,148,95,.18);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .status::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .decision {
+      border-left: 5px solid var(--red);
+      background: linear-gradient(90deg, rgba(215,25,32,.07), white 50%);
+    }
+
+    .callout {
+      padding: 15px 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(183,121,31,.22);
+      background: rgba(183,121,31,.08);
+      color: #5f4512;
+      font-size: 14px;
+    }
+
+    .reader-card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 170px;
+    }
+
+    .reader-card strong {
+      display: block;
+      font-size: 17px;
+      letter-spacing: -.02em;
+    }
+
+    .reader-card span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .reader-card a {
+      margin-top: auto;
+      color: var(--red);
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    .diagram-wrap {
+      padding: 18px;
+      overflow-x: auto;
+    }
+
+    .context-diagram {
+      min-width: 920px;
+      display: grid;
+      grid-template-columns: 240px 1fr 240px;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .actor-col {
+      display: grid;
+      gap: 12px;
+    }
+
+    .actor {
+      padding: 13px;
+      border-radius: 14px;
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      text-align: center;
+      font-weight: 850;
+      font-size: 13px;
+    }
+
+    .system-core {
+      position: relative;
+      padding: 34px 26px;
+      border-radius: 24px;
+      color: white;
+      text-align: center;
+      background: linear-gradient(135deg, var(--ink), #27324a);
+      box-shadow: 0 24px 60px rgba(23,32,51,.18);
+    }
+
+    .system-core h4 { margin: 0 0 8px; font-size: 25px; letter-spacing: -.035em; }
+    .system-core p { color: rgba(255,255,255,.75); margin: 0; }
+
+    .arrow-note {
+      text-align: center;
+      color: var(--muted-2);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      margin: 10px 0;
+    }
+
+    .container-diagram {
+      min-width: 980px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .diagram-layer {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .layer-title {
+      display: flex;
+      align-items: center;
+      padding: 14px;
+      border-radius: 14px;
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      font-weight: 900;
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+    }
+
+    .layer-items {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .diagram-box {
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: white;
+      min-height: 90px;
+      cursor: pointer;
+      transition: .15s ease;
+    }
+
+    .diagram-box:hover,
+    .diagram-box.active {
+      border-color: rgba(215,25,32,.32);
+      background: rgba(215,25,32,.045);
+      transform: translateY(-1px);
+    }
+
+    .diagram-box b { display: block; font-size: 14px; margin-bottom: 5px; }
+    .diagram-box span { display: block; color: var(--muted); font-size: 12px; }
+
+    .detail-panel {
+      border-top: 1px solid var(--line);
+      background: var(--paper-2);
+      padding: 16px 18px;
+    }
+
+    .detail-panel h4 { margin: 0 0 6px; }
+    .detail-panel p { margin: 0; color: var(--muted); }
+
+    .flow-shell {
+      display: grid;
+      grid-template-columns: 310px minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    .flow-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .flow-btn {
+      width: 100%;
+      padding: 12px 12px;
+      text-align: left;
+      border-radius: 14px;
+      background: white;
+      border: 1px solid var(--line);
+      color: var(--ink);
+      cursor: pointer;
+      transition: .15s ease;
+    }
+
+    .flow-btn:hover,
+    .flow-btn.active {
+      background: rgba(215,25,32,.055);
+      border-color: rgba(215,25,32,.25);
+    }
+
+    .flow-btn b { display: block; font-size: 14px; }
+    .flow-btn span { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; }
+
+    .flow-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+      margin-bottom: 16px;
+    }
+
+    .flow-title h4 {
+      margin: 0;
+      font-size: 25px;
+      letter-spacing: -.04em;
+    }
+
+    .flow-title p {
+      margin: 6px 0 0;
+      color: var(--muted);
+    }
+
+    .steps {
+      display: grid;
+      gap: 10px;
+      counter-reset: step;
+    }
+
+    .step {
+      position: relative;
+      display: grid;
+      grid-template-columns: 46px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 14px;
+      border-radius: 16px;
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+    }
+
+    .step::before {
+      counter-increment: step;
+      content: counter(step);
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      color: white;
+      background: var(--red);
+      font-weight: 900;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .step b { display: block; margin-bottom: 3px; }
+    .step span { color: var(--muted); font-size: 13px; }
+
+    .flow-meta {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .meta-card {
+      border-radius: 14px;
+      background: white;
+      border: 1px solid var(--line);
+      padding: 12px;
+    }
+
+    .meta-card b {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--muted-2);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-size: 11px;
+    }
+
+    .meta-card span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .state-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 14px;
+    }
+
+    .state-card {
+      padding: 16px;
+      border-radius: 16px;
+      background: white;
+      border: 1px solid var(--line);
+    }
+
+    .state-card h4 { margin: 0 0 12px; }
+    .state-chain {
+      display: grid;
+      gap: 8px;
+    }
+
+    .state-node {
+      position: relative;
+      padding: 9px 10px;
+      border-radius: 12px;
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .state-node:not(:last-child)::after {
+      content: "↓";
+      display: block;
+      margin: 5px 0 -3px;
+      color: var(--muted-2);
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .tab {
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--muted);
+      font-weight: 850;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .tab.active {
+      color: var(--red-2);
+      background: rgba(215,25,32,.07);
+      border-color: rgba(215,25,32,.18);
+    }
+
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 760px;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line-2);
+      padding: 12px 12px;
+      font-size: 13px;
+    }
+
+    th {
+      color: var(--muted-2);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-weight: 900;
+      background: var(--paper-2);
+    }
+
+    td { color: var(--muted); }
+    td strong { color: var(--ink); }
+
+    .rules {
+      display: grid;
+      gap: 10px;
+    }
+
+    .rule {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 13px;
+      border-radius: 14px;
+      background: white;
+      border: 1px solid var(--line);
+    }
+
+    .rule .icon {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(215,25,32,.08);
+      color: var(--red);
+      font-weight: 900;
+    }
+
+    .rule b { display: block; margin-bottom: 3px; }
+    .rule span { color: var(--muted); font-size: 13px; }
+
+    details {
+      border: 1px solid var(--line);
+      background: white;
+      border-radius: 14px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+
+    summary {
+      padding: 14px 16px;
+      cursor: pointer;
+      font-weight: 900;
+      color: var(--ink);
+      background: var(--paper-2);
+    }
+
+    details[open] summary {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .details-body {
+      padding: 16px;
+    }
+
+    .code-card {
+      position: relative;
+      background: #0c1220;
+      color: #dce7ff;
+      border-radius: 16px;
+      border: 1px solid #1f2a44;
+      overflow: hidden;
+      box-shadow: 0 18px 46px rgba(15,23,42,.12);
+    }
+
+    .code-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      background: #111a2d;
+      border-bottom: 1px solid #1f2a44;
+      color: #9fb0cc;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-weight: 900;
+    }
+
+    .copy-btn {
+      padding: 6px 8px;
+      border-radius: 8px;
+      border: 1px solid #2e3c5e;
+      color: #dce7ff;
+      background: #18233b;
+      font-size: 11px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    pre {
+      margin: 0;
+      padding: 16px;
+      overflow: auto;
+      font-size: 12px;
+      line-height: 1.58;
+    }
+
+    .schema-explorer {
+      display: grid;
+      grid-template-columns: 320px minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill {
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 850;
+      cursor: pointer;
+    }
+
+    .pill.active {
+      color: var(--red-2);
+      background: rgba(215,25,32,.07);
+      border-color: rgba(215,25,32,.18);
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .field {
+      padding: 9px 10px;
+      border-radius: 10px;
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      font-family: var(--mono);
+      color: #334155;
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .endpoint-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .endpoint {
+      display: grid;
+      grid-template-columns: 78px 1.1fr 1.1fr .9fr;
+      gap: 12px;
+      padding: 12px;
+      border-bottom: 1px solid var(--line-2);
+      align-items: start;
+    }
+
+    .endpoint:last-child { border-bottom: 0; }
+
+    .method {
+      width: fit-content;
+      padding: 5px 7px;
+      border-radius: 8px;
+      background: rgba(37,99,235,.08);
+      border: 1px solid rgba(37,99,235,.16);
+      color: #1744aa;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 900;
+    }
+    .method.post { background: rgba(21,148,95,.08); border-color: rgba(21,148,95,.16); color: #0d6f46; }
+    .method.patch { background: rgba(183,121,31,.08); border-color: rgba(183,121,31,.18); color: #815b13; }
+    .method.delete { background: rgba(215,25,32,.08); border-color: rgba(215,25,32,.16); color: var(--red-2); }
+
+    .route { font-family: var(--mono); color: #334155; font-size: 12px; overflow-wrap: anywhere; }
+    .endpoint span { color: var(--muted); font-size: 12px; }
+
+    .acceptance {
+      display: grid;
+      gap: 10px;
+    }
+
+    .accept-item {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 11px 12px;
+      border-radius: 13px;
+      background: white;
+      border: 1px solid var(--line);
+    }
+
+    .accept-item input {
+      margin-top: 4px;
+      accent-color: var(--red);
+    }
+
+    .accept-item span { color: var(--muted); font-size: 13px; }
+
+    .roadmap {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(190px, 1fr));
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+    }
+
+    .phase {
+      min-height: 230px;
+      padding: 16px;
+      border-radius: 16px;
+      background: white;
+      border: 1px solid var(--line);
+    }
+
+    .phase small {
+      display: inline-flex;
+      margin-bottom: 10px;
+      color: var(--red-2);
+      background: rgba(215,25,32,.07);
+      border: 1px solid rgba(215,25,32,.16);
+      padding: 5px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .phase h4 { margin: 0 0 8px; }
+    .phase ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 13px; }
+
+    .file-tree {
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.65;
+      color: #334155;
+      white-space: pre;
+      overflow: auto;
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .footer {
+      max-width: 1240px;
+      margin: 50px auto 0;
+      padding: 20px;
+      color: var(--muted-2);
+      text-align: center;
+      font-size: 12px;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 1100px) {
+      .app { grid-template-columns: 1fr; }
+      aside { display: none; }
+      main { padding: 16px 14px 60px; }
+      .mobile-top {
+        display: flex;
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        margin: -16px -14px 16px;
+        padding: 12px 14px;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(255,255,255,.9);
+        border-bottom: 1px solid var(--line);
+        backdrop-filter: blur(16px);
+      }
+      .cover { padding: 28px; border-radius: 22px; }
+      .cover-grid,
+      .cols-2,
+      .cols-3,
+      .cols-4,
+      .flow-shell,
+      .schema-explorer {
+        grid-template-columns: 1fr;
+      }
+      .section-head { display: block; }
+      .state-grid { grid-template-columns: 1fr; }
+      .roadmap { grid-template-columns: 1fr; overflow: visible; }
+      .flow-meta { grid-template-columns: 1fr; }
+      .endpoint { grid-template-columns: 76px 1fr; }
+      .endpoint span:nth-child(3),
+      .endpoint span:nth-child(4) { grid-column: 2; }
+      .field-grid { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      body { background: white; }
+      aside, .mobile-top, .actions, .btn, .tabs, .endpoint-toolbar, .flow-list, .copy-btn { display: none !important; }
+      .app { display: block; }
+      main { padding: 0; }
+      section { break-inside: avoid; margin-bottom: 18px; }
+      .cover { color: #111; background: white; border: 1px solid #ddd; box-shadow: none; }
+      .cover p { color: #555; }
+      .cover-meta { background: white; border-color: #ddd; }
+      .meta-row { border-color: #eee; }
+      .meta-row span:first-child, .meta-row span:last-child { color: #333; }
+      .card, .phase, .state-card, .diagram-box, .rule, details { box-shadow: none; }
+      .tab-pane { display: block !important; }
+      .diagram-wrap { overflow: visible; }
+      .context-diagram, .container-diagram { min-width: 0; }
+      pre { white-space: pre-wrap; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside>
+      <div class="brand">
+        <div class="logo">TC</div>
+        <div>
+          <h1>Trends Collision<br />Workflow Platform</h1>
+          <small>Official documentation v2</small>
+        </div>
+      </div>
+      <span class="doc-badge">Developer handoff draft</span>
+
+      <div class="nav-label">Documentation</div>
+      <nav id="nav">
+        <a href="#cover">Cover <span class="nav-num">00</span></a>
+        <a href="#doc-control">Document control <span class="nav-num">01</span></a>
+        <a href="#how-to-use">How to use <span class="nav-num">02</span></a>
+        <a href="#executive-summary">Executive summary <span class="nav-num">03</span></a>
+        <a href="#mvp-definition">MVP definition <span class="nav-num">04</span></a>
+        <a href="#users">User roles <span class="nav-num">05</span></a>
+        <a href="#context">System context <span class="nav-num">06</span></a>
+        <a href="#containers">Container architecture <span class="nav-num">07</span></a>
+        <a href="#components">Module architecture <span class="nav-num">08</span></a>
+        <a href="#flows">User flows <span class="nav-num">09</span></a>
+        <a href="#states">State machines <span class="nav-num">10</span></a>
+        <a href="#rules">System rules <span class="nav-num">11</span></a>
+        <a href="#data">Data ownership <span class="nav-num">12</span></a>
+        <a href="#schema">Database schema <span class="nav-num">13</span></a>
+        <a href="#api">API reference <span class="nav-num">14</span></a>
+        <a href="#ui">UI architecture <span class="nav-num">15</span></a>
+        <a href="#files">File structure <span class="nav-num">16</span></a>
+        <a href="#testing">Testing strategy <span class="nav-num">17</span></a>
+        <a href="#roadmap">Build roadmap <span class="nav-num">18</span></a>
+        <a href="#acceptance">Acceptance criteria <span class="nav-num">19</span></a>
+        <a href="#future">Future scope <span class="nav-num">20</span></a>
+        <a href="#changelog">Changelog <span class="nav-num">21</span></a>
+      </nav>
+
+      <div class="side-card">
+        <b>Primary architecture decision</b>
+        <p>One Next.js modular monolith with configurable workflow templates, digital jackets, customer portal tokens, and audit-first data modeling.</p>
+      </div>
+    </aside>
+
+    <main>
+      <div class="mobile-top">
+        <div class="brand" style="margin:0">
+          <div class="logo">TC</div>
+          <div>
+            <h1>Trends Collision Docs</h1>
+            <small>Official documentation v2</small>
+          </div>
+        </div>
+        <a class="btn small primary" href="#cover">Start</a>
+      </div>
+
+      <section id="cover">
+        <div class="cover">
+          <div class="cover-grid">
+            <div>
+              <span class="doc-badge" style="background:rgba(255,255,255,.1);color:white;border-color:rgba(255,255,255,.18)">Official project documentation</span>
+              <h2>System architecture and MVP product specification.</h2>
+              <p>
+                Developer handoff documentation for the Trends Collision Workflow Platform. This revised v2 version documents the full project scope, user flows, data model, architecture rules, API surface, testing plan, and build roadmap.
+              </p>
+              <div class="actions">
+                <a class="btn primary" href="#flows">Review user flows</a>
+                <a class="btn" href="#schema">View schema</a>
+                <button class="btn" onclick="window.print()">Print documentation</button>
+              </div>
+            </div>
+            <div class="cover-meta">
+              <div class="meta-row"><span>Project</span><span>Trends Collision Workflow Platform</span></div>
+              <div class="meta-row"><span>Type</span><span>System Architecture + MVP Product Specification</span></div>
+              <div class="meta-row"><span>Version</span><span>v2.0 Revised Scope</span></div>
+              <div class="meta-row"><span>Status</span><span>Developer Handoff Draft</span></div>
+              <div class="meta-row"><span>Prepared For</span><span>Trends Collision Center</span></div>
+              <div class="meta-row"><span>Prepared By</span><span>Citryn Marketing</span></div>
+              <div class="meta-row"><span>Stack</span><span>Next.js, React, TypeScript, Prisma, Neon, Node.js, Vanilla CSS</span></div>
+              <div class="meta-row"><span>Last Updated</span><span>July 2026</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="doc-control">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">01 Document control</p>
+            <h3>Official reference details.</h3>
+            <p>This section sets the status, audience, source basis, and revision policy so the document can be used as an official project reference.</p>
+          </div>
+          <span class="status">Active draft</span>
+        </div>
+
+        <div class="grid cols-2">
+          <div class="card pad">
+            <h4>Document purpose</h4>
+            <p>This artifact defines what the developer team should build, why it exists, how major modules relate, and which rules should guide implementation.</p>
+            <div class="tag-row">
+              <span class="tag red">Architecture</span>
+              <span class="tag blue">Product spec</span>
+              <span class="tag green">Developer handoff</span>
+              <span class="tag yellow">QA reference</span>
+            </div>
+          </div>
+          <div class="card pad">
+            <h4>Source basis</h4>
+            <p>Based on the revised architecture report, the full Trends Collision transcript, the meeting breakdown, and the uploaded intake/form context. Legal form wording should be verified from approved source files before implementation.</p>
+          </div>
+        </div>
+
+        <div class="card table-wrap" style="margin-top:16px">
+          <table>
+            <thead>
+              <tr>
+                <th>Version</th>
+                <th>Status</th>
+                <th>What changed</th>
+                <th>Owner</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>v1.0</strong></td>
+                <td>Initial architecture</td>
+                <td>Next.js modular monolith, Prisma schema, app routes, general collision workflow MVP.</td>
+                <td>Citryn Marketing</td>
+              </tr>
+              <tr>
+                <td><strong>v2.0</strong></td>
+                <td>Current draft</td>
+                <td>Added official documentation structure, user flows, C4 diagrams, state machines, system rules, data ownership, acceptance criteria, and revised Trends-specific domain model.</td>
+                <td>Citryn Marketing</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="how-to-use">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">02 How to use</p>
+            <h3>Start in the right section.</h3>
+            <p>Different team members should use different parts of this document depending on their role in the project.</p>
+          </div>
+        </div>
+
+        <div class="grid cols-4">
+          <div class="card pad reader-card">
+            <strong>Owner or stakeholder</strong>
+            <span>Use the executive summary, MVP definition, user flows, and acceptance criteria to verify scope.</span>
+            <a href="#executive-summary">Start with executive summary</a>
+          </div>
+          <div class="card pad reader-card">
+            <strong>Project manager</strong>
+            <span>Use roadmap, module scope, testing strategy, and acceptance criteria to manage delivery.</span>
+            <a href="#roadmap">Start with roadmap</a>
+          </div>
+          <div class="card pad reader-card">
+            <strong>Front-end developer</strong>
+            <span>Use UI architecture, route map, user flows, and component rules to plan screens.</span>
+            <a href="#ui">Start with UI architecture</a>
+          </div>
+          <div class="card pad reader-card">
+            <strong>Back-end developer</strong>
+            <span>Use schema, API reference, system rules, permissions, and data ownership.</span>
+            <a href="#schema">Start with schema</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="executive-summary">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">03 Executive summary</p>
+            <h3>What we are building.</h3>
+            <p>The product is a collision repair workflow platform that combines a public website, internal operations system, customer vehicle tracker, and digital jacket workflow.</p>
+          </div>
+        </div>
+
+        <div class="grid cols-3">
+          <div class="card pad decision">
+            <h4>Architecture decision</h4>
+            <p>Build one modular monolith using Next.js App Router, React, TypeScript, Prisma, Neon Postgres, Node.js runtime, and vanilla CSS.</p>
+          </div>
+          <div class="card pad">
+            <h4>Primary system object</h4>
+            <p>The repair order is the center of the platform. It connects customer/dealer, vehicle, workflow, stages, assignments, forms, supplements, notifications, and audit logs.</p>
+          </div>
+          <div class="card pad">
+            <h4>Major revision</h4>
+            <p>The app must support configurable workflow templates. Insurance vehicles, dealer vehicles, COD jobs, and internal jobs should not be forced into one hardcoded stage path.</p>
+          </div>
+        </div>
+
+        <div class="callout" style="margin-top:16px">
+          The MVP should not attempt to replace estimating software, insurer systems, billing systems, or parts procurement on day one. The first version should solve daily workflow clarity: where the vehicle is, what stage it is in, what paperwork is complete, what is blocking progress, and who owns the next action.
+        </div>
+      </section>
+
+      <section id="mvp-definition">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">04 MVP product definition</p>
+            <h3>What is in scope and what is not.</h3>
+            <p>This scope keeps the MVP focused enough to build, while still covering the real workflow needs confirmed during discovery.</p>
+          </div>
+        </div>
+
+        <div class="tabs" data-tabs="scope">
+          <button class="tab active" data-tab="required">MVP required</button>
+          <button class="tab" data-tab="optional">MVP optional</button>
+          <button class="tab" data-tab="later">Not MVP</button>
+        </div>
+
+        <div class="tab-pane active" data-pane="required">
+          <div class="grid cols-3">
+            <div class="card pad"><h4>Website + trust</h4><p>Public website, services, certifications, how to file a claim, contact funnel, customer tracker entry.</p></div>
+            <div class="card pad"><h4>Internal operations</h4><p>Staff login, roles, departments, repair orders, workflow templates, stages, assignments, red flags.</p></div>
+            <div class="card pad"><h4>Digital workflow</h4><p>Digital jackets, intake forms, signatures, damage diagrams, supplements, customer portal tokens, activity logs.</p></div>
+          </div>
+        </div>
+
+        <div class="tab-pane" data-pane="optional">
+          <div class="grid cols-3">
+            <div class="card pad"><h4>Email delivery</h4><p>Logged customer updates can exist first. Email delivery can be added once message templates are approved.</p></div>
+            <div class="card pad"><h4>Basic attachment upload</h4><p>Photos and scanned files are useful, but storage integration can be phased after structured data is stable.</p></div>
+            <div class="card pad"><h4>Basic reporting</h4><p>Simple dashboards should exist. Advanced analytics should wait for real usage data.</p></div>
+          </div>
+        </div>
+
+        <div class="tab-pane" data-pane="later">
+          <div class="grid cols-3">
+            <div class="card pad"><h4>Native app</h4><p>Responsive web is enough for the MVP. Native iOS/Android should wait.</p></div>
+            <div class="card pad"><h4>CCC One integration</h4><p>Only add if official access and stable integration requirements are confirmed.</p></div>
+            <div class="card pad"><h4>External portals</h4><p>Dealer and insurance self-service portals should come after internal workflow is proven.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="users">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">05 User roles</p>
+            <h3>Who uses the system.</h3>
+            <p>Permissions should be role-based for MVP. Fine-grained policy controls can be added later if needed.</p>
+          </div>
+        </div>
+
+        <div class="card table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Role</th>
+                <th>Primary goals</th>
+                <th>Access level</th>
+                <th>Important restrictions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Owner</strong></td><td>Full visibility, settings, reports, testing feedback, workflow control.</td><td>Full access.</td><td>None beyond audit requirements.</td></tr>
+              <tr><td><strong>Manager</strong></td><td>Monitor stages, resolve red flags, assign work, review bottlenecks.</td><td>Broad operational access.</td><td>Cannot bypass audit logs.</td></tr>
+              <tr><td><strong>Front Office</strong></td><td>Customer intake, forms, tracker link, documents, pickup authorization.</td><td>Customer, vehicle, repair order, documents, communication.</td><td>Cannot edit finalized legal documents without versioning.</td></tr>
+              <tr><td><strong>Estimator</strong></td><td>Estimate review, supplement tracking, approvals, photos, repair notes.</td><td>Repair orders, supplements, notes, attachments.</td><td>Customer visibility must be explicitly marked.</td></tr>
+              <tr><td><strong>Technician</strong></td><td>View assigned work, move stages, add notes/photos, flag blockers.</td><td>Assigned repair orders and relevant stage actions.</td><td>No customer portal admin access by default.</td></tr>
+              <tr><td><strong>Dealer Partner</strong></td><td>Future limited visibility into dealer vehicles.</td><td>Post-MVP external access.</td><td>Only assigned dealer records.</td></tr>
+              <tr><td><strong>Customer</strong></td><td>Track vehicle, complete missing docs, receive status updates.</td><td>Private token access to one repair order.</td><td>No internal notes, no employee workflow, no full activity log.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="context">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">06 C4 level 1</p>
+            <h3>System context diagram.</h3>
+            <p>The platform sits between shop users, customers, dealer workflows, and future external service providers.</p>
+          </div>
+        </div>
+
+        <div class="card diagram-wrap">
+          <div class="context-diagram">
+            <div>
+              <div class="actor-col">
+                <div class="actor">Owner</div>
+                <div class="actor">Manager</div>
+                <div class="actor">Front Office</div>
+                <div class="actor">Estimator</div>
+                <div class="actor">Technician</div>
+              </div>
+              <div class="arrow-note">Internal users</div>
+            </div>
+            <div class="system-core">
+              <h4>Trends Collision Workflow Platform</h4>
+              <p>Website, operations dashboard, customer tracker, repair order workflow, digital jacket, red flags, notifications, audit logs, and testing feedback.</p>
+            </div>
+            <div>
+              <div class="actor-col">
+                <div class="actor">Customer</div>
+                <div class="actor">Dealer</div>
+                <div class="actor">Email/SMS Provider</div>
+                <div class="actor">Object Storage</div>
+                <div class="actor">Future CCC One / Integrations</div>
+              </div>
+              <div class="arrow-note">External users and systems</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="containers">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">07 C4 level 2</p>
+            <h3>Container architecture.</h3>
+            <p>One deployed application with separated route groups, services, data access, database, file storage, and replaceable external adapters.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="diagram-wrap">
+            <div class="container-diagram" id="containerDiagram">
+              <div class="diagram-layer">
+                <div class="layer-title">Experience</div>
+                <div class="layer-items">
+                  <div class="diagram-box active" data-title="Public website" data-desc="Marketing routes for services, certifications, claim guidance, dealership/referral positioning, contact, and tracker entry.">
+                    <b>Public Website</b><span>Marketing + trust</span>
+                  </div>
+                  <div class="diagram-box" data-title="Customer tracker" data-desc="Private portal route using a token. Shows customer-safe stages, friendly updates, and document prompts.">
+                    <b>Customer Tracker</b><span>Private token portal</span>
+                  </div>
+                  <div class="diagram-box" data-title="Operations dashboard" data-desc="Authenticated staff app for repair orders, stage movement, digital jacket, red flags, assignments, and reports.">
+                    <b>Operations Dashboard</b><span>Internal workflow</span>
+                  </div>
+                  <div class="diagram-box" data-title="Admin and testing" data-desc="Role management, department setup, workflow templates, and phase-six feedback review.">
+                    <b>Admin + Testing</b><span>Settings + QA</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="diagram-layer">
+                <div class="layer-title">Next.js</div>
+                <div class="layer-items">
+                  <div class="diagram-box" data-title="App Router" data-desc="Route groups separate marketing, app, portal, and API without separate deployments.">
+                    <b>App Router</b><span>Route groups</span>
+                  </div>
+                  <div class="diagram-box" data-title="Server Components" data-desc="Use for page shells, dashboard data, record detail views, reports, customer tracker display, and print views.">
+                    <b>Server Components</b><span>Data rendering</span>
+                  </div>
+                  <div class="diagram-box" data-title="Client Components" data-desc="Use for signature capture, damage diagrams, multi-step forms, filters, assignment controls, and stage actions.">
+                    <b>Client Components</b><span>Interactive controls</span>
+                  </div>
+                  <div class="diagram-box" data-title="Route Handlers" data-desc="REST-like backend contract for app actions, future mobile use, integrations, and portal requests.">
+                    <b>Route Handlers</b><span>API surface</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="diagram-layer">
+                <div class="layer-title">Services</div>
+                <div class="layer-items">
+                  <div class="diagram-box" data-title="Repair Order Service" data-desc="Creates and updates repair orders, links customer/dealer/vehicle, controls lifecycle, and records activity.">
+                    <b>Repair Order</b><span>Central domain</span>
+                  </div>
+                  <div class="diagram-box" data-title="Workflow Service" data-desc="Generates stages from templates, moves stages, enforces skip rules, and creates stage history.">
+                    <b>Workflow</b><span>Templates + stages</span>
+                  </div>
+                  <div class="diagram-box" data-title="Digital Jacket Service" data-desc="Manages forms, packets, signatures, damage diagrams, finalized snapshots, and printable output.">
+                    <b>Digital Jacket</b><span>Forms + signatures</span>
+                  </div>
+                  <div class="diagram-box" data-title="Notification and Activity Service" data-desc="Creates activity logs, notification records, internal alerts, and customer-facing message entries.">
+                    <b>Activity</b><span>Audit + updates</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="diagram-layer">
+                <div class="layer-title">Data</div>
+                <div class="layer-items">
+                  <div class="diagram-box" data-title="Prisma ORM" data-desc="Schema, migrations, type-safe data access, and relation management.">
+                    <b>Prisma</b><span>ORM + migrations</span>
+                  </div>
+                  <div class="diagram-box" data-title="Neon Postgres" data-desc="Primary relational store for business data, audit logs, workflow events, and document JSON.">
+                    <b>Neon Postgres</b><span>Relational database</span>
+                  </div>
+                  <div class="diagram-box" data-title="Object Storage" data-desc="Stores photos, attachments, signed PDFs, scanned documents, and generated files.">
+                    <b>Object Storage</b><span>Files + photos</span>
+                  </div>
+                  <div class="diagram-box" data-title="External Adapters" data-desc="Email, SMS, PDF generation, QR codes, analytics, and future integrations should sit behind replaceable interfaces.">
+                    <b>Adapters</b><span>Future providers</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="detail-panel" id="containerDetail">
+            <h4>Public website</h4>
+            <p>Marketing routes for services, certifications, claim guidance, dealership/referral positioning, contact, and tracker entry.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="components">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">08 C4 level 3</p>
+            <h3>Module architecture.</h3>
+            <p>Each domain module owns a clear part of the system. This prevents page components from becoming business logic containers.</p>
+          </div>
+        </div>
+
+        <div class="card table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Module</th>
+                <th>Owns</th>
+                <th>Key services</th>
+                <th>Must log activity?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Identity</strong></td><td>Users, roles, permissions, sessions.</td><td>auth.service, session.service, permission.service</td><td>Yes for login/security changes.</td></tr>
+              <tr><td><strong>CRM</strong></td><td>Customers, vehicles, dealers.</td><td>customer.service, vehicle.service, dealer.service</td><td>Yes for create/update/delete.</td></tr>
+              <tr><td><strong>Repair Orders</strong></td><td>Core job record, job type, status, summary notes.</td><td>repair-order.service</td><td>Always.</td></tr>
+              <tr><td><strong>Workflow</strong></td><td>Templates, stage generation, stage movement, skip/blocked rules.</td><td>workflow-template.service, workflow.service</td><td>Always.</td></tr>
+              <tr><td><strong>Digital Jacket</strong></td><td>Packets, forms, signatures, diagrams, printable summaries.</td><td>document.service, signature.service, damage-diagram.service</td><td>Always for finalize/signature.</td></tr>
+              <tr><td><strong>Supplements</strong></td><td>Supplement statuses, approvals, customer visibility, attachments.</td><td>supplement.service</td><td>Always.</td></tr>
+              <tr><td><strong>Alerts</strong></td><td>Red flags, missing docs, stalled stages, manager resolutions.</td><td>alert.service</td><td>Always.</td></tr>
+              <tr><td><strong>Portal</strong></td><td>Customer-safe DTO, token validation, tracker access.</td><td>portal-token.service, customer-portal.service</td><td>Yes for views/actions if required.</td></tr>
+              <tr><td><strong>Testing</strong></td><td>Phase-six structured feedback.</td><td>testing-feedback.service</td><td>Yes.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="flows">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">09 Primary user flows</p>
+            <h3>How the system works in real use.</h3>
+            <p>Select a flow to see the role, trigger, steps, data changes, notifications, and success criteria.</p>
+          </div>
+        </div>
+
+        <div class="flow-shell">
+          <div class="card pad">
+            <div class="flow-list" id="flowList"></div>
+          </div>
+          <div class="card pad" id="flowDetail"></div>
+        </div>
+      </section>
+
+      <section id="states">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">10 State machines</p>
+            <h3>Allowed status changes.</h3>
+            <p>State machines prevent messy data, skipped audit trails, and unclear repair order status.</p>
+          </div>
+        </div>
+
+        <div class="state-grid">
+          <div class="state-card">
+            <h4>Repair order</h4>
+            <div class="state-chain">
+              <div class="state-node">OPEN</div>
+              <div class="state-node">ON_HOLD</div>
+              <div class="state-node">READY_FOR_DELIVERY</div>
+              <div class="state-node">DELIVERED</div>
+              <div class="state-node">CLOSED</div>
+            </div>
+            <div class="tag-row"><span class="tag red">OPEN can also become CANCELLED</span></div>
+          </div>
+
+          <div class="state-card">
+            <h4>Stage</h4>
+            <div class="state-chain">
+              <div class="state-node">NOT_STARTED</div>
+              <div class="state-node">ACTIVE</div>
+              <div class="state-node">COMPLETE</div>
+            </div>
+            <div class="tag-row"><span class="tag yellow">ACTIVE can become BLOCKED</span><span class="tag">Any eligible stage can become SKIPPED</span></div>
+          </div>
+
+          <div class="state-card">
+            <h4>Supplement</h4>
+            <div class="state-chain">
+              <div class="state-node">DRAFT</div>
+              <div class="state-node">SUBMITTED</div>
+              <div class="state-node">PENDING_APPROVAL</div>
+              <div class="state-node">APPROVED</div>
+            </div>
+            <div class="tag-row"><span class="tag red">Pending can become DENIED then REVISED</span></div>
+          </div>
+
+          <div class="state-card">
+            <h4>Document packet</h4>
+            <div class="state-chain">
+              <div class="state-node">DRAFT</div>
+              <div class="state-node">IN_PROGRESS</div>
+              <div class="state-node">FINALIZED</div>
+            </div>
+            <div class="tag-row"><span class="tag red">Finalized can only be VOIDED or re-versioned</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="rules">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">11 System rules</p>
+            <h3>Rules developers cannot break.</h3>
+            <p>These rules should be enforced in services, tests, and code reviews.</p>
+          </div>
+        </div>
+
+        <div class="tabs" data-tabs="rules">
+          <button class="tab active" data-tab="portalRules">Customer portal</button>
+          <button class="tab" data-tab="workflowRules">Workflow</button>
+          <button class="tab" data-tab="documentRules">Digital jacket</button>
+          <button class="tab" data-tab="auditRules">Audit</button>
+        </div>
+
+        <div class="tab-pane active" data-pane="portalRules">
+          <div class="rules">
+            <div class="rule"><div class="icon">!</div><div><b>Never expose internal notes.</b><span>The portal must use a customer-safe DTO assembled separately from internal repair order detail.</span></div></div>
+            <div class="rule"><div class="icon">!</div><div><b>Use tokenized access.</b><span>The customer tracker must use CustomerPortalToken, never a raw repair order ID.</span></div></div>
+            <div class="rule"><div class="icon">!</div><div><b>Show only approved stages.</b><span>The tracker can only show stages where customerVisible is true.</span></div></div>
+            <div class="rule"><div class="icon">!</div><div><b>Respect revoked or expired tokens.</b><span>Expired or revoked portal tokens must return no repair data.</span></div></div>
+          </div>
+        </div>
+
+        <div class="tab-pane" data-pane="workflowRules">
+          <div class="rules">
+            <div class="rule"><div class="icon">!</div><div><b>Every repair order must have a job type.</b><span>Job type drives the workflow template and stage generation.</span></div></div>
+            <div class="rule"><div class="icon">!</div><div><b>Stages are generated from templates.</b><span>Do not hardcode one universal workflow path in the UI or API.</span></div></div>
+            <div class="rule"><div class="icon">!</div><div><b>Stage moves create history.</b><span>Every stage transition must write RepairStageHistory and ActivityLog.</span></div></div>
+            <div class="rule"><div class="icon">!</div><div><b>Skipped stages must be explicit.</b><span>Skipped steps should be saved as SKIPPED with actor, timestamp, and optional reason.</span></div></div>
+          </div>
+        </div>
+
+        <div class="tab-pane" data-pane="documentRules">
+          <div class="rules">
+            <div class="rule"><div class="icon">!</div><div><b>Legal text must be versioned.</b><span>Signed forms must preserve the exact template version shown to the signer.</span></div></div>
+            <div class="rule"><div class="icon">!</div><div><b>Finalized docs are immutable.</b><span>Do not silently edit finalized legal documents. Void or create a new version.</span></div></div>
+            <div class="rule"><div class="icon">!</div><div><b>Signatures need metadata.</b><span>Store signer name, timestamp, signature artifact, IP if available, and user agent if available.</span></div></div>
+            <div class="rule"><div class="icon">!</div><div><b>Damage diagrams are structured.</b><span>Store marks as coordinates and metadata, not only as a flattened image.</span></div></div>
+          </div>
+        </div>
+
+        <div class="tab-pane" data-pane="auditRules">
+          <div class="rules">
+            <div class="rule"><div class="icon">!</div><div><b>Important mutations log activity.</b><span>Create activity rows for repair order changes, documents, stages, assignments, supplements, alerts, and customer updates.</span></div></div>
+            <div class="rule"><div class="icon">!</div><div><b>Actor and timestamp are required.</b><span>Every activity should store actorUserId if available and a reliable timestamp.</span></div></div>
+            <div class="rule"><div class="icon">!</div><div><b>Account scoping is mandatory.</b><span>Every business query should be scoped by accountId, even in single-shop MVP.</span></div></div>
+            <div class="rule"><div class="icon">!</div><div><b>Customer visibility is explicit.</b><span>Never infer that a note or stage is customer-safe unless it is marked as such.</span></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="data">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">12 Data ownership</p>
+            <h3>Which module owns which data.</h3>
+            <p>This map helps prevent duplicate logic and accidental cross-module ownership.</p>
+          </div>
+        </div>
+
+        <div class="card table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Owning module</th>
+                <th>Created by</th>
+                <th>Read by</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>User / Session</strong></td><td>Identity</td><td>Admin / Auth</td><td>All authenticated modules</td></tr>
+              <tr><td><strong>Customer</strong></td><td>CRM</td><td>Front Office</td><td>Repair Orders, Portal, Documents</td></tr>
+              <tr><td><strong>Dealer</strong></td><td>CRM</td><td>Front Office / Admin</td><td>Repair Orders, Reports</td></tr>
+              <tr><td><strong>Vehicle</strong></td><td>CRM</td><td>Front Office</td><td>Repair Orders, Documents, Portal</td></tr>
+              <tr><td><strong>RepairOrder</strong></td><td>Repair Orders</td><td>Front Office / Manager</td><td>All operations modules</td></tr>
+              <tr><td><strong>WorkflowTemplate</strong></td><td>Workflow</td><td>Admin / Manager</td><td>Repair Orders</td></tr>
+              <tr><td><strong>RepairOrderStage</strong></td><td>Workflow</td><td>Workflow Service</td><td>Dashboard, Portal, Reports</td></tr>
+              <tr><td><strong>Supplement</strong></td><td>Supplements</td><td>Estimator</td><td>Repair Orders, Portal if visible</td></tr>
+              <tr><td><strong>DocumentPacket</strong></td><td>Digital Jacket</td><td>Front Office</td><td>Repair Orders, Print Views</td></tr>
+              <tr><td><strong>Signature</strong></td><td>Digital Jacket</td><td>Customer / Staff</td><td>Documents, Audit</td></tr>
+              <tr><td><strong>CustomerPortalToken</strong></td><td>Portal</td><td>Repair Order Service</td><td>Customer Tracker</td></tr>
+              <tr><td><strong>Notification</strong></td><td>Activity / Notifications</td><td>Workflow / Front Office</td><td>Repair Orders, Portal, Reports</td></tr>
+              <tr><td><strong>ActivityLog</strong></td><td>Audit</td><td>All services</td><td>Repair Orders, Reports, Testing</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="schema">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">13 Database schema</p>
+            <h3>Schema explorer and implementation outline.</h3>
+            <p>The schema is designed for a single-shop MVP with future multi-location or multi-tenant readiness through accountId scoping.</p>
+          </div>
+        </div>
+
+        <div class="schema-explorer">
+          <div class="card pad">
+            <h4>Model explorer</h4>
+            <p>Select a model to view its purpose, key fields, and related modules.</p>
+            <div class="pill-list" id="modelPills" style="margin-top:14px"></div>
+          </div>
+          <div class="card pad" id="modelView"></div>
+        </div>
+
+        <div class="code-card" style="margin-top:16px">
+          <div class="code-head">
+            <span>Critical Prisma concept</span>
+            <button class="copy-btn" data-copy="schema-code">Copy</button>
+          </div>
+<pre id="schema-code"><code>model WorkflowTemplate {
+  id          String   @id @default(cuid())
+  accountId   String
+  name        String
+  jobType     JobType
+  isDefault   Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  stages      WorkflowTemplateStage[]
+}
+
+model WorkflowTemplateStage {
+  id                 String @id @default(cuid())
+  workflowTemplateId String
+  departmentId       String?
+  name               String
+  customerVisible    Boolean @default(false)
+  sortOrder          Int
+  redFlagHours       Int?
+  canSkip            Boolean @default(true)
+}
+
+model RepairOrderStage {
+  id              String      @id @default(cuid())
+  repairOrderId   String
+  departmentId    String?
+  name            String
+  status          StageStatus @default(NOT_STARTED)
+  sortOrder       Int
+  startedAt       DateTime?
+  completedAt     DateTime?
+  assignedToId    String?
+  customerVisible Boolean     @default(false)
+}</code></pre>
+        </div>
+      </section>
+
+      <section id="api">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">14 API reference</p>
+            <h3>REST-like route handler map.</h3>
+            <p>The MVP should expose a stable internal API contract. Some form mutations can use server actions, but route handlers should remain available for future mobile, integrations, and portal flows.</p>
+          </div>
+        </div>
+
+        <div class="card pad">
+          <div class="endpoint-toolbar" id="endpointToolbar">
+            <button class="pill active" data-api="all">All</button>
+            <button class="pill" data-api="identity">Identity</button>
+            <button class="pill" data-api="crm">CRM</button>
+            <button class="pill" data-api="workflow">Workflow</button>
+            <button class="pill" data-api="documents">Documents</button>
+            <button class="pill" data-api="portal">Portal</button>
+            <button class="pill" data-api="admin">Admin</button>
+          </div>
+          <div id="endpointList"></div>
+        </div>
+
+        <details style="margin-top:16px" open>
+          <summary>Example endpoint specification: POST /api/repair-orders</summary>
+          <div class="details-body">
+            <div class="grid cols-2">
+              <div class="code-card">
+                <div class="code-head"><span>Request body</span><button class="copy-btn" data-copy="repair-order-request">Copy</button></div>
+<pre id="repair-order-request"><code>{
+  "customerId": "cus_123",
+  "vehicleId": "veh_123",
+  "dealerId": null,
+  "jobType": "INSURANCE",
+  "workflowTemplateId": "wft_insurance_default",
+  "claimNumber": "ABC12345",
+  "promisedDate": "2026-07-30T17:00:00.000Z"
+}</code></pre>
+              </div>
+              <div class="code-card">
+                <div class="code-head"><span>Side effects</span><button class="copy-btn" data-copy="repair-order-effects">Copy</button></div>
+<pre id="repair-order-effects"><code>1. Validate authenticated user permission.
+2. Create RepairOrder.
+3. Generate RepairOrderStage rows from selected WorkflowTemplate.
+4. Create CustomerPortalToken if customer-visible.
+5. Create ActivityLog row.
+6. Return repair order detail DTO.</code></pre>
+              </div>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <section id="ui">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">15 UI architecture</p>
+            <h3>Screen structure and component boundaries.</h3>
+            <p>The repair order detail screen is the core daily workspace. The website, portal, and admin areas should all support this central workflow.</p>
+          </div>
+        </div>
+
+        <div class="grid cols-3">
+          <div class="card pad">
+            <h4>Repair order detail</h4>
+            <p>Top summary, customer/vehicle rail, workflow tabs, documents, supplements, activity, alerts, and current owner.</p>
+            <div class="tag-row"><span class="tag red">Core screen</span><span class="tag blue">Server first</span></div>
+          </div>
+          <div class="card pad">
+            <h4>Customer tracker</h4>
+            <p>Private token page with safe stage timeline, friendly update notes, missing document prompts, and ready-for-pickup message.</p>
+            <div class="tag-row"><span class="tag green">Customer-safe DTO</span></div>
+          </div>
+          <div class="card pad">
+            <h4>Digital jacket</h4>
+            <p>Multi-step forms, damage diagram, signatures, finalized document snapshots, attachments, and print-ready jacket summary.</p>
+            <div class="tag-row"><span class="tag purple">Client interaction</span></div>
+          </div>
+        </div>
+
+        <div class="card table-wrap" style="margin-top:16px">
+          <table>
+            <thead>
+              <tr>
+                <th>Use Server Components for</th>
+                <th>Use Client Components for</th>
+                <th>Reason</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Dashboard shells</td><td>Filters and search controls</td><td>Keep database fetching server-side, isolate browser state.</td></tr>
+              <tr><td>Repair order detail load</td><td>Stage action buttons</td><td>Record display is server-driven, mutations need interactivity.</td></tr>
+              <tr><td>Customer tracker page</td><td>Customer document forms</td><td>Portal read view is safe server DTO, forms need client state.</td></tr>
+              <tr><td>Print views</td><td>Signature capture</td><td>Print output should be deterministic, signatures require canvas/input events.</td></tr>
+              <tr><td>Reports</td><td>Damage diagram drawing</td><td>Reports are data-heavy, diagrams need browser interaction.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="files">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">16 File structure</p>
+            <h3>Recommended project structure.</h3>
+            <p>Keep pages thin. Put business logic in services. Keep validation and permissions close to the domain.</p>
+          </div>
+        </div>
+
+        <div class="file-tree">src/
+  app/
+    (marketing)/
+      layout.tsx
+      page.tsx
+      services/page.tsx
+      certifications/page.tsx
+      how-to-file-a-claim/page.tsx
+      why-choose-us/page.tsx
+      dealerships/page.tsx
+      contact/page.tsx
+      track/[token]/page.tsx
+
+    (app)/
+      layout.tsx
+      dashboard/page.tsx
+      repair-orders/
+        page.tsx
+        new/page.tsx
+        [repairOrderId]/
+          page.tsx
+          print/page.tsx
+      customers/page.tsx
+      vehicles/page.tsx
+      dealers/page.tsx
+      documents/page.tsx
+      alerts/page.tsx
+      reports/page.tsx
+      testing/page.tsx
+      admin/
+        page.tsx
+        users/page.tsx
+        departments/page.tsx
+        workflow-templates/page.tsx
+
+    api/
+      auth/login/route.ts
+      auth/logout/route.ts
+      auth/me/route.ts
+      customers/route.ts
+      vehicles/route.ts
+      dealers/route.ts
+      repair-orders/route.ts
+      repair-orders/[repairOrderId]/route.ts
+      repair-orders/[repairOrderId]/stages/[stageId]/route.ts
+      repair-orders/[repairOrderId]/assignments/route.ts
+      repair-orders/[repairOrderId]/alerts/route.ts
+      repair-orders/[repairOrderId]/supplements/route.ts
+      repair-orders/[repairOrderId]/documents/route.ts
+      portal/[token]/route.ts
+      documents/[documentId]/route.ts
+      signatures/route.ts
+      testing/feedback/route.ts
+
+  components/
+    app-shell/
+    marketing/
+    dashboard/
+    repair-orders/
+    workflow/
+    digital-jacket/
+    customer-portal/
+    alerts/
+    print/
+
+  features/
+    auth/
+    customers/
+    vehicles/
+    dealers/
+    repair-orders/
+    workflow/
+    digital-jacket/
+    supplements/
+    notifications/
+    alerts/
+    admin/
+    testing/
+
+  server/
+    services/
+    repositories/
+    validators/
+    events/
+
+  lib/
+    prisma.ts
+    auth.ts
+    session.ts
+    permissions.ts
+    dates.ts
+    ids.ts
+
+prisma/
+  schema.prisma
+  migrations/
+  seed.ts</div>
+      </section>
+
+      <section id="testing">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">17 Testing strategy</p>
+            <h3>Quality plan for launch.</h3>
+            <p>The MVP should include unit, integration, and end-to-end tests for the flows that matter most to the shop.</p>
+          </div>
+        </div>
+
+        <div class="grid cols-3">
+          <div class="card pad">
+            <h4>Unit tests</h4>
+            <p>Permissions, workflow generation, stage transition rules, red flag timing, token validation, and document finalization rules.</p>
+          </div>
+          <div class="card pad">
+            <h4>Integration tests</h4>
+            <p>Create repair orders, generate stages, move stages, create supplements, finalize documents, and fetch portal data by token.</p>
+          </div>
+          <div class="card pad">
+            <h4>E2E tests</h4>
+            <p>Front office intake, digital jacket, customer tracker, technician stage update, manager red flag resolution, and print summary.</p>
+          </div>
+        </div>
+
+        <div class="card table-wrap" style="margin-top:16px">
+          <table>
+            <thead>
+              <tr>
+                <th>Test pass</th>
+                <th>Users</th>
+                <th>Focus</th>
+                <th>Exit criteria</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Owner review</strong></td><td>Owners/managers</td><td>Completeness, reporting, permissions, red flags.</td><td>Core workflow approved or revision tickets created.</td></tr>
+              <tr><td><strong>Front office review</strong></td><td>Intake/admin staff</td><td>Intake speed, forms, tracker link, customer updates.</td><td>Staff can enter a real job without duplicate work.</td></tr>
+              <tr><td><strong>Estimator review</strong></td><td>Estimators</td><td>Supplements, approvals, notes, photos, workflow handoffs.</td><td>Supplement flow matches real shop process.</td></tr>
+              <tr><td><strong>Shop-floor review</strong></td><td>Technicians/QC/detail</td><td>Assignments, stage movement, blockers, mobile use.</td><td>Techs can update work without front-office intervention.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="roadmap">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">18 Build roadmap</p>
+            <h3>Recommended implementation phases.</h3>
+            <p>Build the platform in dependency order. Do not start customer rollout before internal phase-six testing is complete.</p>
+          </div>
+        </div>
+
+        <div class="roadmap">
+          <div class="phase"><small>Phase 1</small><h4>Discovery mapping</h4><ul><li>Departments</li><li>Job types</li><li>Workflow templates</li><li>Form inventory</li><li>Visibility rules</li></ul></div>
+          <div class="phase"><small>Phase 2</small><h4>Website</h4><ul><li>Public pages</li><li>Claim guidance</li><li>Certifications</li><li>Contact funnel</li><li>Tracker route</li></ul></div>
+          <div class="phase"><small>Phase 3</small><h4>Tracker prototype</h4><ul><li>Customer</li><li>Vehicle</li><li>Repair order</li><li>Portal token</li><li>Status display</li></ul></div>
+          <div class="phase"><small>Phase 4</small><h4>Internal workflow</h4><ul><li>Templates</li><li>Stages</li><li>Assignments</li><li>Red flags</li><li>Activity log</li></ul></div>
+          <div class="phase"><small>Phase 5</small><h4>Digital jacket</h4><ul><li>Intake packet</li><li>Authorizations</li><li>Damage diagrams</li><li>Signatures</li><li>Print summary</li></ul></div>
+          <div class="phase"><small>Phase 6</small><h4>Testing</h4><ul><li>Owner review</li><li>Front office review</li><li>Estimator review</li><li>Shop review</li><li>Revision list</li></ul></div>
+        </div>
+      </section>
+
+      <section id="acceptance">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">19 Acceptance criteria</p>
+            <h3>Definition of done by module.</h3>
+            <p>Use these checklists to confirm when each major module is ready for internal testing.</p>
+          </div>
+        </div>
+
+        <div class="grid cols-2">
+          <div class="card pad">
+            <h4>Repair order MVP</h4>
+            <div class="acceptance">
+              <label class="accept-item"><input type="checkbox"><span>Staff can create a repair order from customer, vehicle, and job type.</span></label>
+              <label class="accept-item"><input type="checkbox"><span>System generates stages from selected workflow template.</span></label>
+              <label class="accept-item"><input type="checkbox"><span>Staff can assign users/departments to stages.</span></label>
+              <label class="accept-item"><input type="checkbox"><span>Stage changes create history and activity logs.</span></label>
+              <label class="accept-item"><input type="checkbox"><span>Customer-visible stages appear in portal, internal-only stages do not.</span></label>
+            </div>
+          </div>
+
+          <div class="card pad">
+            <h4>Digital jacket MVP</h4>
+            <div class="acceptance">
+              <label class="accept-item"><input type="checkbox"><span>Staff can complete intake and authorization packet.</span></label>
+              <label class="accept-item"><input type="checkbox"><span>Signature capture stores signer metadata.</span></label>
+              <label class="accept-item"><input type="checkbox"><span>Damage diagram stores structured marks.</span></label>
+              <label class="accept-item"><input type="checkbox"><span>Finalized documents are versioned and protected.</span></label>
+              <label class="accept-item"><input type="checkbox"><span>Printable jacket summary renders correctly.</span></label>
+            </div>
+          </div>
+
+          <div class="card pad">
+            <h4>Customer tracker MVP</h4>
+            <div class="acceptance">
+              <label class="accept-item"><input type="checkbox"><span>Private portal token is generated for eligible repair orders.</span></label>
+              <label class="accept-item"><input type="checkbox"><span>Token route validates hash, expiration, and revocation.</span></label>
+              <label class="accept-item"><input type="checkbox"><span>Portal uses customer-safe DTO only.</span></label>
+              <label class="accept-item"><input type="checkbox"><span>Customer can see current approved status and last update.</span></label>
+              <label class="accept-item"><input type="checkbox"><span>No internal notes appear in customer view.</span></label>
+            </div>
+          </div>
+
+          <div class="card pad">
+            <h4>Testing MVP</h4>
+            <div class="acceptance">
+              <label class="accept-item"><input type="checkbox"><span>Owners can submit feedback by system area.</span></label>
+              <label class="accept-item"><input type="checkbox"><span>Front office can submit intake/document feedback.</span></label>
+              <label class="accept-item"><input type="checkbox"><span>Shop floor can submit workflow feedback.</span></label>
+              <label class="accept-item"><input type="checkbox"><span>Managers can review feedback list.</span></label>
+              <label class="accept-item"><input type="checkbox"><span>Customer rollout is blocked until revisions are reviewed.</span></label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="future">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">20 Future scope</p>
+            <h3>What to postpone.</h3>
+            <p>These features may be valuable, but should not block the MVP.</p>
+          </div>
+        </div>
+
+        <div class="grid cols-4">
+          <div class="card pad"><h4>Native mobile app</h4><p>Responsive web is enough for launch.</p></div>
+          <div class="card pad"><h4>Insurance portal</h4><p>Validate customer and internal workflow first.</p></div>
+          <div class="card pad"><h4>Dealer self-service</h4><p>Build internal dealer tracking first.</p></div>
+          <div class="card pad"><h4>CCC One integration</h4><p>Requires official access and confirmed data contract.</p></div>
+          <div class="card pad"><h4>OCR extraction</h4><p>Manual structured intake is faster to validate.</p></div>
+          <div class="card pad"><h4>Parts procurement</h4><p>Complex and not core to first MVP.</p></div>
+          <div class="card pad"><h4>Advanced analytics</h4><p>Needs real usage data.</p></div>
+          <div class="card pad"><h4>Automated billing</h4><p>Not necessary to prove workflow value.</p></div>
+        </div>
+      </section>
+
+      <section id="changelog">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">21 Changelog</p>
+            <h3>Revision history.</h3>
+            <p>Track major documentation changes here as the project moves from discovery to build.</p>
+          </div>
+        </div>
+
+        <div class="card table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Version</th>
+                <th>Change</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>July 2026</td>
+                <td><strong>v2.0</strong></td>
+                <td>Official documentation artifact created.</td>
+                <td>Added user flows, system rules, C4 diagrams, state machines, data ownership, API reference, acceptance criteria, and refined MVP scope.</td>
+              </tr>
+              <tr>
+                <td>July 2026</td>
+                <td><strong>v1.0</strong></td>
+                <td>Initial architecture artifact created.</td>
+                <td>Established Next.js modular monolith, Prisma/Neon schema direction, and high-level app sections.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="footer">
+        Trends Collision Workflow Platform | Official Architecture Documentation v2 | Prepared for developer handoff
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const containerBoxes = document.querySelectorAll("#containerDiagram .diagram-box");
+    const containerDetail = document.getElementById("containerDetail");
+    containerBoxes.forEach(box => {
+      box.addEventListener("click", () => {
+        containerBoxes.forEach(b => b.classList.remove("active"));
+        box.classList.add("active");
+        containerDetail.innerHTML = `<h4>${box.dataset.title}</h4><p>${box.dataset.desc}</p>`;
+      });
+    });
+
+    document.querySelectorAll("[data-tabs]").forEach(group => {
+      const groupName = group.dataset.tabs;
+      group.querySelectorAll(".tab").forEach(tab => {
+        tab.addEventListener("click", () => {
+          group.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+          tab.classList.add("active");
+          let cursor = group.nextElementSibling;
+          while (cursor && cursor.classList.contains("tab-pane")) {
+            cursor.classList.toggle("active", cursor.dataset.pane === tab.dataset.tab);
+            cursor = cursor.nextElementSibling;
+          }
+        });
+      });
+    });
+
+    const flows = [
+      {
+        id: "front-office",
+        title: "Front Office Intake Flow",
+        role: "Front Office",
+        trigger: "Customer or dealer vehicle enters the shop.",
+        outcome: "Repair order created, workflow stages generated, digital jacket started, tracker link available if applicable.",
+        description: "This is the main entry flow for active work. The system should reduce duplicate entry and create a complete operational record from the start.",
+        data: "Customer, Vehicle, Dealer if applicable, RepairOrder, RepairOrderStage, DocumentPacket, CustomerPortalToken, ActivityLog.",
+        notifications: "Optional customer tracker link by email/text after staff review.",
+        steps: [
+          ["Create or find customer/dealer", "Search existing records first. Create new customer or dealer only when needed."],
+          ["Create or confirm vehicle", "Enter year, make, model, VIN, plate, color, mileage, owner type, and dealer stock number if applicable."],
+          ["Select job type", "Insurance, dealer, COD, internal/custom. Job type drives workflow template selection."],
+          ["Create repair order", "System creates RepairOrder and generates RepairOrderStage rows from the selected workflow template."],
+          ["Start digital jacket", "Attach the correct packet: intake, authorization, damage diagram, payment/deductible, pickup authorization."],
+          ["Generate tracker token", "If customer-visible, create private portal token and QR/link. Do not expose internal dashboard data."],
+          ["Log activity", "ActivityLog records who created the repair order and when."]
+        ]
+      },
+      {
+        id: "customer-tracker",
+        title: "Customer Tracker Flow",
+        role: "Customer",
+        trigger: "Customer scans QR code or clicks private link.",
+        outcome: "Customer sees safe repair status without calling the shop.",
+        description: "The customer tracker should be simple and controlled. It should reduce phone calls without exposing sensitive internal notes.",
+        data: "CustomerPortalToken, RepairOrder, customer-visible RepairOrderStage, Notification, Document request status.",
+        notifications: "Ready-for-pickup and approved status updates may be sent by email/SMS later.",
+        steps: [
+          ["Open tokenized URL", "System validates token hash, expiration, revocation, and repair order access."],
+          ["Load customer-safe DTO", "Assemble a separate response with only approved fields and customer-visible stages."],
+          ["Show current status", "Display a timeline with simple labels and last public update."],
+          ["Show document requests", "If signatures or forms are missing, show approved customer-facing form prompts."],
+          ["Record portal activity", "Optionally log viewedAt or activity for staff visibility."],
+          ["Block unsafe data", "Never show internal notes, red flags, private activity logs, employee discussion, or hidden stages."]
+        ]
+      },
+      {
+        id: "technician",
+        title: "Technician Stage Flow",
+        role: "Technician",
+        trigger: "Technician views assigned work or department queue.",
+        outcome: "Stage is updated, notes/photos captured, next department is triggered.",
+        description: "Technicians need a focused interface: assigned jobs, current stage, required checklist items, notes, photos, and stage completion.",
+        data: "Assignment, RepairOrderStage, RepairStageHistory, Attachment, ActivityLog, AlertFlag if blocked.",
+        notifications: "Internal alert or next department notification when stage moves or blocker is created.",
+        steps: [
+          ["Open assigned work", "Technician sees only assigned repair orders or department queue based on permissions."],
+          ["Review current stage", "Stage screen shows customer/vehicle summary, required actions, internal notes, and attachments."],
+          ["Add notes/photos", "Photos and notes are stored against repair order or stage."],
+          ["Mark blocked or complete", "Blocked creates alert. Complete moves stage and records history."],
+          ["Trigger next stage", "Workflow service activates or notifies the next department based on template rules."],
+          ["Log activity", "Every action records actor, timestamp, stage, and summary."]
+        ]
+      },
+      {
+        id: "red-flag",
+        title: "Manager Red Flag Flow",
+        role: "Manager",
+        trigger: "A stage exceeds redFlagHours, required paperwork is missing, or staff manually flags an issue.",
+        outcome: "Manager sees and resolves bottleneck with audit trail.",
+        description: "Red flags are meant to identify stalled vehicles and missing work before the customer has to call for an update.",
+        data: "AlertFlag, RepairOrder, RepairOrderStage, Assignment, ActivityLog.",
+        notifications: "Internal manager alert, not customer-facing by default.",
+        steps: [
+          ["Scheduled rule runs", "System checks active stages against redFlagHours."],
+          ["Create alert", "If no unresolved alert exists, create AlertFlag and set RepairOrder.isRedFlagged."],
+          ["Manager reviews alert", "Manager opens alert queue and sees vehicle, stage, age, owner, and recommended action."],
+          ["Resolve or reassign", "Manager resolves alert, adds note, changes assignment, or moves vehicle to blocked/on hold."],
+          ["Log resolution", "ActivityLog records who resolved it and what changed."]
+        ]
+      },
+      {
+        id: "supplement",
+        title: "Insurance Supplement Flow",
+        role: "Estimator",
+        trigger: "Additional damage or work is identified after teardown.",
+        outcome: "Supplement status is tracked and customer-visible update can be created.",
+        description: "Supplements are frequent and should be modeled directly, not hidden inside generic notes.",
+        data: "Supplement, RepairOrder, Attachment, Notification, ActivityLog.",
+        notifications: "Customer update can be created when submitted, pending approval, approved, or denied if marked customerVisible.",
+        steps: [
+          ["Create supplement", "Estimator logs supplement number, amount if known, notes, and attachments."],
+          ["Set status", "Draft, submitted, pending approval, approved, denied, revised."],
+          ["Choose customer visibility", "Only approved customer-safe supplement updates appear in the tracker."],
+          ["Attach evidence", "Photos, estimates, and insurer documents are stored in object storage with metadata in Postgres."],
+          ["Move workflow when appropriate", "Approved supplement can unblock parts/order/repair stages."],
+          ["Log activity", "Every status change is recorded."]
+        ]
+      },
+      {
+        id: "digital-jacket",
+        title: "Digital Jacket Flow",
+        role: "Front Office + Customer",
+        trigger: "Intake starts or missing form is requested.",
+        outcome: "Digital packet is completed, signed, versioned, and printable.",
+        description: "The digital jacket should mirror the paper jacket process while reducing repeated data entry.",
+        data: "DocumentPacket, Document, DocumentFieldValue, Signature, DamageDiagramMark, Attachment, ActivityLog.",
+        notifications: "Optional customer document request by private portal link.",
+        steps: [
+          ["Start packet", "Create document packet tied to repair order."],
+          ["Complete structured fields", "Customer, vehicle, claim, payment, pickup, and authorization fields reuse existing data where possible."],
+          ["Mark damage diagram", "Store accident-related and non-accident-related marks as coordinates and notes."],
+          ["Capture signatures", "Store signature image, signer, timestamp, IP if available, and user agent if available."],
+          ["Finalize packet", "Save immutable snapshot with template version and printable output."],
+          ["Print jacket summary", "Generate server-rendered print view for physical shop records if needed."]
+        ]
+      },
+      {
+        id: "dealer",
+        title: "Dealer Vehicle Flow",
+        role: "Front Office / Manager",
+        trigger: "Dealer vehicle comes in for work.",
+        outcome: "Dealer vehicle is tracked internally by stock number, scope, status, and assigned department.",
+        description: "Dealer workflow should be internal-first. External dealer portal can come after internal process is proven.",
+        data: "Dealer, Vehicle, RepairOrder, WorkflowTemplate, RepairOrderStage, Assignment, ActivityLog.",
+        notifications: "Internal only for MVP. External dealer updates can be added later.",
+        steps: [
+          ["Select dealer", "Choose dealer account or create one."],
+          ["Enter stock number", "Vehicle may be tracked by stock number instead of customer claim details."],
+          ["Select dealer workflow", "Dealer jobs may skip customer-facing paperwork and go directly to scope/work stages."],
+          ["Assign work", "Manager or front office assigns department/technician."],
+          ["Move stages internally", "Stages are usually hidden from customer portal."],
+          ["Mark dealer ready", "Final status shows dealer vehicle is ready for pickup/delivery."]
+        ]
+      }
+    ];
+
+    function renderFlowList() {
+      const list = document.getElementById("flowList");
+      list.innerHTML = flows.map((flow, index) => `
+        <button class="flow-btn ${index === 0 ? "active" : ""}" data-flow="${flow.id}">
+          <b>${flow.title}</b>
+          <span>${flow.role}</span>
+        </button>
+      `).join("");
+
+      list.querySelectorAll(".flow-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          list.querySelectorAll(".flow-btn").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          renderFlow(btn.dataset.flow);
+        });
+      });
+    }
+
+    function renderFlow(id) {
+      const flow = flows.find(f => f.id === id) || flows[0];
+      const detail = document.getElementById("flowDetail");
+      detail.innerHTML = `
+        <div class="flow-title">
+          <div>
+            <h4>${flow.title}</h4>
+            <p>${flow.description}</p>
+          </div>
+          <span class="tag red">${flow.role}</span>
+        </div>
+        <div class="steps">
+          ${flow.steps.map(([title, body]) => `<div class="step"><div><b>${title}</b><span>${body}</span></div></div>`).join("")}
+        </div>
+        <div class="flow-meta">
+          <div class="meta-card"><b>Trigger</b><span>${flow.trigger}</span></div>
+          <div class="meta-card"><b>Data touched</b><span>${flow.data}</span></div>
+          <div class="meta-card"><b>Notifications</b><span>${flow.notifications}</span></div>
+        </div>
+        <div class="callout" style="margin-top:14px"><strong>Success criteria:</strong> ${flow.outcome}</div>
+      `;
+    }
+
+    renderFlowList();
+    renderFlow(flows[0].id);
+
+    const models = {
+      Account: {
+        purpose: "Tenant boundary. MVP starts as one shop, but accountId keeps all major records future-ready.",
+        fields: ["id", "name", "slug", "createdAt", "updatedAt"],
+        module: "Identity / Platform"
+      },
+      User: {
+        purpose: "Staff identity and accountability for stage moves, notes, signatures, and activity logs.",
+        fields: ["id", "accountId", "departmentId", "roleId", "firstName", "lastName", "email", "passwordHash", "status"],
+        module: "Identity"
+      },
+      RepairOrder: {
+        purpose: "Central operational record connecting customer/dealer, vehicle, job type, stages, documents, supplements, alerts, and activity.",
+        fields: ["id", "accountId", "customerId", "dealerId", "vehicleId", "roNumber", "jobType", "status", "promisedDate", "isRedFlagged"],
+        module: "Repair Orders"
+      },
+      WorkflowTemplate: {
+        purpose: "Defines process paths by job type. Prevents hardcoded one-size-fits-all workflow.",
+        fields: ["id", "accountId", "name", "jobType", "isDefault", "isActive"],
+        module: "Workflow"
+      },
+      RepairOrderStage: {
+        purpose: "Actual stage instance generated for one repair order from a template stage.",
+        fields: ["id", "repairOrderId", "departmentId", "name", "status", "sortOrder", "startedAt", "completedAt", "assignedToId", "customerVisible"],
+        module: "Workflow"
+      },
+      Supplement: {
+        purpose: "Tracks supplement lifecycle, approval status, amount, notes, attachments, and customer visibility.",
+        fields: ["id", "repairOrderId", "number", "status", "amount", "customerVisible", "submittedAt", "approvedAt", "deniedAt"],
+        module: "Supplements"
+      },
+      DocumentPacket: {
+        purpose: "Groups intake, authorization, damage diagram, signatures, and print output into a digital jacket.",
+        fields: ["id", "repairOrderId", "packetType", "status", "version", "finalizedAt"],
+        module: "Digital Jacket"
+      },
+      Signature: {
+        purpose: "Stores signature artifact and metadata for legal authorizations.",
+        fields: ["id", "documentId", "signerName", "signerRole", "signedAt", "imageDataUrl", "ipAddress", "userAgent"],
+        module: "Digital Jacket"
+      },
+      DamageDiagramMark: {
+        purpose: "Stores structured damage marks as coordinates with type, label, and accident-related flag.",
+        fields: ["id", "documentId", "x", "y", "markType", "label", "accidentRelated", "note"],
+        module: "Digital Jacket"
+      },
+      CustomerPortalToken: {
+        purpose: "Private tracker access without exposing raw repair order IDs or requiring a full customer account login.",
+        fields: ["id", "repairOrderId", "tokenHash", "expiresAt", "lastViewedAt", "revokedAt"],
+        module: "Customer Portal"
+      },
+      ActivityLog: {
+        purpose: "Audit trail for important mutations across workflow, documents, supplements, alerts, and communication.",
+        fields: ["id", "accountId", "repairOrderId", "actorUserId", "eventType", "entityType", "entityId", "summary", "metadataJson", "createdAt"],
+        module: "Audit"
+      }
+    };
+
+    function renderModelPills() {
+      const wrap = document.getElementById("modelPills");
+      wrap.innerHTML = Object.keys(models).map((name, index) => `<button class="pill ${index === 0 ? "active" : ""}" data-model="${name}">${name}</button>`).join("");
+      wrap.querySelectorAll(".pill").forEach(pill => {
+        pill.addEventListener("click", () => {
+          wrap.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
+          pill.classList.add("active");
+          renderModel(pill.dataset.model);
+        });
+      });
+    }
+
+    function renderModel(name) {
+      const model = models[name];
+      const view = document.getElementById("modelView");
+      view.innerHTML = `
+        <h4>${name}</h4>
+        <p>${model.purpose}</p>
+        <div class="tag-row"><span class="tag red">${model.module}</span></div>
+        <div class="field-grid">${model.fields.map(f => `<div class="field">${f}</div>`).join("")}</div>
+      `;
+    }
+
+    renderModelPills();
+    renderModel("Account");
+
+    const endpoints = [
+      ["POST", "/api/auth/login", "Authenticate user and create session.", "identity", "Public login form"],
+      ["POST", "/api/auth/logout", "End current session.", "identity", "Authenticated"],
+      ["GET", "/api/auth/me", "Return current user and permissions.", "identity", "Authenticated"],
+      ["GET", "/api/customers", "Search/list customers.", "crm", "repair_order.read"],
+      ["POST", "/api/customers", "Create customer.", "crm", "customer.create"],
+      ["GET", "/api/vehicles", "Search/list vehicles.", "crm", "repair_order.read"],
+      ["POST", "/api/vehicles", "Create vehicle.", "crm", "vehicle.create"],
+      ["GET", "/api/dealers", "Search/list dealers.", "crm", "dealer.read"],
+      ["POST", "/api/dealers", "Create dealer.", "crm", "dealer.create"],
+      ["POST", "/api/repair-orders", "Create repair order and generate stages.", "workflow", "repair_order.create"],
+      ["GET", "/api/repair-orders/[id]", "Get full repair order detail.", "workflow", "repair_order.read"],
+      ["PATCH", "/api/repair-orders/[id]", "Update repair order.", "workflow", "repair_order.update"],
+      ["PATCH", "/api/repair-orders/[id]/stages/[stageId]", "Move/update stage.", "workflow", "workflow.stage.move"],
+      ["POST", "/api/repair-orders/[id]/assignments", "Assign user or department.", "workflow", "workflow.assign"],
+      ["POST", "/api/repair-orders/[id]/alerts", "Create red flag.", "workflow", "alert.create"],
+      ["PATCH", "/api/repair-orders/[id]/alerts/[alertId]", "Resolve red flag.", "workflow", "alert.resolve"],
+      ["POST", "/api/repair-orders/[id]/supplements", "Create supplement.", "workflow", "supplement.create"],
+      ["PATCH", "/api/repair-orders/[id]/supplements/[supplementId]", "Update supplement.", "workflow", "supplement.update"],
+      ["GET", "/api/repair-orders/[id]/documents", "List document packets/forms.", "documents", "document.read"],
+      ["POST", "/api/repair-orders/[id]/documents", "Create document packet or form.", "documents", "document.create"],
+      ["PATCH", "/api/documents/[id]", "Update document fields.", "documents", "document.update"],
+      ["POST", "/api/documents/[id]/finalize", "Finalize document snapshot.", "documents", "document.finalize"],
+      ["POST", "/api/signatures", "Save signature metadata.", "documents", "signature.capture"],
+      ["POST", "/api/damage-diagrams/[id]/marks", "Save damage diagram mark.", "documents", "document.update"],
+      ["GET", "/api/portal/[token]", "Fetch customer-safe tracker data.", "portal", "Token access"],
+      ["POST", "/api/portal/[token]/documents", "Submit customer document fields.", "portal", "Token access"],
+      ["POST", "/api/repair-orders/[id]/notifications", "Log/send customer update.", "portal", "customer_update.send"],
+      ["GET", "/api/admin/workflow-templates", "List workflow templates.", "admin", "workflow.template.manage"],
+      ["POST", "/api/admin/workflow-templates", "Create workflow template.", "admin", "workflow.template.manage"],
+      ["PATCH", "/api/admin/users/[id]", "Update user role/status.", "admin", "admin.users.manage"],
+      ["POST", "/api/testing/feedback", "Submit testing feedback.", "admin", "testing.feedback.create"]
+    ];
+
+    function renderEndpoints(filter = "all") {
+      const list = document.getElementById("endpointList");
+      const shown = endpoints.filter(e => filter === "all" || e[3] === filter);
+      list.innerHTML = shown.map(([method, route, desc, group, permission]) => {
+        const methodClass = method.toLowerCase();
+        return `
+          <div class="endpoint">
+            <span class="method ${methodClass}">${method}</span>
+            <span class="route">${route}</span>
+            <span>${desc}</span>
+            <span><strong>Permission:</strong> ${permission}</span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    document.querySelectorAll("[data-api]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("[data-api]").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        renderEndpoints(btn.dataset.api);
+      });
+    });
+    renderEndpoints();
+
+    document.querySelectorAll(".copy-btn").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const id = btn.dataset.copy;
+        const text = document.getElementById(id)?.innerText || "";
+        try {
+          await navigator.clipboard.writeText(text);
+          const old = btn.textContent;
+          btn.textContent = "Copied";
+          setTimeout(() => btn.textContent = old, 1200);
+        } catch (e) {
+          btn.textContent = "Select text";
+        }
+      });
+    });
+
+    const sections = [...document.querySelectorAll("main section[id]")];
+    const navLinks = [...document.querySelectorAll("#nav a")];
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(link => {
+            link.classList.toggle("active", link.getAttribute("href") === "#" + entry.target.id);
+          });
+        }
+      });
+    }, { rootMargin: "-30% 0px -60% 0px", threshold: 0 });
+    sections.forEach(section => observer.observe(section));
+  </script>
+</body>
+</html>

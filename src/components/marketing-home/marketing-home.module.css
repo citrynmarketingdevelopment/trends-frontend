@@ -11,6 +11,7 @@
   --trends-line-strong: rgb(199 173 123 / 52%);
   --trends-gutter: clamp(1.25rem, 4vw, 4.5rem);
   --trends-content: 90rem;
+  --trends-section-content: 100rem;
   --trends-section: clamp(6rem, 11vw, 11rem);
   min-width: 20rem;
   min-height: 100dvh;
@@ -211,7 +212,7 @@
   font-size: clamp(4.4rem, 7.7vw, 7.15rem);
   font-weight: 900;
   line-height: 0.86;
-  letter-spacing: -0.045em;
+  letter-spacing: 0;
   text-transform: uppercase;
   animation: heroIn 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
@@ -624,7 +625,7 @@
 
 .sequenceInstruction {
   position: absolute;
-  right: 0;
+  left: 0;
   bottom: 1.6rem;
   margin: 0;
   color: #8f867e;
@@ -632,6 +633,55 @@
   font-size: 0.56rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.sequenceNavigation {
+  position: absolute;
+  right: 0;
+  bottom: 2.1rem;
+  display: flex;
+  gap: 0.6rem;
+}
+
+.sequenceNavigation button {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  min-height: 3rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid rgb(199 173 123 / 32%);
+  border-radius: 0.2rem;
+  color: #c8c0b7;
+  background: rgb(9 9 10 / 78%);
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    color 180ms ease,
+    background 180ms ease;
+}
+
+.sequenceNavigation button:hover:not(:disabled) {
+  border-color: var(--trends-champagne);
+  color: var(--trends-bone);
+  background: rgb(84 17 24 / 42%);
+}
+
+.sequenceNavigation button:disabled {
+  cursor: not-allowed;
+  opacity: 0.38;
+}
+
+.sequenceNavigation kbd,
+.sequenceNavigation span {
+  font-family: var(--font-trends-mono), monospace;
+  font-size: 0.64rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sequenceNavigation kbd {
+  color: var(--trends-champagne);
 }
 
 .exploreControls {
@@ -741,7 +791,7 @@
 .serviceHeading,
 .serviceReel,
 .dealerTrust {
-  width: min(79rem, 100%);
+  width: min(var(--trends-section-content), 100%);
   margin-inline: auto;
 }
 
@@ -912,7 +962,6 @@
   mix-blend-mode: screen;
 }
 
-.dealerLogoViewport:hover .dealerLogoTrack,
 .dealerLogoViewport:focus .dealerLogoTrack {
   animation-play-state: paused;
 }
@@ -980,7 +1029,7 @@
   display: grid;
   grid-template-columns: minmax(18rem, 0.58fr) minmax(0, 1.22fr);
   gap: 1.35rem 1.5rem;
-  width: min(var(--trends-content), calc(100% - var(--trends-gutter) * 2));
+  width: min(var(--trends-section-content), calc(100% - var(--trends-gutter) * 2));
   margin-inline: auto;
   padding-block: clamp(5.5rem, 8vw, 7rem);
 }
@@ -1021,12 +1070,20 @@
   box-shadow: 0 0 1.3rem rgb(200 29 43 / 52%);
 }
 
-.trackingIntroduction > p:last-child {
+.trackingBody {
   max-width: 24rem;
   margin-top: 2rem;
+}
+
+.trackingBody p {
   color: #d0c8bf;
   font-size: 0.82rem;
   line-height: 1.85;
+}
+
+.trackingBody p + p {
+  margin-top: 1.15rem;
+  color: var(--trends-muted);
 }
 
 .trackingPanel {
@@ -1193,8 +1250,205 @@
   line-height: 1.6;
 }
 
+.repairServicesSection {
+  width: 100%;
+  padding: clamp(5.75rem, 7.5vw, 7.25rem) var(--trends-gutter) clamp(5rem, 7vw, 6.5rem);
+  background: var(--trends-carbon);
+}
+
+.repairServicesInner {
+  width: min(var(--trends-section-content), 100%);
+  margin-inline: auto;
+}
+
+.repairServicesHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(17rem, 19rem);
+  gap: clamp(2.5rem, 7vw, 7rem);
+  align-items: end;
+  padding-bottom: 1.9rem;
+  border-bottom: 1px solid var(--trends-line);
+}
+
+.repairServicesHeader > div > p {
+  margin-bottom: 0.85rem;
+  color: #ed4b59;
+  font-family: var(--font-trends-mono), monospace;
+  font-size: 0.61rem;
+  letter-spacing: 0.23em;
+  text-transform: uppercase;
+}
+
+.repairServicesHeader h2 {
+  max-width: 45rem;
+  font-size: clamp(3.25rem, 4.9vw, 4.85rem);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.repairServicesHeader > p {
+  color: var(--trends-muted);
+  font-size: 0.77rem;
+  line-height: 1.7;
+}
+
+.repairServicesRail {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-top: 2.2rem;
+}
+
+.repairServiceCard {
+  position: relative;
+  min-width: 0;
+  min-height: clamp(28rem, 36vw, 31rem);
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid #2d2725;
+  border-radius: 0.25rem;
+  background: #0b0a0a;
+}
+
+.repairServiceImage {
+  z-index: -3;
+  object-fit: cover;
+  filter: saturate(0.7) contrast(1.12) brightness(0.82);
+  transform: scale(1.015);
+}
+
+.repairServiceGrade {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background:
+    linear-gradient(180deg, rgb(5 5 6 / 5%) 0%, rgb(5 5 6 / 18%) 38%, rgb(7 4 5 / 96%) 100%),
+    linear-gradient(110deg, rgb(200 29 43 / 16%), transparent 54%);
+}
+
+.repairServiceCard:nth-child(2) .repairServiceGrade {
+  background:
+    linear-gradient(180deg, rgb(5 5 6 / 8%) 0%, rgb(74 7 14 / 12%) 35%, rgb(19 3 5 / 96%) 100%),
+    linear-gradient(110deg, rgb(200 29 43 / 31%), transparent 62%);
+}
+
+.repairServiceNumber {
+  position: absolute;
+  top: 1rem;
+  left: 1.05rem;
+  color: rgb(242 238 230 / 28%);
+  font-family: var(--font-trends-display), sans-serif;
+  font-size: clamp(3.9rem, 5vw, 5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.repairServiceCopy {
+  position: absolute;
+  right: 1.35rem;
+  bottom: 1.45rem;
+  left: 1.35rem;
+}
+
+.repairServiceAccent {
+  display: block;
+  width: 2.25rem;
+  height: 3px;
+  margin-bottom: 0.9rem;
+  background: var(--trends-red);
+}
+
+.repairServiceCopy h3 {
+  font-size: clamp(2rem, 2.7vw, 2.85rem);
+  font-weight: 800;
+  line-height: 0.84;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+}
+
+.repairServiceCopy h3 span {
+  display: block;
+}
+
+.repairServiceCopy ul {
+  display: grid;
+  gap: 0.55rem;
+  margin: 1.05rem 0 0;
+  padding: 0.95rem 0 0;
+  border-top: 1px solid rgb(242 238 230 / 16%);
+  list-style: none;
+}
+
+.repairServiceCopy li {
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+  color: #d3cbc2;
+  font-family: var(--font-trends-mono), monospace;
+  font-size: clamp(0.55rem, 0.7vw, 0.66rem);
+  letter-spacing: 0.015em;
+}
+
+.repairServiceCopy li > span {
+  flex: none;
+  width: 0.55rem;
+  height: 1px;
+  background: var(--trends-red);
+}
+
+.repairServicesFooter {
+  display: grid;
+  grid-template-columns: minmax(18rem, 0.75fr) minmax(0, 1fr);
+  gap: clamp(2rem, 6vw, 5.5rem);
+  align-items: center;
+  margin-top: 1.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--trends-line);
+}
+
+.repairServicesFooter > p {
+  max-width: 28rem;
+  color: var(--trends-muted);
+  font-size: 0.72rem;
+  line-height: 1.7;
+}
+
+.repairServicesFooter ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  justify-content: flex-end;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.repairServicesFooter li {
+  padding: 0.5rem 0.68rem;
+  border: 1px solid #3a302e;
+  border-radius: 0.2rem;
+  color: #a9a097;
+  font-family: var(--font-trends-mono), monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .repairServiceImage {
+    transition: transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .repairServiceCard:hover .repairServiceImage {
+    transform: scale(1.055);
+  }
+}
+
 .questionsSection {
-  width: min(var(--trends-content), calc(100% - var(--trends-gutter) * 2));
+  width: min(var(--trends-section-content), calc(100% - var(--trends-gutter) * 2));
   margin-inline: auto;
   padding-block: clamp(6.5rem, 8vw, 7.25rem);
   scroll-margin-top: 5rem;
@@ -1614,6 +1868,28 @@
     width: 56vw;
   }
 
+  .repairServicesHeader {
+    grid-template-columns: minmax(0, 1fr) minmax(15rem, 18rem);
+    gap: 2.5rem;
+  }
+
+  .repairServicesRail {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .repairServiceCard {
+    min-height: 29rem;
+  }
+
+  .repairServicesFooter {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .repairServicesFooter ul {
+    justify-content: flex-start;
+  }
+
   .faqHeader {
     grid-template-columns: minmax(0, 1fr) minmax(15rem, 18rem);
     gap: 2.5rem;
@@ -1884,7 +2160,7 @@
     font-size: clamp(3.65rem, 17vw, 5rem);
   }
 
-  .trackingIntroduction > p:last-child {
+  .trackingBody {
     max-width: 21rem;
   }
 
@@ -1921,6 +2197,45 @@
 
   .trackingFeatures article {
     min-height: 7rem;
+  }
+
+  .repairServicesSection {
+    padding: 5.5rem 1rem 5rem;
+  }
+
+  .repairServicesHeader {
+    grid-template-columns: 1fr;
+    gap: 1.45rem;
+  }
+
+  .repairServicesHeader h2 {
+    max-width: 23rem;
+    font-size: clamp(3.1rem, 14.5vw, 4.35rem);
+  }
+
+  .repairServicesHeader > p {
+    max-width: 22rem;
+  }
+
+  .repairServicesRail {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  .repairServiceCard {
+    min-height: 29rem;
+  }
+
+  .repairServiceCopy h3 {
+    font-size: 2.7rem;
+  }
+
+  .repairServicesFooter {
+    grid-template-columns: 1fr;
+  }
+
+  .repairServicesFooter ul {
+    justify-content: flex-start;
   }
 
   .questionsSection {

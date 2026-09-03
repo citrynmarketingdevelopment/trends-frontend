@@ -286,6 +286,7 @@ export function ProcessStory() {
   const sequenceActiveRef = useRef(false);
   const sequenceLockedRef = useRef(false);
   const sequenceObserverRef = useRef<Observer | null>(null);
+  const sequenceControlRef = useRef<(direction: -1 | 1) => void>(() => undefined);
   const sequenceProgressRef = useRef<HTMLDivElement>(null);
   const sequenceProgressFillRef = useRef<HTMLSpanElement>(null);
   const invalidateSceneRef = useRef<() => void>(() => undefined);
@@ -421,13 +422,13 @@ export function ProcessStory() {
       });
     };
 
-    const runSequence = (direction: -1 | 1) => {
+    const runSequence = (direction: -1 | 1, directControl = false) => {
       lastIntentAt = performance.now();
       if (
         ownershipRef.current !== "story" ||
         !sequenceActiveRef.current ||
         sequenceLockedRef.current ||
-        !gestureArmed
+        (!gestureArmed && !directControl)
       ) {
         return;
       }
@@ -484,6 +485,8 @@ export function ProcessStory() {
         },
       });
     };
+
+    sequenceControlRef.current = (direction) => runSequence(direction, true);
 
     const queueSequenceIntent = (direction: -1 | 1) => {
       clearFrame(intentFrame);
@@ -642,6 +645,7 @@ export function ProcessStory() {
       observer.kill();
       trigger.kill();
       sequenceObserverRef.current = null;
+      sequenceControlRef.current = () => undefined;
       sequenceActiveRef.current = false;
       sequenceLockedRef.current = false;
     };
@@ -815,6 +819,28 @@ export function ProcessStory() {
                 ? "Explore freely or scroll to continue"
                 : "Scroll once to advance the next sequence"}
           </p>
+          {sequenceEligible ? (
+            <div className={styles.sequenceNavigation} aria-label="Process chapter controls">
+              <button
+                type="button"
+                aria-label="Previous process chapter (Page Up)"
+                disabled={sequencePlaying || sequenceIndex === 0}
+                onClick={() => sequenceControlRef.current(-1)}
+              >
+                <kbd>Page Up</kbd>
+                <span>Previous</span>
+              </button>
+              <button
+                type="button"
+                aria-label="Next process chapter (Page Down)"
+                disabled={sequencePlaying}
+                onClick={() => sequenceControlRef.current(1)}
+              >
+                <kbd>Page Down</kbd>
+                <span>{sequenceIndex === 4 ? "Continue" : "Next"}</span>
+              </button>
+            </div>
+          ) : null}
         </div>
 
         <div className={styles.exploreControls} data-visible={phase === "explore" || undefined}>

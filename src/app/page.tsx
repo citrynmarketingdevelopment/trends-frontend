@@ -2,11 +2,16 @@ import type { Metadata } from "next";
 import { Barlow_Condensed, DM_Mono, Instrument_Serif, Manrope } from "next/font/google";
 
 import { BrandLogo } from "@/components/brand-logo";
+import { CertificationShowcase } from "@/components/marketing-home/certification-showcase";
 import { ExperienceProvider } from "@/components/marketing-home/experience-state";
 import { HeroLogo3D } from "@/components/marketing-home/hero-logo-3d";
 import { MarketingHeader } from "@/components/marketing-home/marketing-header";
 import styles from "@/components/marketing-home/marketing-home.module.css";
-import { PostProcessSections } from "@/components/marketing-home/post-process-sections";
+import {
+  PostProcessSections,
+  RepairServicesSection,
+  RepairTrackingSection,
+} from "@/components/marketing-home/post-process-sections";
 import { ProcessStory } from "@/components/marketing-home/process-story";
 import { ServiceReel } from "@/components/marketing-home/service-reel";
 import { getSiteOrigin } from "@/lib/env/site-origin";
@@ -73,9 +78,9 @@ export default function Home() {
                 <BrandLogo className={styles.heroLogoBaseline} preload />
               </div>
               <p className={styles.eyebrow}>Collision · Restoration · Refinement</p>
-              <h1 id="hero-heading" aria-label="The art of restoration.">
-                <span>The art of</span>
-                <span>Restoration.</span>
+              <h1 id="hero-heading" aria-label="Trends Auto Collision">
+                <span className={styles.outlineText}>Trends</span>
+                <span>Auto Collision</span>
               </h1>
               <p className={styles.heroSupport}>
                 More than repairing what was damaged. We bring every line, finish, and detail back
@@ -98,7 +103,10 @@ export default function Home() {
 
           <ServiceReel />
 
+          <RepairTrackingSection />
           <ProcessStory />
+          <CertificationShowcase />
+          <RepairServicesSection />
           <PostProcessSections />
         </main>
 

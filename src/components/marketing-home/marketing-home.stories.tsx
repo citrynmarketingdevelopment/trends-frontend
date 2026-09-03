@@ -2,11 +2,13 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import type { ReactNode } from "react";
 
 import { BrandLogo } from "@/components/brand-logo";
+import { CertificationShowcase } from "./certification-showcase";
 import { ExperienceProvider } from "./experience-state";
 import styles from "./marketing-home.module.css";
 import { MarketingHeader } from "./marketing-header";
 import {
   QuestionsSection,
+  RepairServicesSection,
   RepairStartPoster,
   RepairTrackingSection,
 } from "./post-process-sections";
@@ -103,6 +105,23 @@ export const ServiceReelMobile: Story = {
   ),
 };
 
+export const CertificationsDesktop: Story = {
+  render: () => (
+    <Frame>
+      <CertificationShowcase />
+    </Frame>
+  ),
+};
+
+export const CertificationsMobile: Story = {
+  parameters: { viewport: { defaultViewport: "mobile2" } },
+  render: () => (
+    <Frame>
+      <CertificationShowcase />
+    </Frame>
+  ),
+};
+
 export const PhaseCards: Story = {
   render: () => (
     <Frame>
@@ -132,6 +151,23 @@ export const RepairTrackingMobile: Story = {
   render: () => (
     <Frame>
       <RepairTrackingSection />
+    </Frame>
+  ),
+};
+
+export const RepairServicesDesktop: Story = {
+  render: () => (
+    <Frame>
+      <RepairServicesSection />
+    </Frame>
+  ),
+};
+
+export const RepairServicesMobile: Story = {
+  parameters: { viewport: { defaultViewport: "mobile2" } },
+  render: () => (
+    <Frame>
+      <RepairServicesSection />
     </Frame>
   ),
 };

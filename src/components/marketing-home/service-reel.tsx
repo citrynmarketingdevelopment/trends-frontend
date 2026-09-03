@@ -6,8 +6,7 @@ const services = [
   {
     name: "Collision Repair",
     description: "Structure, panels, paint, and safety systems returned to standard.",
-    image:
-      "https://images.unsplash.com/photo-1555140713-973b9f36cd1e?auto=format&fit=crop&w=1600&q=82",
+    image: "/images/services/collision-repair-crashed-car.webp",
   },
   {
     name: "Custom Work",
@@ -18,8 +17,7 @@ const services = [
   {
     name: "Roadside",
     description: "Recovery and transport.",
-    image:
-      "https://images.unsplash.com/photo-1738102478331-3fb33e8932df?auto=format&fit=crop&w=1200&q=82",
+    image: "/images/services/roadside-tow-truck.webp",
   },
   {
     name: "Tires + Alignment",
