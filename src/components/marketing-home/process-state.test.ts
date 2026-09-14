@@ -17,10 +17,10 @@ const capableDesktop = {
 } as const;
 
 describe("marketing enhancement gates", () => {
-  it("keeps heavy scenes off narrow, save-data, and WebGL-failed devices", () => {
+  it("keeps the hero logo available on capable mobile devices and off save-data or WebGL-failed devices", () => {
     expect(canEnhanceLogo(capableDesktop)).toBe(true);
     expect(canEnhanceCar(capableDesktop)).toBe(true);
-    expect(canEnhanceLogo({ ...capableDesktop, width: 390 })).toBe(false);
+    expect(canEnhanceLogo({ ...capableDesktop, width: 390 })).toBe(true);
     expect(canEnhanceLogo({ ...capableDesktop, deviceMemory: 2, hardwareConcurrency: 2 })).toBe(
       true,
     );

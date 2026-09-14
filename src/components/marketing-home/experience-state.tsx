@@ -70,7 +70,7 @@ export interface CapabilitySnapshot {
 }
 
 export function canEnhanceLogo(snapshot: CapabilitySnapshot) {
-  return snapshot.width >= 768 && !snapshot.saveData && snapshot.webGL2;
+  return !snapshot.saveData && snapshot.webGL2;
 }
 
 export function canEnhanceCar(snapshot: CapabilitySnapshot) {

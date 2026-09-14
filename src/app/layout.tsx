@@ -2,27 +2,21 @@ import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 
 import { getSiteOrigin } from "@/lib/env/site-origin";
+import { pageSeo } from "@/content/seo";
 import "@/styles/globals.css";
 
 const siteOrigin = getSiteOrigin();
 
 export const metadata: Metadata = {
   title: {
-    default: "Collision Repair in Bakersfield, California",
-    template: "%s | Bakersfield Collision Repair",
+    default: pageSeo.home.title,
+    template: "%s | Trends Collision Center",
   },
-  description: "Collision repair information and customer service for Bakersfield, California.",
+  description: pageSeo.home.description,
+  robots: siteOrigin ? { index: true, follow: true } : { index: false, follow: false },
   ...(siteOrigin
     ? {
-        alternates: { canonical: "/" },
         metadataBase: siteOrigin,
-        openGraph: {
-          description:
-            "Collision repair information and customer service for Bakersfield, California.",
-          title: "Collision Repair in Bakersfield, California",
-          type: "website",
-          url: "/",
-        },
       }
     : {}),
 };

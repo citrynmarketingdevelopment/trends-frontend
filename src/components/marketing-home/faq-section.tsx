@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { useRef, useState } from "react";
 import type { KeyboardEvent } from "react";
 
@@ -55,15 +57,15 @@ const questions = [
     ],
   },
   {
-    id: "custom",
-    category: "Custom work",
-    question: "Do you take custom work?",
+    id: "mechanical",
+    category: "Mechanical",
+    question: "Do you offer mechanical repairs?",
     answer:
-      "Custom refinish and restoration work can be discussed after the vehicle, finish, and project scope are reviewed.",
+      "Yes. We can discuss diagnostics, maintenance, steering, suspension, and other mechanical concerns after reviewing your vehicle and the symptoms.",
     facts: [
-      ["Vehicle", "Start with the year, make, model, and current condition."],
-      ["Direction", "Reference images help define the intended finish."],
-      ["Scope", "Feasibility is confirmed after an initial review."],
+      ["Vehicle", "Start with the year, make, model, and service history."],
+      ["Concern", "Tell us what changed and when you notice it."],
+      ["Plan", "We review the findings and proposed work before you approve repairs."],
     ],
   },
 ] as const;
@@ -111,9 +113,9 @@ export function QuestionsSection() {
             Pick a question to see the answer. If yours is not here, use the repair start section to
             prepare for the first conversation.
           </p>
-          <a className={styles.faqAllQuestions} href="#faq-index">
+          <Link className={styles.faqAllQuestions} href="#faq-index">
             VIEW ALL QUESTIONS
-          </a>
+          </Link>
         </div>
       </div>
 
@@ -178,9 +180,9 @@ export function QuestionsSection() {
               </div>
             ))}
           </dl>
-          <a className={`${styles.primaryButton} ${styles.faqDetailCta}`} href="#start">
+          <Link className={`${styles.primaryButton} ${styles.faqDetailCta}`} href="/contact">
             START A REPAIR
-          </a>
+          </Link>
         </div>
       </div>
     </section>

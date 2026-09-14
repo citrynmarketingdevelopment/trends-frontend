@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
-import { Barlow_Condensed, DM_Mono, Instrument_Serif, Manrope } from "next/font/google";
+import Link from "next/link";
+import { marketingClassName, MarketingFooter } from "@/components/marketing-site/marketing-shell";
 
 import { BrandLogo } from "@/components/brand-logo";
 import { CertificationShowcase } from "@/components/marketing-home/certification-showcase";
@@ -14,85 +14,63 @@ import {
 } from "@/components/marketing-home/post-process-sections";
 import { ProcessStory } from "@/components/marketing-home/process-story";
 import { ServiceReel } from "@/components/marketing-home/service-reel";
-import { getSiteOrigin } from "@/lib/env/site-origin";
+import { pageSeo } from "@/content/seo";
+import { marketingMetadata } from "@/lib/marketing-metadata";
+import { MarketingStructuredData } from "@/components/marketing-site/structured-data";
 
-const body = Manrope({
-  variable: "--font-trends-body",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["400", "500", "600", "700"],
-});
-
-const display = Barlow_Condensed({
-  variable: "--font-trends-display",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["600", "700", "800", "900"],
-});
-
-const mono = DM_Mono({
-  variable: "--font-trends-mono",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["400", "500"],
-});
-
-const editorial = Instrument_Serif({
-  variable: "--font-trends-editorial",
-  subsets: ["latin"],
-  display: "swap",
-  weight: "400",
-});
-
-const title = "Trends Collision Center | Precision After Impact";
-const description =
-  "A cinematic look at collision repair assessment, restoration, refinishing, and final review in Bakersfield, California.";
-const siteOrigin = getSiteOrigin();
-
-export const metadata: Metadata = {
-  title: { absolute: title },
-  description,
-  ...(siteOrigin
-    ? {
-        alternates: { canonical: "/" },
-        openGraph: { title, description, type: "website", url: "/" },
-      }
-    : {}),
-};
+export const metadata = marketingMetadata(pageSeo.home.title, pageSeo.home.description, "/");
 
 export default function Home() {
   return (
     <ExperienceProvider>
-      <div
-        className={`${styles.marketing} ${body.variable} ${display.variable} ${mono.variable} ${editorial.variable}`}
-        id="top"
-      >
+      <div className={marketingClassName} id="top">
         <MarketingHeader />
+        <MarketingStructuredData
+          path="/"
+          name={pageSeo.home.heading}
+          description={pageSeo.home.description}
+        />
 
         <main id="main-content" tabIndex={-1}>
           <section className={styles.hero} aria-labelledby="hero-heading">
             <HeroLogo3D />
+            <video
+              aria-hidden="true"
+              autoPlay
+              className={styles.heroVideo}
+              data-hero-video
+              loop
+              muted
+              playsInline
+              preload="metadata"
+            >
+              <source src="/videos/location-drone-hero.webm" type="video/webm" />
+            </video>
             <div className={styles.heroScrim} aria-hidden="true" />
             <div className={styles.heroPoster}>
               <div className={styles.heroMark}>
                 <BrandLogo className={styles.heroLogoBaseline} preload />
               </div>
               <p className={styles.eyebrow}>Collision · Restoration · Refinement</p>
-              <h1 id="hero-heading" aria-label="Trends Auto Collision">
-                <span className={styles.outlineText}>Trends</span>
-                <span>Auto Collision</span>
+              <h1 className={styles.heroSeoHeading} id="hero-heading">
+                Auto Collision Center in Bakersfield
               </h1>
+              <p aria-hidden="true" className={styles.heroDisplayTitle} data-hero-display-title>
+                <span className={styles.outlineText}>Trends</span>
+                <span>Collision Center</span>
+              </p>
               <p className={styles.heroSupport}>
-                More than repairing what was damaged. We bring every line, finish, and detail back
-                together until the repair disappears.
+                Trends Collision Center is your family-owned collision center in Bakersfield. From
+                auto body and paint repairs to complete vehicle care, we bring careful workmanship
+                and clear communication to every step.
               </p>
               <div className={styles.heroActions}>
-                <a className={styles.primaryButton} href="#start">
+                <Link className={styles.primaryButton} href="/contact">
                   START A REPAIR
-                </a>
-                <a className={styles.secondaryButton} href="#process">
+                </Link>
+                <Link className={styles.secondaryButton} href="#process">
                   OUR PROCESS
-                </a>
+                </Link>
               </div>
             </div>
             <div className={styles.heroFacts}>
@@ -110,19 +88,7 @@ export default function Home() {
           <PostProcessSections />
         </main>
 
-        <footer className={styles.footer}>
-          <a href="#top" className={styles.footerBrand} aria-label="Return to the top">
-            <BrandLogo className={styles.footerLogo} />
-            <span>Trends Collision Center</span>
-          </a>
-          <p>Collision repair process prototype for Bakersfield, California.</p>
-          <div>
-            <a href="#process">Process</a>
-            <a href="#services">Services</a>
-            <a href="#faq">FAQ</a>
-            <a href="#start">Start a repair</a>
-          </div>
-        </footer>
+        <MarketingFooter />
       </div>
     </ExperienceProvider>
   );

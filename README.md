@@ -98,7 +98,23 @@ Copy `public/` into `.next/standalone/public/` and `.next/static/` into `.next/s
 
 ## Content and integration status
 
-The repair-start panel is an honest prototype handoff. Contact destinations, phone, address, hours, certifications, reviews, tracking, insurer language, towing, and external forms remain excluded until approved. No form submits or stores data, and no backend or analytics contract was added.
+The public site includes Home, Services, five service detail pages, About Us, and Contact Us. Service copy and business contact details are shared across navigation, pages, and the footer. The homepage tracking panel remains an explicitly labeled preview; this release does not create a customer portal.
+
+### Bakersfield SEO
+
+All nine marketing pages have local headings, unique search titles and descriptions, social metadata, and structured business/page data. Service pages also describe their individual services and breadcrumbs. Keyword assignments and the research sources are in [the Bakersfield keyword plan](docs/seo/bakersfield-keyword-plan.md); edit `src/content/seo.ts` to maintain the page targets. City-level search volumes are unverified, so service keyword priorities remain provisional until a Bakersfield-targeted dataset is available.
+
+Configure `NEXT_PUBLIC_SITE_ORIGIN` at production build time to enable canonical URLs, sitemap entries, domain-based JSON-LD, and indexing. Builds without a valid origin retain preview noindex protection. This configuration does not register the site with Search Console or change Google Business Profile listings.
+
+### Activate contact emails
+
+Contact delivery runs in the Next.js Node server and is independent of the future repair-workflow backend. Add `SMTP_HOST`, `SMTP_PORT` (587 for STARTTLS or 465 for TLS), `SMTP_USER`, `SMTP_PASSWORD`, `CONTACT_FROM_EMAIL`, and `CONTACT_TO_EMAIL` from `.env.example` to the deployment's server environment, then restart/redeploy. Use a sender address authorized by your SMTP provider; set the recipient to the shop inbox that should receive inquiries. None of these values belong in `NEXT_PUBLIC_` variables.
+
+With incomplete configuration, the form displays the shop's phone/email and disables online submission. It never simulates a successful delivery. Once configured, `POST /api/contact` validates the inquiry, sends the shop notification, then sends the customer a branded HTML/plain-text acknowledgment with next steps. If only the acknowledgment fails, the customer sees that the shop received the inquiry and is told not to resubmit. Photos are requested during follow-up; there are no uploads, database records, automatic delivery retries, or SMS notifications in this flow.
+
+The endpoint checks the request origin, limits body size, validates and escapes content, and uses a honeypot plus bounded per-process request limits. For multi-instance hosting, configure a shared/edge rate limit before enabling public delivery. SMTP logs record failures without customer message contents or credentials. Verify both inboxes with a controlled test after configuration; automated tests use mocks and send no real email.
+
+Email templates live in `src/features/contact/email-templates.ts`. The SMTP transport lives in `src/features/contact/mail.ts`. Customer emails describe inspection and follow-up without promising a booked appointment or a fixed turnaround time.
 
 `NEXT_PUBLIC_SITE_ORIGIN` must be the approved bare HTTPS origin in production. Until it is supplied, canonical and Open Graph URLs are omitted, the sitemap stays empty, and robots deny indexing so an incomplete preview cannot be mistaken for a launch artifact.
 

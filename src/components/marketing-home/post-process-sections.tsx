@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Image from "next/image";
 
 import { BrandLogo } from "@/components/brand-logo";
@@ -229,20 +230,15 @@ export function RepairStartPoster() {
         <h2 id="start-heading">Send us the damage.</h2>
         <p id="start-note">
           Photos, vehicle details, and claim information if available are enough to prepare for the
-          first conversation. Contact details are pending approval in this prototype.
+          first conversation. Tell us about your vehicle and we?ll discuss the next step.
         </p>
         <div className={styles.repairPosterActions}>
-          <button
-            className={styles.primaryButton}
-            type="button"
-            disabled
-            aria-describedby="start-note"
-          >
+          <Link className={styles.primaryButton} href="/contact">
             START A REPAIR
-          </button>
-          <a className={styles.secondaryButton} href="#faq">
+          </Link>
+          <Link className={styles.secondaryButton} href="#faq">
             WHAT TO GATHER
-          </a>
+          </Link>
         </div>
       </div>
     </section>

@@ -1,31 +1,18 @@
+import Link from "next/link";
 import Image from "next/image";
+import { services as serviceContent } from "@/content/services";
 
 import styles from "./marketing-home.module.css";
 
-const services = [
-  {
-    name: "Collision Repair",
-    description: "Structure, panels, paint, and safety systems returned to standard.",
-    image: "/images/services/collision-repair-crashed-car.webp",
-  },
-  {
-    name: "Custom Work",
-    description: "Refinish and restoration.",
-    image:
-      "https://images.unsplash.com/photo-1775955352278-d8ce3a2f78cd?auto=format&fit=crop&w=1200&q=82",
-  },
-  {
-    name: "Roadside",
-    description: "Recovery and transport.",
-    image: "/images/services/roadside-tow-truck.webp",
-  },
-  {
-    name: "Tires + Alignment",
-    description: "Road-ready geometry.",
-    image:
-      "https://images.unsplash.com/photo-1614689304159-273632ab5c5a?auto=format&fit=crop&w=1200&q=82",
-  },
-] as const;
+const reelServices = serviceContent.map((service) => ({
+  name: service.slug === "collision" ? "Collision Repair" : service.name,
+  description: service.summary,
+  image:
+    service.slug === "collision"
+      ? "/images/services/collision-repair-crashed-car.webp"
+      : service.image,
+  href: `/services/${service.slug}` as const,
+}));
 
 const dealerBrands: ReadonlyArray<{ name: string; image: string; negative?: boolean }> = [
   { name: "GM", image: "/images/vehicle-makes/gm-logo.svg" },
@@ -49,7 +36,7 @@ export function ServiceReel() {
     <section className={styles.services} id="services" aria-labelledby="services-heading">
       <div className={styles.serviceHeading}>
         <div>
-          <p className={styles.serviceMarker}>Services / Four disciplines</p>
+          <p className={styles.serviceMarker}>Services / Five disciplines</p>
           <h2 id="services-heading" aria-label="The whole repair. One continuous story.">
             <span>The whole repair.</span>
             <span>One continuous story.</span>
@@ -62,7 +49,7 @@ export function ServiceReel() {
       </div>
 
       <div className={styles.serviceReel} data-service-reel>
-        {services.map((service, index) => (
+        {reelServices.map((service, index) => (
           <article
             className={styles.serviceCard}
             data-service-card
@@ -82,7 +69,9 @@ export function ServiceReel() {
               {String(index + 1).padStart(2, "0")}
             </span>
             <div className={styles.serviceCopy}>
-              <h3>{service.name}</h3>
+              <h3>
+                <Link href={service.href}>{service.name}</Link>
+              </h3>
               <p>{service.description}</p>
             </div>
           </article>

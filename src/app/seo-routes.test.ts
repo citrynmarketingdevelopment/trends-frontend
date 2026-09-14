@@ -26,15 +26,19 @@ describe("SEO route configuration", () => {
     });
   });
 
-  it("publishes only the canonical homepage when a secure origin is configured", () => {
+  it("publishes all approved marketing routes when a secure origin is configured", () => {
     process.env.NEXT_PUBLIC_SITE_ORIGIN = "https://example.com";
 
-    expect(sitemap()).toEqual([
-      {
-        changeFrequency: "monthly",
-        priority: 1,
-        url: "https://example.com/",
-      },
+    expect(sitemap().map((entry) => entry.url)).toEqual([
+      "https://example.com/",
+      "https://example.com/services",
+      "https://example.com/services/collision",
+      "https://example.com/services/mechanical",
+      "https://example.com/services/roadside",
+      "https://example.com/services/tires-alignment",
+      "https://example.com/services/fleet-maintenance",
+      "https://example.com/about",
+      "https://example.com/contact",
     ]);
     expect(robots()).toEqual({
       host: "https://example.com",

@@ -64,11 +64,11 @@ describe("Home", () => {
     expect(
       within(main).getByRole("heading", {
         level: 1,
-        name: "Trends Auto Collision",
+        name: "Auto Collision Center in Bakersfield",
       }),
     ).toBeInTheDocument();
     for (const repairLink of within(main).getAllByRole("link", { name: "START A REPAIR" })) {
-      expect(repairLink).toHaveAttribute("href", "#start");
+      expect(repairLink).toHaveAttribute("href", "/contact");
     }
     expect(within(main).getByRole("link", { name: "OUR PROCESS" })).toHaveAttribute(
       "href",
@@ -80,7 +80,13 @@ describe("Home", () => {
         name: "The whole repair. One continuous story.",
       }),
     ).toBeInTheDocument();
-    for (const service of ["Collision Repair", "Custom Work", "Roadside", "Tires + Alignment"]) {
+    for (const service of [
+      "Collision Repair",
+      "Mechanical",
+      "Roadside",
+      "Tires & Alignment",
+      "Fleet Maintenance",
+    ]) {
       expect(within(main).getByRole("heading", { level: 3, name: service })).toBeInTheDocument();
     }
     const servicesSection = within(main)
@@ -154,7 +160,11 @@ describe("Home", () => {
     expect(
       within(main).getByRole("heading", { level: 2, name: "Everything we do, under one roof." }),
     ).toBeInTheDocument();
-    expect(main.querySelectorAll('img[src^="/images/repair-services/"]')).toHaveLength(4);
+    expect(
+      main
+        .querySelector('section[aria-labelledby="repair-services-heading"]')
+        ?.querySelectorAll("img"),
+    ).toHaveLength(4);
     expect(
       within(main).getByRole("heading", { level: 2, name: "Questions are part of the process." }),
     ).toBeInTheDocument();
@@ -170,6 +180,15 @@ describe("Home", () => {
       within(main).getByRole("heading", { level: 2, name: "Send us the damage." }),
     ).toBeInTheDocument();
     expect(within(main).getByTestId("hero-logo-enhancement")).toBeInTheDocument();
+    const heroVideo = main.querySelector("[data-hero-video]");
+    expect(heroVideo).toHaveAttribute("autoplay");
+    expect(heroVideo).toHaveAttribute("loop");
+    expect(heroVideo).toHaveProperty("muted", true);
+    expect(heroVideo).toHaveAttribute("playsinline");
+    expect(heroVideo?.querySelector("source")).toHaveAttribute(
+      "src",
+      "/videos/location-drone-hero.webm",
+    );
     expect(within(main).queryByText("REVUELTO")).not.toBeInTheDocument();
 
     const hero = within(main).getByRole("heading", { level: 1 }).closest("section");

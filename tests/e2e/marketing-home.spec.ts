@@ -58,10 +58,18 @@ test("homepage loads the new dimensional logo without requesting the Revuelto at
   await expect(
     page.getByRole("heading", {
       level: 1,
-      name: "Trends Auto Collision",
+      name: "Auto Collision Center in Bakersfield",
     }),
-  ).toBeVisible();
+  ).toBeAttached();
+  const heroDisplayTitle = page.locator("[data-hero-display-title]");
+  await expect(heroDisplayTitle.locator("span").nth(0)).toHaveText("Trends");
+  await expect(heroDisplayTitle.locator("span").nth(1)).toHaveText("Collision Center");
   await expect(page.getByAltText("Trends logo").first()).toBeVisible();
+  const heroVideo = page.locator("[data-hero-video]");
+  await expect(heroVideo).toBeVisible();
+  await expect(heroVideo).toHaveJSProperty("autoplay", true);
+  await expect(heroVideo).toHaveJSProperty("loop", true);
+  await expect(heroVideo).toHaveJSProperty("muted", true);
 
   const logo = await logoResponse;
   const shader = await shaderResponse;
@@ -106,6 +114,19 @@ test("reduced motion keeps the enhanced hero but pauses its motion", async ({ pa
   await expect(heroScene).not.toHaveAttribute("data-failed", "true");
 });
 
+test("a capable mobile browser loads the hero shader and 3D logo", async ({ page }) => {
+  await useCapableDesktop(page);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+
+  await expect(page.locator('[data-rotation="rotating"][data-ready="true"] canvas')).toHaveCount(1);
+  const heroVideo = page.locator("[data-hero-video]");
+  await expect(heroVideo).toBeVisible();
+  await expect
+    .poll(() => heroVideo.evaluate((video: HTMLVideoElement) => video.currentTime))
+    .toBeGreaterThan(0);
+});
+
 test("the hero retries once after a transient WebGL context loss", async ({ page }) => {
   await useCapableDesktop(page);
   await page.goto("/");
@@ -128,11 +149,11 @@ test("service cards expand on desktop hover and return to the default reel", asy
   const reel = page.locator("[data-service-reel]");
   await reel.scrollIntoViewIfNeeded();
   const cards = reel.locator("[data-service-card]");
-  await expect(cards).toHaveCount(4);
+  await expect(cards).toHaveCount(5);
 
   const widths = async () =>
     Promise.all(
-      [0, 1, 2, 3].map(async (index) => (await cards.nth(index).boundingBox())?.width ?? 0),
+      [0, 1, 2, 3, 4].map(async (index) => (await cards.nth(index).boundingBox())?.width ?? 0),
     );
 
   const initial = await widths();
@@ -189,7 +210,9 @@ test("service imagery and homepage section order match the current launch layout
 
   await expect(page.locator('img[src*="collision-repair-crashed-car.webp"]').first()).toBeVisible();
   await expect(page.locator('img[src*="roadside-tow-truck.webp"]').first()).toBeVisible();
-  await expect(page.locator('img[src*="repair-services"]')).toHaveCount(4);
+  await expect(page.locator('section[aria-labelledby="repair-services-heading"] img')).toHaveCount(
+    4,
+  );
 
   const sections = page.locator("#main-content > section");
   await expect(sections.nth(2)).toContainText("Full visibility.");
@@ -437,7 +460,7 @@ test("the FAQ index updates its detail panel by pointer and keyboard", async ({ 
   );
   await expect(
     page.getByRole("tabpanel").getByRole("link", { name: "START A REPAIR" }),
-  ).toHaveAttribute("href", "#start");
+  ).toHaveAttribute("href", "/contact");
 });
 
 test.describe("without JavaScript", () => {
@@ -448,9 +471,12 @@ test.describe("without JavaScript", () => {
     await expect(
       page.getByRole("heading", {
         level: 1,
-        name: "Trends Auto Collision",
+        name: "Auto Collision Center in Bakersfield",
       }),
-    ).toBeVisible();
+    ).toBeAttached();
+    const heroDisplayTitle = page.locator("[data-hero-display-title]");
+    await expect(heroDisplayTitle.locator("span").nth(0)).toHaveText("Trends");
+    await expect(heroDisplayTitle.locator("span").nth(1)).toHaveText("Collision Center");
     await expect(
       page.getByRole("heading", { level: 2, name: "Full visibility. Zero guesswork." }),
     ).toBeVisible();
@@ -462,10 +488,12 @@ test.describe("without JavaScript", () => {
     ).toBeVisible();
     await expect(page.getByRole("link", { name: "Start a repair" }).first()).toHaveAttribute(
       "href",
-      "#start",
+      "/contact",
     );
-    await expect(page.getByRole("heading", { level: 3, name: "Collision Repair" })).toBeVisible();
-    await expect(page.getByRole("heading", { level: 3, name: "Tires + Alignment" })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { level: 3, name: "Collision Repair", exact: true }),
+    ).toBeVisible();
+    await expect(page.getByRole("heading", { level: 3, name: "Tires & Alignment" })).toBeVisible();
     await expect(page.locator("canvas")).toHaveCount(0);
   });
 });
@@ -487,9 +515,11 @@ test("mobile navigation, skip link, anchors, and narrow layouts remain usable", 
   await expect(menu).toHaveAttribute("aria-expanded", "true");
   const primaryNavigation = page.getByRole("navigation", { name: "Primary navigation" });
   await expect(primaryNavigation.getByRole("link", { name: "Services" })).toBeVisible();
-  await expect(primaryNavigation.getByRole("link", { name: "Tracking" })).toBeVisible();
-  await primaryNavigation.getByRole("link", { name: "Services" }).click();
-  await expect(page).toHaveURL(/#services$/);
+  await expect(primaryNavigation.getByRole("link", { name: "About Us" })).toBeVisible();
+  await primaryNavigation.getByRole("link", { name: "Services", exact: true }).click();
+  await expect(page).toHaveURL(/\/services$/);
+  await page.goto("/#services");
+  await page.locator("#services").scrollIntoViewIfNeeded();
 
   const cards = page.locator("[data-service-card]");
   const firstCard = await cards.first().boundingBox();

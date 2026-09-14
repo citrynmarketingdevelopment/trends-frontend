@@ -97,6 +97,7 @@ function LogoModel({ active }: { active: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
   const { scene: sourceScene } = useGLTF(LOGO_MODEL_URL);
   const viewport = useThree((state) => state.viewport);
+  const canvasWidth = useThree((state) => state.size.width);
   const prepared = useMemo(() => {
     const scene = sourceScene.clone(true);
     const materialCopies = new Map<THREE.Material, THREE.Material>();
@@ -142,12 +143,14 @@ function LogoModel({ active }: { active: boolean }) {
     if (active && groupRef.current) groupRef.current.rotation.y += delta * 0.38;
   });
 
-  const modelHeight = viewport.height * 0.175;
+  const mobileViewport = canvasWidth < 768;
+  const modelHeight = viewport.height * (mobileViewport ? 0.15 : 0.175);
+  const modelVerticalPosition = viewport.height * (mobileViewport ? 0.32 : 0.29);
 
   return (
     <group
       ref={groupRef}
-      position={[0, viewport.height * 0.238, 0]}
+      position={[0, modelVerticalPosition, 0]}
       rotation={[-0.045, -0.18, -0.012]}
       scale={prepared.scale * modelHeight}
     >

@@ -35,6 +35,9 @@ describe("QuestionsSection", () => {
 
     await user.keyboard("{Home}");
     expect(insurance).toHaveFocus();
-    expect(screen.getByRole("link", { name: "START A REPAIR" })).toHaveAttribute("href", "#start");
+    expect(screen.getByRole("link", { name: "START A REPAIR" })).toHaveAttribute(
+      "href",
+      "/contact",
+    );
   });
 });
