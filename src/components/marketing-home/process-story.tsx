@@ -338,6 +338,19 @@ export function ProcessStory() {
   }, []);
 
   useEffect(() => {
+    if (!mobileLayout || !capable || reducedMotion) return;
+
+    const preload = () => preloadRevueltoAssets();
+    if (typeof window.requestIdleCallback === "function") {
+      const idleCallback = window.requestIdleCallback(preload, { timeout: 2500 });
+      return () => window.cancelIdleCallback(idleCallback);
+    }
+
+    const timeout = window.setTimeout(preload, 1200);
+    return () => window.clearTimeout(timeout);
+  }, [capable, mobileLayout, reducedMotion]);
+
+  useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
     const observer = new IntersectionObserver(
@@ -714,9 +727,11 @@ export function ProcessStory() {
       id="process"
       aria-labelledby="process-heading"
       data-enhanced={enhancementActive || undefined}
+      data-car-capable={capable || undefined}
       data-camera-ownership={ownership}
       data-mobile-passive-spin={mobilePassiveSpin || undefined}
       data-phase={phase}
+      data-viewport-tier={viewportTier}
       data-sequence-index={sequenceIndex}
       data-sequence-playing={sequencePlaying || undefined}
     >
@@ -799,7 +814,7 @@ export function ProcessStory() {
 
         {lifecycle === "loading" ? (
           <p className={styles.sceneStatus} role="status">
-            Preparing live vehicle study
+            Loading 3D vehicle
           </p>
         ) : null}
         {lifecycle === "failed" ? (
@@ -866,7 +881,9 @@ export function ProcessStory() {
         <div
           className={styles.exploreControls}
           data-visible={
-            enhancementActive && (mobileLayout || phase === "explore") ? true : undefined
+            enhancementActive && lifecycle === "ready" && (mobileLayout || phase === "explore")
+              ? true
+              : undefined
           }
         >
           {ownership !== "orbit" ? (

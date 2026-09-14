@@ -74,9 +74,10 @@ export function canEnhanceLogo(snapshot: CapabilitySnapshot) {
 }
 
 export function canEnhanceCar(snapshot: CapabilitySnapshot) {
+  if (snapshot.saveData || !snapshot.webGL2) return false;
+  if (snapshot.width < 768) return true;
+
   return (
-    !snapshot.saveData &&
-    snapshot.webGL2 &&
     (snapshot.deviceMemory === null || snapshot.deviceMemory >= 6) &&
     snapshot.hardwareConcurrency >= 6
   );

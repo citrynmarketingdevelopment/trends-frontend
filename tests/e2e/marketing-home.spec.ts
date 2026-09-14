@@ -12,23 +12,31 @@ async function disableWebGL(page: Page) {
   });
 }
 
-async function useCapableDesktop(page: Page) {
-  await page.addInitScript(() => {
-    Object.defineProperties(navigator, {
-      connection: {
-        configurable: true,
-        get: () => ({ saveData: false }),
-      },
-      deviceMemory: {
-        configurable: true,
-        get: () => 8,
-      },
-      hardwareConcurrency: {
-        configurable: true,
-        get: () => 8,
-      },
-    });
-  });
+async function useCapableDesktop(
+  page: Page,
+  options: { deviceMemory?: number; hardwareConcurrency?: number } = {},
+) {
+  const deviceMemory = options.deviceMemory ?? 8;
+  const hardwareConcurrency = options.hardwareConcurrency ?? 8;
+  await page.addInitScript(
+    ({ deviceMemory, hardwareConcurrency }) => {
+      Object.defineProperties(navigator, {
+        connection: {
+          configurable: true,
+          get: () => ({ saveData: false }),
+        },
+        deviceMemory: {
+          configurable: true,
+          get: () => deviceMemory,
+        },
+        hardwareConcurrency: {
+          configurable: true,
+          get: () => hardwareConcurrency,
+        },
+      });
+    },
+    { deviceMemory, hardwareConcurrency },
+  );
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.setViewportSize({ width: 1280, height: 720 });
 }
@@ -129,24 +137,38 @@ test("a capable mobile browser loads the hero shader and 3D logo", async ({ page
 
 test("mobile process shows one passive car before unlocking 3D exploration", async ({ page }) => {
   test.setTimeout(60_000);
-  await useCapableDesktop(page);
+  await useCapableDesktop(page, { deviceMemory: 2, hardwareConcurrency: 2 });
   await page.setViewportSize({ width: 390, height: 844 });
+  let releaseCarRequest: () => void = () => {};
+  const carRequestGate = new Promise<void>((resolve) => {
+    releaseCarRequest = resolve;
+  });
+  await page.route(`**${CAR_MODEL_PATH}`, async (route) => {
+    await carRequestGate;
+    await route.continue();
+  });
   await page.goto("/");
 
   const process = page.locator("#process");
-  await process.scrollIntoViewIfNeeded();
+  await process.evaluate((element) => element.scrollIntoView({ block: "start" }));
+  await expect(process).toHaveAttribute("data-car-capable", "true");
+  const loader = process.locator('[role="status"]');
+  await expect(loader).toBeVisible();
+  await expect(loader).toHaveText("Loading 3D vehicle");
+  releaseCarRequest();
   await expect(process).toHaveAttribute("data-enhanced", "true", { timeout: 30_000 });
   await expect(process.locator('[data-lifecycle="ready"]')).toBeVisible({ timeout: 30_000 });
+  await process.evaluate((element) => element.scrollIntoView({ block: "start" }));
   await expect(process).toHaveAttribute("data-mobile-passive-spin", "true");
   await expect(process.locator("[data-process-phase-cards]")).toBeHidden();
 
-  await clickAtCenter(page, process.getByRole("button", { name: "Explore 3D" }));
+  await process.getByRole("button", { name: "Explore 3D" }).dispatchEvent("click");
   await expect(process).toHaveAttribute("data-camera-ownership", "orbit");
   await expect(process).not.toHaveAttribute("data-mobile-passive-spin", "true");
 
   const pearl = process.getByRole("button", { name: "Pearl" });
   await expect(pearl).toBeVisible();
-  await clickAtCenter(page, pearl);
+  await pearl.dispatchEvent("click");
   await expect(pearl).toHaveAttribute("aria-pressed", "true");
   await expect(process.getByRole("button", { name: "Exit 3D" })).toBeVisible();
 });

@@ -590,6 +590,23 @@
   text-transform: uppercase;
 }
 
+.sceneStatus {
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+}
+
+.sceneStatus::before {
+  flex: 0 0 auto;
+  width: 0.75rem;
+  height: 0.75rem;
+  border: 1px solid rgb(199 173 123 / 32%);
+  border-top-color: var(--trends-champagne);
+  border-radius: 50%;
+  content: "";
+  animation: processLoaderSpin 800ms linear infinite;
+}
+
 .sceneFailure {
   padding-left: 1rem;
   border-left: 1px solid var(--trends-red);
@@ -1845,6 +1862,12 @@
   }
 }
 
+@keyframes processLoaderSpin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
 @media (max-width: 73rem) {
   .headerInner {
     grid-template-columns: auto 1fr;
@@ -2140,9 +2163,20 @@
 
   .phaseNarrative,
   .processRail,
-  .repairLabels,
-  .sceneStatus {
+  .repairLabels {
     display: none;
+  }
+
+  .sceneStatus {
+    top: 19rem;
+    right: auto;
+    left: 50%;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--trends-line);
+    border-radius: 0.3rem;
+    background: rgb(9 9 10 / 82%);
+    white-space: nowrap;
+    transform: translateX(-50%);
   }
 
   .phaseCards {
@@ -2466,6 +2500,10 @@
     width: 100%;
     animation: none;
     transform: none;
+  }
+
+  .sceneStatus::before {
+    animation: none;
   }
 
   .dealerLogoTrack {

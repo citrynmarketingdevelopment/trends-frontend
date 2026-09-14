@@ -17,7 +17,7 @@ const capableDesktop = {
 } as const;
 
 describe("marketing enhancement gates", () => {
-  it("keeps capable mobile 3D available while respecting device and data limits", () => {
+  it("keeps mobile 3D available while respecting data, WebGL, and desktop limits", () => {
     expect(canEnhanceLogo(capableDesktop)).toBe(true);
     expect(canEnhanceCar(capableDesktop)).toBe(true);
     expect(canEnhanceLogo({ ...capableDesktop, width: 390 })).toBe(true);
@@ -32,7 +32,10 @@ describe("marketing enhancement gates", () => {
         deviceMemory: 2,
         hardwareConcurrency: 2,
       }),
-    ).toBe(false);
+    ).toBe(true);
+    expect(canEnhanceCar({ ...capableDesktop, deviceMemory: 4, hardwareConcurrency: 4 })).toBe(
+      false,
+    );
     expect(canEnhanceLogo({ ...capableDesktop, saveData: true })).toBe(false);
     expect(canEnhanceLogo({ ...capableDesktop, webGL2: false })).toBe(false);
     expect(canEnhanceCar({ ...capableDesktop, saveData: true })).toBe(false);
