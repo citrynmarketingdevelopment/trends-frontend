@@ -201,12 +201,23 @@ function ProcessTreatments({ progressRef }: { progressRef: MutableRefObject<numb
   );
 }
 
+function MobileVehicleSpin({ active, children }: { active: boolean; children: ReactNode }) {
+  const group = useRef<THREE.Group>(null);
+
+  useFrame((_, delta) => {
+    if (active && group.current) group.current.rotation.y += delta * 0.14;
+  });
+
+  return <group ref={group}>{children}</group>;
+}
+
 function ProcessScene({
   progressRef,
   paintColor,
   viewportTier,
   ownership,
   autoRotate,
+  passiveSpin,
   reducedMotion,
   onInteraction,
   onReturned,
@@ -217,6 +228,7 @@ function ProcessScene({
   viewportTier: ViewportTier;
   ownership: CameraOwnership;
   autoRotate: boolean;
+  passiveSpin: boolean;
   reducedMotion: boolean;
   onInteraction: () => void;
   onReturned: () => void;
@@ -253,9 +265,11 @@ function ProcessScene({
           scale={[3, 2, 1]}
         />
       </Environment>
-      <RevueltoModel paintColor={paintColor} storyProgressRef={progressRef} />
+      <MobileVehicleSpin active={passiveSpin}>
+        <RevueltoModel paintColor={paintColor} storyProgressRef={progressRef} />
+      </MobileVehicleSpin>
       <RevueltoStudioGround color="#050505" aoIntensity={1.25} radius={5.2} />
-      <ProcessTreatments progressRef={progressRef} />
+      {viewportTier === "mobile" ? null : <ProcessTreatments progressRef={progressRef} />}
       <CameraDirector
         progressRef={progressRef}
         viewportTier={viewportTier}
@@ -304,8 +318,10 @@ export function ProcessStory() {
   const [capable, setCapable] = useState(false);
   const [sequenceIndex, setSequenceIndex] = useState(0);
   const [sequencePlaying, setSequencePlaying] = useState(false);
-  const sequenceEligible = capable && !reducedMotion && lifecycle !== "failed";
-  const shouldOwnScene = stageVisible && sequenceEligible;
+  const mobileLayout = viewportTier === "mobile";
+  const sceneEligible = capable && !reducedMotion && lifecycle !== "failed";
+  const sequenceEligible = sceneEligible && !mobileLayout;
+  const shouldOwnScene = stageVisible && sceneEligible;
 
   const commitOwnership = useCallback((nextOwnership: CameraOwnership) => {
     ownershipRef.current = nextOwnership;
@@ -661,7 +677,7 @@ export function ProcessStory() {
   const enterExplore = () => {
     sequenceObserverRef.current?.disable();
     commitOwnership("orbit");
-    setAutoRotate(true);
+    setAutoRotate(!mobileLayout);
   };
   const returnToStory = () => {
     commitOwnership("returning");
@@ -674,13 +690,14 @@ export function ProcessStory() {
   }, [commitOwnership]);
 
   const canvasActive = stageVisible && documentVisible && sceneOwner === "car";
+  const mobilePassiveSpin = mobileLayout && ownership === "story";
   const frameLoop = !canvasActive
     ? "never"
-    : ownership === "orbit" || ownership === "returning"
+    : mobilePassiveSpin || ownership === "orbit" || ownership === "returning"
       ? "always"
       : "demand";
 
-  const enhancementActive = sceneEnabled && !reducedMotion && lifecycle !== "failed";
+  const enhancementActive = sceneEnabled && sceneEligible;
   const ownsScene = enhancementActive && sceneOwner === "car";
 
   useLayoutEffect(() => {
@@ -697,6 +714,8 @@ export function ProcessStory() {
       id="process"
       aria-labelledby="process-heading"
       data-enhanced={enhancementActive || undefined}
+      data-camera-ownership={ownership}
+      data-mobile-passive-spin={mobilePassiveSpin || undefined}
       data-phase={phase}
       data-sequence-index={sequenceIndex}
       data-sequence-playing={sequencePlaying || undefined}
@@ -740,6 +759,7 @@ export function ProcessStory() {
                     viewportTier={viewportTier}
                     ownership={ownership}
                     autoRotate={autoRotate}
+                    passiveSpin={mobilePassiveSpin}
                     reducedMotion={reducedMotion}
                     onInteraction={() => setAutoRotate(false)}
                     onReturned={finishReturnToStory}
@@ -843,23 +863,30 @@ export function ProcessStory() {
           ) : null}
         </div>
 
-        <div className={styles.exploreControls} data-visible={phase === "explore" || undefined}>
+        <div
+          className={styles.exploreControls}
+          data-visible={
+            enhancementActive && (mobileLayout || phase === "explore") ? true : undefined
+          }
+        >
           {ownership !== "orbit" ? (
             <button type="button" className={styles.primaryButton} onClick={enterExplore}>
-              Explore 360
+              {mobileLayout ? "Explore 3D" : "Explore 360"}
             </button>
           ) : (
             <>
-              <button
-                type="button"
-                className={styles.secondaryButton}
-                aria-pressed={autoRotate}
-                onClick={() => setAutoRotate((current) => !current)}
-              >
-                {autoRotate ? "Pause 360" : "Play 360"}
-              </button>
+              {mobileLayout ? null : (
+                <button
+                  type="button"
+                  className={styles.secondaryButton}
+                  aria-pressed={autoRotate}
+                  onClick={() => setAutoRotate((current) => !current)}
+                >
+                  {autoRotate ? "Pause 360" : "Play 360"}
+                </button>
+              )}
               <button type="button" className={styles.secondaryButton} onClick={returnToStory}>
-                Return to story
+                {mobileLayout ? "Exit 3D" : "Return to story"}
               </button>
               <fieldset className={styles.paintControls}>
                 <legend>Paint</legend>
@@ -879,7 +906,7 @@ export function ProcessStory() {
         </div>
       </div>
 
-      <div className={styles.phaseCards}>
+      <div className={styles.phaseCards} data-process-phase-cards>
         {processPhases.map((item) => (
           <article key={item.id}>
             <span>{item.label}</span>

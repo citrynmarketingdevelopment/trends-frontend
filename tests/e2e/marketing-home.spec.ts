@@ -127,6 +127,30 @@ test("a capable mobile browser loads the hero shader and 3D logo", async ({ page
     .toBeGreaterThan(0);
 });
 
+test("mobile process shows one passive car before unlocking 3D exploration", async ({ page }) => {
+  test.setTimeout(60_000);
+  await useCapableDesktop(page);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+
+  const process = page.locator("#process");
+  await process.scrollIntoViewIfNeeded();
+  await expect(process).toHaveAttribute("data-enhanced", "true", { timeout: 30_000 });
+  await expect(process.locator('[data-lifecycle="ready"]')).toBeVisible({ timeout: 30_000 });
+  await expect(process).toHaveAttribute("data-mobile-passive-spin", "true");
+  await expect(process.locator("[data-process-phase-cards]")).toBeHidden();
+
+  await clickAtCenter(page, process.getByRole("button", { name: "Explore 3D" }));
+  await expect(process).toHaveAttribute("data-camera-ownership", "orbit");
+  await expect(process).not.toHaveAttribute("data-mobile-passive-spin", "true");
+
+  const pearl = process.getByRole("button", { name: "Pearl" });
+  await expect(pearl).toBeVisible();
+  await clickAtCenter(page, pearl);
+  await expect(pearl).toHaveAttribute("aria-pressed", "true");
+  await expect(process.getByRole("button", { name: "Exit 3D" })).toBeVisible();
+});
+
 test("the hero retries once after a transient WebGL context loss", async ({ page }) => {
   await useCapableDesktop(page);
   await page.goto("/");

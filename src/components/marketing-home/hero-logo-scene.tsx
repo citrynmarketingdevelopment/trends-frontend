@@ -145,7 +145,7 @@ function LogoModel({ active }: { active: boolean }) {
 
   const mobileViewport = canvasWidth < 768;
   const modelHeight = viewport.height * (mobileViewport ? 0.15 : 0.175);
-  const modelVerticalPosition = viewport.height * (mobileViewport ? 0.32 : 0.29);
+  const modelVerticalPosition = viewport.height * (mobileViewport ? 0.25 : 0.22);
 
   return (
     <group

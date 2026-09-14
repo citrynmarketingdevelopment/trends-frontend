@@ -51,18 +51,12 @@ export default function Home() {
               <div className={styles.heroMark}>
                 <BrandLogo className={styles.heroLogoBaseline} preload />
               </div>
-              <p className={styles.eyebrow}>Collision · Restoration · Refinement</p>
               <h1 className={styles.heroSeoHeading} id="hero-heading">
                 Auto Collision Center in Bakersfield
               </h1>
               <p aria-hidden="true" className={styles.heroDisplayTitle} data-hero-display-title>
                 <span className={styles.outlineText}>Trends</span>
                 <span>Collision Center</span>
-              </p>
-              <p className={styles.heroSupport}>
-                Trends Collision Center is your family-owned collision center in Bakersfield. From
-                auto body and paint repairs to complete vehicle care, we bring careful workmanship
-                and clear communication to every step.
               </p>
               <div className={styles.heroActions}>
                 <Link className={styles.primaryButton} href="/contact">

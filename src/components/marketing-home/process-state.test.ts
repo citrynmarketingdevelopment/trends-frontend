@@ -17,13 +17,22 @@ const capableDesktop = {
 } as const;
 
 describe("marketing enhancement gates", () => {
-  it("keeps the hero logo available on capable mobile devices and off save-data or WebGL-failed devices", () => {
+  it("keeps capable mobile 3D available while respecting device and data limits", () => {
     expect(canEnhanceLogo(capableDesktop)).toBe(true);
     expect(canEnhanceCar(capableDesktop)).toBe(true);
     expect(canEnhanceLogo({ ...capableDesktop, width: 390 })).toBe(true);
+    expect(canEnhanceCar({ ...capableDesktop, width: 390 })).toBe(true);
     expect(canEnhanceLogo({ ...capableDesktop, deviceMemory: 2, hardwareConcurrency: 2 })).toBe(
       true,
     );
+    expect(
+      canEnhanceCar({
+        ...capableDesktop,
+        width: 390,
+        deviceMemory: 2,
+        hardwareConcurrency: 2,
+      }),
+    ).toBe(false);
     expect(canEnhanceLogo({ ...capableDesktop, saveData: true })).toBe(false);
     expect(canEnhanceLogo({ ...capableDesktop, webGL2: false })).toBe(false);
     expect(canEnhanceCar({ ...capableDesktop, saveData: true })).toBe(false);

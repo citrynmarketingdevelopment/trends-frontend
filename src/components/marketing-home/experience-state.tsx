@@ -75,7 +75,6 @@ export function canEnhanceLogo(snapshot: CapabilitySnapshot) {
 
 export function canEnhanceCar(snapshot: CapabilitySnapshot) {
   return (
-    snapshot.width >= 768 &&
     !snapshot.saveData &&
     snapshot.webGL2 &&
     (snapshot.deviceMemory === null || snapshot.deviceMemory >= 6) &&

@@ -197,7 +197,7 @@
   object-fit: cover;
   object-position: top center;
   opacity: 0.34;
-  filter: saturate(0.75) contrast(2.00);
+  filter: saturate(0.75) contrast(2);
   mix-blend-mode: screen;
 }
 
@@ -207,7 +207,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: min(66rem, 100%);
+  width: min(82rem, 100%);
   text-align: center;
 }
 
@@ -222,10 +222,10 @@
 }
 
 .heroDisplayTitle {
-  max-width: 66rem;
+  max-width: 82rem;
   margin: 0;
   font-family: var(--font-trends-display), sans-serif;
-  font-size: clamp(4.4rem, 7.7vw, 7.15rem);
+  font-size: clamp(5.8rem, 10.5vw, 10rem);
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.025em;
@@ -2082,8 +2082,8 @@
   }
 
   .heroDisplayTitle {
-    max-width: 23rem;
-    font-size: clamp(3.65rem, 17.7vw, 5rem);
+    max-width: 26rem;
+    font-size: clamp(5.2rem, 24vw, 7.75rem);
     line-height: 0.88;
   }
 
@@ -2141,17 +2141,37 @@
   .phaseNarrative,
   .processRail,
   .repairLabels,
-  .exploreControls,
   .sceneStatus {
     display: none;
   }
 
-  .phaseCards,
-  .processStory[data-enhanced="true"] .phaseCards {
+  .phaseCards {
     display: grid;
     grid-template-columns: 1fr;
     width: calc(100% - 2rem);
     padding-bottom: 6rem;
+  }
+
+  .processStory[data-enhanced="true"] .phaseCards {
+    display: none;
+  }
+
+  .exploreControls {
+    top: 27rem;
+    bottom: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: min(calc(100% - 2rem), 22rem);
+  }
+
+  .exploreControls > button {
+    width: 100%;
+  }
+
+  .paintControls {
+    flex: 1 0 100%;
+    justify-content: center;
+    padding: 0.35rem 0 0.1rem;
   }
 
   .phaseCards article {
