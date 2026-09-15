@@ -32,11 +32,11 @@ export const services: readonly Service[] = [
     detailAlt: "Technician welding a vehicle body structure in the workshop",
     featureTitle: "The finish starts beneath the surface.",
     featureBody:
-      "Panel fit, structural work, and surface preparation all contribute to the final result. Our team follows the repair from the first inspection through refinishing and the final review, with quality checks along the way.",
+      "Panel fit, structural work, and surface preparation all contribute to the final result. We believe a high-quality repair deserves high-quality products, which is why we refinish with Glasurit premium products and back our paint workmanship with a Limited Lifetime Warranty.",
     subservices: [
       {
         title: "Body & panel repair",
-        body: "Collision damage, bumper repair, dent removal, rear-end damage, and hail damage assessment.",
+        body: "Structural and cosmetic repairs to restore vehicles to pre-accident condition, including bumper repair, dent removal, and hail damage assessment.",
       },
       {
         title: "Frame & structure",
@@ -44,7 +44,7 @@ export const services: readonly Service[] = [
       },
       {
         title: "Paint & refinishing",
-        body: "Vehicle painting, paint and scratch repair, surface preparation, and color matching.",
+        body: "Factory-quality paint and refinishing for a seamless, long-lasting finish, using Glasurit premium refinishing products.",
       },
       {
         title: "Restoration & finishing",
@@ -113,20 +113,20 @@ export const services: readonly Service[] = [
       "Complete vehicle care goes beyond the bodywork. We review mechanical concerns in the context of the whole vehicle, whether they follow an impact, appear during everyday driving, or are part of a maintenance visit.",
     subservices: [
       {
-        title: "Diagnostics & inspections",
-        body: "Assessment of warning lights, unusual noises, starting concerns, and changes in vehicle performance.",
+        title: "Diagnostics",
+        body: "Advanced vehicle diagnostics to identify and resolve mechanical and electrical issues, from warning lights to unusual noises and starting concerns.",
+      },
+      {
+        title: "Brakes",
+        body: "Brake inspections, repairs, and replacements, with the mechanical systems that affect everyday driving reviewed alongside them.",
       },
       {
         title: "Steering & suspension",
-        body: "Inspection and repair planning for steering response, ride quality, worn components, and impact-related concerns.",
+        body: "Suspension diagnostics, repair, and replacement, including steering response, ride quality, and impact-related concerns.",
       },
       {
-        title: "Brakes & road readiness",
-        body: "Evaluation of braking concerns and the mechanical systems that affect everyday driving.",
-      },
-      {
-        title: "Maintenance & repairs",
-        body: "Discuss fluid service, wear items, and mechanical repair needs based on your vehicle and its service history.",
+        title: "A/C & maintenance",
+        body: "A/C diagnostics, service, and repair, alongside complete mechanical repair and maintenance for all vehicle types.",
       },
     ],
     process: [
@@ -185,15 +185,15 @@ export const services: readonly Service[] = [
     detailAlt: "Trucks photographed outside at a vehicle event",
     featureTitle: "From the roadside to the next step.",
     featureBody:
-      "Getting the vehicle to the right place is the start of the repair. We help you discuss transport and arrival details so the shop can prepare for an inspection. Call to confirm current availability, service area, and pricing.",
+      "Roadside assistance and towing keep customers and fleets moving. On-site support handles what can be solved where you are, and professional towing covers the rest. Call to confirm current availability, service area, and pricing.",
     subservices: [
       {
-        title: "Collision towing",
-        body: "Discuss transport for an accident-damaged vehicle and its arrival at the collision center.",
+        title: "Roadside assistance",
+        body: "On-site vehicle support: tires and tire patches, jump starts, fuel delivery, oil changes, and auto lockouts, to help get customers and fleets back on the road.",
       },
       {
-        title: "Breakdown transport",
-        body: "Towing options for a vehicle that cannot be driven to a scheduled assessment or repair.",
+        title: "Towing",
+        body: "Professional towing services for individual, business, and fleet vehicles, including accident-damaged vehicles arriving at the collision center.",
       },
       {
         title: "Vehicle recovery",
@@ -263,12 +263,12 @@ export const services: readonly Service[] = [
       "From everyday tire concerns to wheel and rim customization, details matter. We discuss fitment, condition, and the intended use of the vehicle before recommending the next step.",
     subservices: [
       {
-        title: "Tire inspection & replacement",
-        body: "Review tire condition, wear patterns, sizing, and replacement options for the vehicle.",
+        title: "Tires & wheels",
+        body: "Tire installation, balancing, and wheel services, with a review of tire condition, wear patterns, sizing, and replacement options.",
       },
       {
-        title: "Wheel alignment",
-        body: "Check alignment concerns and determine whether related steering or suspension work is needed.",
+        title: "Alignment",
+        body: "Precision wheel alignments for safety, performance, and longer tire life, including any related steering or suspension work.",
       },
       {
         title: "Wheel & rim care",
@@ -410,3 +410,42 @@ export const publicPaths = [
   "/about",
   "/contact",
 ];
+
+/**
+ * The eleven approved service lines Trends offers under one name. Used on the About page
+ * and anywhere the full "complete vehicle solutions" list is shown.
+ */
+export const completeSolutions = [
+  {
+    title: "Collision Repair",
+    body: "Structural and cosmetic repairs to restore vehicles to pre-accident condition.",
+  },
+  {
+    title: "Paint & Refinishing",
+    body: "Factory-quality paint and refinishing for a seamless, long-lasting finish.",
+  },
+  {
+    title: "Mechanical Repair",
+    body: "Complete mechanical repair and maintenance services for all vehicle types.",
+  },
+  { title: "Tires & Wheels", body: "Tire installation, balancing, and wheel services." },
+  {
+    title: "Alignment",
+    body: "Precision wheel alignments for safety, performance, and longer tire life.",
+  },
+  { title: "Brakes", body: "Brake inspections, repairs, and replacements." },
+  { title: "Suspension", body: "Suspension diagnostics, repair, and replacement." },
+  { title: "A/C Service", body: "A/C diagnostics, service, and repair." },
+  {
+    title: "Diagnostics",
+    body: "Advanced vehicle diagnostics to identify and resolve mechanical and electrical issues.",
+  },
+  {
+    title: "Roadside Assistance",
+    body: "On-site vehicle support — tires and tire patches, jump starts, fuel delivery, oil changes, and auto lockouts — to help get customers and fleets back on the road.",
+  },
+  {
+    title: "Towing",
+    body: "Professional towing services for individual, business, and fleet vehicles.",
+  },
+] as const;

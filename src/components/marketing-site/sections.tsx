@@ -148,7 +148,12 @@ export function ServiceCapabilities({ service }: { service: Service }) {
       "/images/services/348s (6).jpg",
       "/images/services/348s (1).jpg",
     ],
-    mechanical: [service.detailImage, service.image, service.image, service.detailImage],
+    mechanical: [
+      service.detailImage,
+      service.image,
+      "/images/services/348s (7).jpg",
+      service.detailImage,
+    ],
     roadside: [service.image, service.image, service.detailImage, service.image],
     "tires-alignment": [
       service.detailImage,
@@ -164,6 +169,8 @@ export function ServiceCapabilities({ service }: { service: Service }) {
     ],
   };
   const photos = photoSets[service.slug]!;
+  // Services carry different numbers of subservices, so wrap rather than run off the end.
+  const photoFor = (index: number) => photos[index % photos.length]!;
   return (
     <section className={homeStyles.repairServicesSection} aria-labelledby="capabilities-title">
       <div className={homeStyles.repairServicesInner}>
@@ -179,7 +186,7 @@ export function ServiceCapabilities({ service }: { service: Service }) {
             <article className={homeStyles.repairServiceCard} key={item.title}>
               <Image
                 className={homeStyles.repairServiceImage}
-                src={photos[index]!}
+                src={photoFor(index)}
                 alt=""
                 fill
                 sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 25vw"

@@ -785,6 +785,122 @@
   outline-offset: 3px;
 }
 
+/* Interactive three-step process indicator. Phones only; desktop uses the scroll sequence. */
+.mobileSteps {
+  display: none;
+}
+
+.mobileStepsEyebrow {
+  color: var(--trends-champagne);
+  font-family: var(--font-trends-mono), monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.mobileStepRow {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 1.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mobileStepRow::before {
+  position: absolute;
+  top: 1.35rem;
+  right: 16.66%;
+  left: 16.66%;
+  height: 2px;
+  content: "";
+  background: var(--trends-red);
+}
+
+.mobileStepRow li {
+  min-width: 0;
+}
+
+.mobileStepRow button {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.mobileStepRow button > span {
+  display: grid;
+  width: 2.7rem;
+  height: 2.7rem;
+  border: 2px solid var(--trends-red);
+  border-radius: 50%;
+  color: var(--trends-bone);
+  background: var(--trends-carbon);
+  font-family: var(--font-trends-display), sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  place-items: center;
+  transition:
+    background-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.mobileStepRow button[data-active] > span {
+  background: var(--trends-red);
+  box-shadow:
+    0 0 0 0.3rem rgb(200 29 43 / 18%),
+    0 0 1.5rem rgb(200 29 43 / 70%);
+}
+
+.mobileStepRow b {
+  margin-top: 0.85rem;
+  color: #8e867e;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 220ms ease;
+}
+
+.mobileStepRow button[data-active] b {
+  color: var(--trends-bone);
+}
+
+.mobileStepDetail {
+  margin-top: 2.25rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--trends-line);
+}
+
+.mobileStepDetail > span {
+  color: var(--trends-champagne);
+  font-family: var(--font-trends-mono), monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.mobileStepDetail h3 {
+  margin: 0.85rem 0 0;
+  font-size: 1.9rem;
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.mobileStepDetail p {
+  margin: 0.9rem 0 0;
+  color: var(--trends-muted);
+  font-size: 0.9375rem;
+  line-height: 1.8;
+}
+
 .phaseCards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -885,7 +1001,9 @@
 
 .serviceCard {
   position: relative;
+  display: block;
   flex: 1 1 0;
+  color: inherit;
   min-width: 0;
   overflow: hidden;
   isolation: isolate;
@@ -1295,6 +1413,179 @@
   line-height: 1.6;
 }
 
+.fleetSection {
+  width: 100%;
+  padding: clamp(5.5rem, 7.5vw, 7rem) var(--trends-gutter);
+  background: var(--trends-carbon);
+}
+
+.fleetInner {
+  width: min(var(--trends-section-content), 100%);
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr);
+  gap: clamp(2.5rem, 6vw, 6rem);
+  align-items: start;
+}
+
+.fleetCopy > p:first-child {
+  color: var(--trends-champagne);
+  font-family: var(--font-trends-mono), monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.fleetCopy h2 {
+  margin: 1.25rem 0 1.75rem;
+  max-width: 16ch;
+  font-size: clamp(2.6rem, 6vw, 4.25rem);
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.fleetCopy h2 + p {
+  max-width: 46ch;
+  color: #bdb5ac;
+  font-size: 0.9375rem;
+  line-height: 1.9;
+}
+
+.fleetCopy h2 ~ p + p {
+  margin-top: 1.25rem;
+}
+
+.fleetActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2.25rem;
+}
+
+.fleetPoints {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--trends-line);
+}
+
+.fleetPoints li {
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  gap: 1rem;
+  padding: 1.35rem 0;
+  border-bottom: 1px solid var(--trends-line);
+}
+
+.fleetPoints li > span {
+  color: var(--trends-champagne);
+  font-family: var(--font-trends-mono), monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+}
+
+.fleetPoints h3 {
+  font-size: 1.1rem;
+  line-height: 1.2;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--trends-bone);
+}
+
+.fleetPoints p {
+  margin-top: 0.5rem;
+  color: var(--trends-muted);
+  font-size: 0.8125rem;
+  line-height: 1.75;
+}
+
+.materialsSection {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  padding: clamp(5.75rem, 7.5vw, 7.25rem) var(--trends-gutter);
+  background: #050506;
+  overflow: hidden;
+}
+
+.materialsImage {
+  object-fit: cover;
+  z-index: -2;
+}
+
+.materialsScrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(100deg, rgb(5 5 6 / 92%) 26%, rgb(5 5 6 / 56%));
+}
+
+.materialsInner {
+  width: min(var(--trends-section-content), 100%);
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(17rem, 21rem);
+  gap: clamp(2.5rem, 6vw, 5.5rem);
+  align-items: start;
+}
+
+.materialsCopy > p:first-child {
+  font-family: var(--font-trends-mono), monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--trends-champagne);
+}
+
+.materialsCopy h2 {
+  margin: 1.25rem 0 1.75rem;
+  font-family: var(--font-trends-display), sans-serif;
+  font-size: clamp(2.6rem, 6vw, 4.25rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: var(--trends-bone);
+  max-width: 18ch;
+}
+
+.materialsCopy h2 ~ p {
+  max-width: 44ch;
+  color: #bdb5ac;
+  font-size: 0.9375rem;
+  line-height: 1.9;
+}
+
+.materialsCopy h2 ~ p + p {
+  margin-top: 1.5rem;
+}
+
+.materialsFacts {
+  margin: 0;
+  border-top: 1px solid var(--trends-line);
+}
+
+.materialsFacts > div {
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--trends-line);
+}
+
+.materialsFacts dt {
+  font-family: var(--font-trends-mono), monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #a9a097;
+}
+
+.materialsFacts dd {
+  margin: 0.6rem 0 0;
+  font-size: 1.05rem;
+  line-height: 1.35;
+  color: var(--trends-bone);
+}
+
 .repairServicesSection {
   width: 100%;
   padding: clamp(5.75rem, 7.5vw, 7.25rem) var(--trends-gutter) clamp(5rem, 7vw, 6.5rem);
@@ -1348,7 +1639,9 @@
 
 .repairServiceCard {
   position: relative;
+  display: block;
   min-width: 0;
+  color: inherit;
   min-height: clamp(28rem, 36vw, 31rem);
   overflow: hidden;
   isolation: isolate;
@@ -1887,6 +2180,20 @@
 }
 
 @media (max-width: 63.99rem) {
+  .fleetInner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.75rem;
+  }
+
+  .materialsInner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.75rem;
+  }
+
+  .materialsScrim {
+    background: linear-gradient(180deg, rgb(5 5 6 / 88%), rgb(5 5 6 / 96%));
+  }
+
   .serviceHeading {
     grid-template-columns: minmax(0, 1fr) minmax(13rem, 0.42fr);
   }
@@ -2147,18 +2454,33 @@
   .processStory[data-enhanced="true"] .processStage {
     position: relative;
     top: auto;
-    min-height: 42rem;
-    height: 42rem;
-  }
-
-  .processStage::after {
-    background: linear-gradient(180deg, rgb(9 9 10 / 25%), rgb(9 9 10 / 92%));
+    min-height: 48rem;
+    height: 48rem;
   }
 
   .processHeading {
-    top: 5.5rem;
+    top: 5rem;
     left: 1rem;
     max-width: calc(100% - 2rem);
+  }
+
+  /* Enlarge the process headline on phones; the eyebrow stays a supporting label. */
+  .processHeading > span {
+    font-size: 0.8rem;
+  }
+
+  .processHeading h2 {
+    font-size: 3.1rem;
+  }
+
+  .processHeading h2 .outlineText {
+    -webkit-text-stroke-width: 2px;
+    text-stroke-width: 2px;
+  }
+
+  /* Drop the vehicle clear of the heading so the two stop crowding each other. */
+  .processCanvas {
+    top: 11rem;
   }
 
   .phaseNarrative,
@@ -2179,19 +2501,23 @@
     transform: translateX(-50%);
   }
 
-  .phaseCards {
-    display: grid;
-    grid-template-columns: 1fr;
-    width: calc(100% - 2rem);
-    padding-bottom: 6rem;
+  .fleetPoints li {
+    grid-template-columns: 1.75rem minmax(0, 1fr);
+    gap: 0.75rem;
   }
 
-  .processStory[data-enhanced="true"] .phaseCards {
+  .mobileSteps {
+    display: block;
+    padding: 1.75rem 1rem var(--trends-section);
+  }
+
+  /* The interactive stepper carries these three phases on phones. */
+  .phaseCards {
     display: none;
   }
 
   .exploreControls {
-    top: 27rem;
+    top: 39rem;
     bottom: auto;
     flex-wrap: wrap;
     justify-content: center;

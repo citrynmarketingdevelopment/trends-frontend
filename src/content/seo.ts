@@ -18,7 +18,7 @@ export const pageSeo = {
   about: {
     title: "About Trends Collision Center in Bakersfield",
     description:
-      "Meet Trends Collision Center, a family-owned Bakersfield auto body shop. Learn about our I-CAR Gold Class commitment, repair approach, and complete vehicle care.",
+      "Trends Collision Center is more than a repair facility. Learn about our mission, certified expertise, Glasurit refinishing, and complete vehicle solutions in Bakersfield.",
     heading: "About Trends Collision Center in Bakersfield",
   },
   contact: {

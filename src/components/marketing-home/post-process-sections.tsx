@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { BrandLogo } from "@/components/brand-logo";
+import { getService } from "@/content/services";
 import { QuestionsSection } from "./faq-section";
 import styles from "./marketing-home.module.css";
 
@@ -42,21 +43,25 @@ const repairServices = [
     title: ["Body &", "Structure"],
     items: ["Dent repair & removal", "Auto body repair", "Aluminum repair"],
     image: "/images/repair-services/body-structure.webp",
+    href: "/services/collision",
   },
   {
     title: ["Paint &", "Finish"],
     items: ["Auto paint repair", "Paint scratch repair", "Fender repair"],
     image: "/images/repair-services/paint-finish.webp",
+    href: "/services/collision",
   },
   {
     title: ["Glass &", "Weather"],
     items: ["Auto glass repair", "Windshield replacement", "Hail damage repair"],
     image: "/images/repair-services/glass-weather.webp",
+    href: "/services/collision",
   },
   {
     title: ["Finishing", "& Safety"],
     items: ["Paintless dent repair", "Bumper repair", "ADAS calibrations"],
     image: "/images/repair-services/finishing-safety.webp",
+    href: "/services/mechanical",
   },
 ] as const;
 
@@ -65,8 +70,9 @@ const serviceHighlights = [
   "Certified parts",
   "Payment options",
   "All insurers",
-  "Waterborne paints",
-  "Towing & rental",
+  "Glasurit refinishing",
+  "Limited lifetime paint warranty",
+  "Towing & roadside",
 ] as const;
 
 export function RepairTrackingSection() {
@@ -154,6 +160,93 @@ export function RepairTrackingSection() {
   );
 }
 
+const fleetService = getService("fleet-maintenance")!;
+
+export function FleetPartnerSection() {
+  return (
+    <section className={styles.fleetSection} id="fleet" aria-labelledby="fleet-heading">
+      <div className={styles.fleetInner}>
+        <div className={styles.fleetCopy}>
+          <p>Fleets &amp; dealerships</p>
+          <h2 id="fleet-heading">Keep the whole fleet moving.</h2>
+          <p>
+            A single vehicle out of service can affect the day&apos;s work. We help fleet contacts
+            understand the repair scope, coordinate approvals, and discuss priorities across
+            bodywork, mechanical service, and tires.
+          </p>
+          <p>
+            One team. One trusted partner. Complete vehicle solutions for the businesses and
+            dealerships that keep Kern County moving.
+          </p>
+          <div className={styles.fleetActions}>
+            <Link className={styles.primaryButton} href="/services/fleet-maintenance">
+              FLEET MAINTENANCE
+            </Link>
+            <Link className={styles.secondaryButton} href="/contact?service=fleet-maintenance">
+              TALK TO OUR FLEET TEAM
+            </Link>
+          </div>
+        </div>
+        <ul className={styles.fleetPoints}>
+          {fleetService.subservices.map((item, index) => (
+            <li key={item.title}>
+              <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+export function PremiumMaterialsSection() {
+  return (
+    <section className={styles.materialsSection} id="materials" aria-labelledby="materials-heading">
+      <Image
+        alt=""
+        className={styles.materialsImage}
+        fill
+        sizes="100vw"
+        src="/images/services/348s (4).jpg"
+      />
+      <div className={styles.materialsScrim} aria-hidden="true" />
+      <div className={styles.materialsInner}>
+        <div className={styles.materialsCopy}>
+          <p>Premium materials</p>
+          <h2 id="materials-heading">Quality starts with what we use.</h2>
+          <p>
+            At Trends Collision Center, quality starts with the materials we use. We believe a
+            high-quality repair deserves high-quality products, which is why we use Glasurit premium
+            refinishing products, a trusted name in automotive paint and refinishing.
+          </p>
+          <p>
+            From preparation to the final finish, our team is committed to delivering exceptional
+            color, durability, and long-lasting results.
+          </p>
+        </div>
+        <dl className={styles.materialsFacts}>
+          <div>
+            <dt>Refinishing system</dt>
+            <dd>Glasurit premium products</dd>
+          </div>
+          <div>
+            <dt>Paint workmanship</dt>
+            <dd>Limited Lifetime Warranty</dd>
+          </div>
+          <div>
+            <dt>The result</dt>
+            <dd>Exceptional color, durability, and long-lasting results</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+  );
+}
+
 export function RepairServicesSection() {
   return (
     <section className={styles.repairServicesSection} aria-labelledby="repair-services-heading">
@@ -164,14 +257,18 @@ export function RepairServicesSection() {
             <h2 id="repair-services-heading">Everything we do, under one roof.</h2>
           </div>
           <p>
-            Insurance or cash, dealer or daily driver. The same standard and the same repair record
-            follow every vehicle.
+            Complete, dependable vehicle solutions for individuals, businesses, dealerships, and
+            fleets, all under one trusted name.
           </p>
         </header>
 
         <div className={styles.repairServicesRail}>
           {repairServices.map((service, index) => (
-            <article className={styles.repairServiceCard} key={service.title.join(" ")}>
+            <Link
+              className={styles.repairServiceCard}
+              href={service.href}
+              key={service.title.join(" ")}
+            >
               <Image
                 alt=""
                 className={styles.repairServiceImage}
@@ -199,7 +296,7 @@ export function RepairServicesSection() {
                   ))}
                 </ul>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
 

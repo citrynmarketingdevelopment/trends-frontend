@@ -49,9 +49,9 @@ export function MarketingFooter() {
             </span>
           </Link>
           <p>
-            Family owned. Community driven.
+            More Than Collision.
             <br />
-            Complete vehicle care in Bakersfield.
+            Complete vehicle solutions in Bakersfield.
           </p>
           <div className={styles.socials}>
             {business.socials.map((social) => (

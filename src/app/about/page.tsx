@@ -4,6 +4,7 @@ import { MarketingShell } from "@/components/marketing-site/marketing-shell";
 import { ContactCta, PageHero } from "@/components/marketing-site/sections";
 import styles from "@/components/marketing-site/marketing-site.module.css";
 import { business } from "@/content/business";
+import { completeSolutions } from "@/content/services";
 import { marketingMetadata } from "@/lib/marketing-metadata";
 import { pageSeo } from "@/content/seo";
 import { MarketingStructuredData } from "@/components/marketing-site/structured-data";
@@ -12,16 +13,16 @@ export const metadata = marketingMetadata(pageSeo.about.title, pageSeo.about.des
 
 const values = [
   {
-    title: "Quality in the details",
-    body: "A repair is made up of many decisions. We take care with the assessment, preparation, and finishing details because the result should be work we are proud to put the Trends name behind.",
+    title: "Quality workmanship",
+    body: "Our reputation has been built on the standard of the work itself. Whether we are repairing one vehicle or supporting an entire fleet, we approach every job with the same standard of care and attention to detail.",
   },
   {
-    title: "Trust through communication",
-    body: "You deserve to understand the work being recommended. We discuss the repair scope, explain the next steps, and make room for your questions throughout the process.",
+    title: "Certified expertise",
+    body: "Training and proper repair procedures sit behind the decisions we make on every vehicle. Certified expertise is how we make sure a repair is done right, not simply finished.",
   },
   {
-    title: "Complete vehicle care",
-    body: "Body and paint work are part of a bigger picture. Mechanical service, tires, towing, and fleet repairs allow us to help with more of the needs that come with owning and operating a vehicle.",
+    title: "Complete vehicle solutions",
+    body: "Collision repair and refinishing, mechanical services, tires, towing, and roadside assistance. Our team is equipped to handle your vehicle needs under one trusted name.",
   },
 ];
 const gallery = [
@@ -53,50 +54,80 @@ export default function AboutPage() {
       <PageHero
         eyebrow="About Us"
         title={pageSeo.about.heading}
-        introduction="Family owned and operated. Rooted in Bakersfield. Built around quality, trust, and care for the whole vehicle."
+        introduction="More than a repair facility. A complete automotive service partner built on quality, trust, and a commitment to doing things the right way."
         image="/images/repair-services/paint-finish.webp"
         imageAlt="Automotive paint and body repair"
         compact
       />
       <section className={`${styles.section} ${styles.split}`} aria-labelledby="story-title">
         <div>
-          <p className={styles.label}>More than a collision center</p>
+          <p className={styles.label}>Who we are</p>
           <h2 id="story-title">
-            Work we’re proud
-            <br />
-            to put our name on.
+            More than
+            <br />a repair facility.
           </h2>
         </div>
         <div className={styles.storyCopy}>
           <p className={styles.lead}>
-            Every vehicle belongs to someone who depends on it. That’s where our approach begins.
+            Trends Collision Center is more than a repair facility — we are a complete automotive
+            service partner built on quality, trust, and a commitment to doing things the right way.
           </p>
           <p>
-            As a family-owned and operated business, Trends Collision Center takes pride in treating
-            every vehicle as if it were our own. We serve the Bakersfield and Kern County community
-            with quality workmanship, dependable service, and attention to detail.
+            Based in Bakersfield, California, we provide comprehensive vehicle solutions for
+            individual customers, businesses, dealerships, and fleets. From collision repair and
+            refinishing to mechanical services, tires, towing, and roadside assistance, our team is
+            equipped to handle your vehicle needs under one trusted name.
           </p>
           <p>
-            We are an I-CAR Gold Class collision center with multiple manufacturer certifications.
-            That commitment to training and proper repair procedures supports how we approach the
-            work, from the first inspection to the final review.
+            Our reputation has been built through quality workmanship, certified expertise,
+            dependable service, and long-term relationships with the people and businesses we serve.
+            Whether we’re repairing one vehicle or supporting an entire fleet, we approach every job
+            with the same standard of care and attention to detail.
           </p>
           <p>
-            Our customers include individual drivers, dealerships, and commercial fleets. Their
-            needs may be different, but our goal is the same: understand the vehicle, communicate
-            clearly, and deliver work we are proud to stand behind.
+            As we continue to grow, our purpose remains the same: deliver exceptional service, stand
+            behind our work, and become the automotive partner our customers can depend on for the
+            road ahead.
           </p>
           <Link className={styles.textLink} href="/#certifications">
             Explore our credentials <span aria-hidden="true">↗</span>
           </Link>
         </div>
       </section>
+      <section className={`${styles.section} ${styles.split}`} aria-labelledby="mission-title">
+        <div>
+          <p className={styles.label}>Mission statement</p>
+          <h2 id="mission-title">
+            More Than
+            <br />
+            Collision.
+          </h2>
+        </div>
+        <div className={styles.storyCopy}>
+          <p className={styles.lead}>
+            At Trends Collision Center, our mission is to be More Than Collision.
+          </p>
+          <p>
+            We are committed to providing complete, dependable vehicle solutions for individuals,
+            businesses, dealerships, and fleets — all under one trusted name. From collision repair
+            and refinishing to mechanical services, tires, towing, and roadside assistance, our goal
+            is to make vehicle care simple, reliable, and professional.
+          </p>
+          <p>
+            Built on quality workmanship, certified expertise, and a commitment to our customers,
+            Trends Collision Center strives to set a higher standard for the automotive industry.
+          </p>
+          <p className={styles.missionPledge}>
+            One team. One trusted partner. Complete vehicle solutions.
+          </p>
+        </div>
+      </section>
       <section className={`${styles.section} ${styles.values}`} aria-labelledby="values-title">
-        <p className={styles.label}>What makes Trends, Trends</p>
+        <p className={styles.label}>What Trends is built on</p>
         <h2 id="values-title">
-          Quality. Trust.
+          Quality. Expertise.
           <br />
-          Complete vehicle care.
+          Complete vehicle solutions.
         </h2>
         <div className={styles.valueGrid}>
           {values.map((value, index) => (
@@ -106,6 +137,32 @@ export default function AboutPage() {
               <p>{value.body}</p>
             </article>
           ))}
+        </div>
+      </section>
+      <section className={styles.feature} aria-labelledby="materials-title">
+        <div className={styles.featurePhoto}>
+          <Image src="/images/services/348s (4).jpg" alt="" fill sizes="100vw" />
+          <div />
+        </div>
+        <div className={styles.featureInner}>
+          <div>
+            <p className={styles.label}>Premium materials</p>
+            <h2 id="materials-title">Quality starts with what we use.</h2>
+            <p>
+              At Trends Collision Center, quality starts with the materials we use. We believe a
+              high-quality repair deserves high-quality products, which is why we use Glasurit
+              premium refinishing products, a trusted name in automotive paint and refinishing.
+            </p>
+            <p>
+              From preparation to the final finish, our team is committed to delivering exceptional
+              color, durability, and long-lasting results. For added confidence, our paint
+              workmanship is backed by a Limited Lifetime Warranty, giving our customers peace of
+              mind long after their vehicle leaves our facility.
+            </p>
+            <Link className={styles.textLink} href="/services/collision">
+              See our paint &amp; refinishing work <span aria-hidden="true">↗</span>
+            </Link>
+          </div>
         </div>
       </section>
       <section className={styles.section} aria-labelledby="workshop-title">
@@ -135,31 +192,29 @@ export default function AboutPage() {
           ))}
         </div>
       </section>
-      <section className={`${styles.section} ${styles.split}`} aria-labelledby="care-title">
-        <div>
-          <p className={styles.label}>Your complete repair partner</p>
-          <h2 id="care-title">
-            Beyond body
+      <section className={styles.section} aria-labelledby="solutions-title">
+        <div className={styles.sectionHeading}>
+          <div>
+            <p className={styles.label}>Under one trusted name</p>
+            <h2 id="solutions-title">Complete vehicle solutions.</h2>
+          </div>
+          <p className={styles.muted}>
+            For individuals, businesses,
             <br />
-            and paint.
-          </h2>
-        </div>
-        <div className={styles.storyCopy}>
-          <p>
-            From collision repairs and restoration to steering and suspension, tires, towing, and
-            fleet work, we help you look after the whole vehicle. Dealerships and business owners
-            can also discuss coordinated repair and maintenance needs with our team.
+            dealerships, and fleets.
           </p>
-          <p>
-            For a more personal finish, we offer project consultations for chrome delete
-            application, grille customization, vertical door installation, wheel and rim
-            customization, and lift or leveling kits. Each project starts with a review of the
-            vehicle, fitment, and intended result.
-          </p>
-          <Link className={styles.textLink} href="/services">
-            Explore all services <span aria-hidden="true">↗</span>
-          </Link>
         </div>
+        <ul className={styles.solutionList}>
+          {completeSolutions.map((solution) => (
+            <li key={solution.title}>
+              <h3>{solution.title}</h3>
+              <p>{solution.body}</p>
+            </li>
+          ))}
+        </ul>
+        <Link className={styles.textLink} href="/services">
+          Explore all services <span aria-hidden="true">↗</span>
+        </Link>
       </section>
       <section className={styles.socialSection}>
         <p className={styles.label}>Stay connected</p>

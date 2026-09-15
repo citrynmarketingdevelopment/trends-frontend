@@ -43,17 +43,18 @@ export function ServiceReel() {
           </h2>
         </div>
         <p className={styles.serviceIntroduction}>
-          From impact to final stance, every surface and system is treated as part of the same
-          result.
+          From collision repair and refinishing to mechanical services, tires, towing, and roadside
+          assistance, every surface and system is treated as part of the same result.
         </p>
       </div>
 
       <div className={styles.serviceReel} data-service-reel>
         {reelServices.map((service, index) => (
-          <article
+          <Link
             className={styles.serviceCard}
             data-service-card
             data-service-name={service.name}
+            href={service.href}
             key={service.name}
           >
             <Image
@@ -69,12 +70,10 @@ export function ServiceReel() {
               {String(index + 1).padStart(2, "0")}
             </span>
             <div className={styles.serviceCopy}>
-              <h3>
-                <Link href={service.href}>{service.name}</Link>
-              </h3>
+              <h3>{service.name}</h3>
               <p>{service.description}</p>
             </div>
-          </article>
+          </Link>
         ))}
       </div>
 

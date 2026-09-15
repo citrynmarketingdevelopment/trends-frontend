@@ -41,6 +41,7 @@ import {
   type SceneLifecycle,
   type ViewportTier,
 } from "./process-state";
+import { ProcessStepsMobile } from "./process-steps-mobile";
 import styles from "./marketing-home.module.css";
 
 gsap.registerPlugin(Observer, ScrollTrigger);
@@ -922,6 +923,8 @@ export function ProcessStory() {
           )}
         </div>
       </div>
+
+      <ProcessStepsMobile />
 
       <div className={styles.phaseCards} data-process-phase-cards>
         {processPhases.map((item) => (

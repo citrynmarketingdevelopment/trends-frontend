@@ -8,7 +8,9 @@ import { HeroLogo3D } from "@/components/marketing-home/hero-logo-3d";
 import { MarketingHeader } from "@/components/marketing-home/marketing-header";
 import styles from "@/components/marketing-home/marketing-home.module.css";
 import {
+  FleetPartnerSection,
   PostProcessSections,
+  PremiumMaterialsSection,
   RepairServicesSection,
   RepairTrackingSection,
 } from "@/components/marketing-home/post-process-sections";
@@ -74,10 +76,12 @@ export default function Home() {
           </section>
 
           <ServiceReel />
+          <FleetPartnerSection />
 
           <RepairTrackingSection />
           <ProcessStory />
           <CertificationShowcase />
+          <PremiumMaterialsSection />
           <RepairServicesSection />
           <PostProcessSections />
         </main>

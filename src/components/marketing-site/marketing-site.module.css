@@ -774,6 +774,44 @@
   clip-path: inset(50%);
 }
 
+.missionPledge {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--trends-line);
+  font-family: var(--font-trends-display), sans-serif;
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  line-height: 1.15;
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  color: var(--trends-champagne);
+}
+.solutionList {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2.25rem 2.5rem;
+  margin: 3.5rem 0 2.5rem;
+  padding: 0;
+  list-style: none;
+}
+.solutionList li {
+  border-top: 1px solid var(--trends-line);
+  padding-top: 1.25rem;
+}
+.solutionList h3 {
+  font-size: 1.35rem;
+  line-height: 1.1;
+  margin: 0 0 0.75rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--trends-bone);
+}
+.solutionList p {
+  font-size: 0.8125rem;
+  line-height: 1.8;
+  color: var(--trends-muted);
+  margin: 0;
+}
 @media (min-width: 1440px) {
   .heroInner {
     min-height: 52.5rem;
@@ -807,6 +845,9 @@
     padding-inline: 1.2rem;
   }
   .subserviceGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .solutionList {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .footerTop {
@@ -932,6 +973,11 @@
   }
   .gallery figure:nth-child(2) {
     justify-self: end;
+  }
+  .solutionList {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+    margin-top: 2.5rem;
   }
   .socialLinks {
     grid-template-columns: 1fr;
