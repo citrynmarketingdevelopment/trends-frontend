@@ -3,7 +3,7 @@
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.65rem;
   font-weight: 400;
-  letter-spacing: 0.13em;
+  letter-spacing: 0;
   line-height: 1.7;
   text-transform: uppercase;
 }
@@ -45,7 +45,7 @@
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.625rem;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0;
   color: #c5bdb4;
 }
 .breadcrumbs a:hover {
@@ -63,7 +63,7 @@
   font-size: clamp(5rem, 11.67vw, 10.5rem);
   line-height: 0.8;
   font-weight: 800;
-  letter-spacing: -0.035em;
+  letter-spacing: 0;
   text-transform: uppercase;
   white-space: pre-line;
   margin: 1.7rem 0 2rem;
@@ -109,7 +109,7 @@
   border-radius: 0.15rem;
   font-size: 0.7rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
   text-transform: uppercase;
   cursor: pointer;
   transition:
@@ -148,7 +148,7 @@
 .socialSection h2 {
   font-size: clamp(2.65rem, 3.6vw, 3.25rem);
   line-height: 0.98;
-  letter-spacing: -0.015em;
+  letter-spacing: 0;
   font-weight: 800;
   text-transform: uppercase;
 }
@@ -166,7 +166,7 @@
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.625rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0;
   color: var(--trends-champagne);
 }
 .process {
@@ -195,7 +195,7 @@
   color: #ed6a72;
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.65rem;
-  letter-spacing: 0.1em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 .steps h3 {
@@ -231,6 +231,16 @@
   inset: 0;
   background: linear-gradient(90deg, rgb(5 5 6 / 95%), rgb(5 5 6 / 62%));
 }
+.feature[data-portrait] .featurePhoto {
+  left: auto;
+  width: 42%;
+}
+.feature[data-portrait] .featurePhoto > div {
+  background: linear-gradient(90deg, #050506, transparent 40%);
+}
+.feature[data-portrait] .featureInner > div {
+  max-width: 32rem;
+}
 .featureInner {
   width: min(79rem, calc(100% - 12.2vw));
   min-height: 31.25rem;
@@ -260,7 +270,7 @@
   color: var(--trends-champagne);
   font-size: 0.7rem;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
 }
 .textLink:hover {
   text-decoration: underline;
@@ -472,7 +482,7 @@
   color: var(--trends-muted);
   font-size: 0.6rem;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
   font-family: var(--font-trends-mono), monospace;
 }
 .serviceList {
@@ -531,6 +541,22 @@
   font-size: 1.35rem;
   line-height: 1.65;
 }
+.shopFigure {
+  margin: 2.5rem 0 0;
+}
+.shopFigure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.shopFigure figcaption {
+  margin-top: 0.75rem;
+  color: var(--trends-muted);
+  font-family: var(--font-trends-mono), monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
 .values {
   background: var(--trends-carbon);
 }
@@ -560,9 +586,14 @@
   margin: 0;
   max-width: 21.75rem;
 }
-.gallery img {
-  width: 100%;
-  height: auto;
+.galleryFrame {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--trends-carbon);
+}
+.galleryFrame img {
+  object-fit: cover;
 }
 .gallery figcaption {
   margin-top: 1rem;
@@ -607,7 +638,7 @@
   font-size: clamp(4.5rem, 8vw, 7.5rem);
   line-height: 0.88;
   font-weight: 800;
-  letter-spacing: -0.025em;
+  letter-spacing: 0;
   text-transform: uppercase;
   margin: 1.5rem 0;
 }
@@ -642,7 +673,7 @@
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.65rem;
   color: var(--trends-champagne);
-  letter-spacing: 0.1em;
+  letter-spacing: 0;
   text-transform: uppercase;
   margin-bottom: 0.75rem;
 }
@@ -783,7 +814,7 @@
   line-height: 1.15;
   text-transform: uppercase;
   font-weight: 800;
-  letter-spacing: 0.01em;
+  letter-spacing: 0;
   color: var(--trends-champagne);
 }
 .solutionList {
@@ -911,6 +942,18 @@
   .featureInner {
     width: calc(100% - 2.5rem);
     padding: 4rem 0;
+  }
+  .feature[data-portrait] .featurePhoto {
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    height: 20rem;
+  }
+  .feature[data-portrait] .featurePhoto > div {
+    background: linear-gradient(180deg, #050506, transparent 35%);
+  }
+  .feature[data-portrait] .featureInner {
+    padding-bottom: 22rem;
   }
   .split,
   .cta,

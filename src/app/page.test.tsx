@@ -70,14 +70,14 @@ describe("Home", () => {
     for (const repairLink of within(main).getAllByRole("link", { name: "START A REPAIR" })) {
       expect(repairLink).toHaveAttribute("href", "/contact");
     }
-    expect(within(main).getByRole("link", { name: "OUR PROCESS" })).toHaveAttribute(
+    expect(within(main).getByRole("link", { name: "INSURANCE CLAIMS" })).toHaveAttribute(
       "href",
-      "#process",
+      "#faq-index",
     );
     expect(
       within(main).getByRole("heading", {
         level: 2,
-        name: "The whole repair. One continuous story.",
+        name: "The Whole Repair. Your Local Collision Experts.",
       }),
     ).toBeInTheDocument();
     for (const service of [
@@ -92,7 +92,7 @@ describe("Home", () => {
     const servicesSection = within(main)
       .getByRole("heading", {
         level: 2,
-        name: "The whole repair. One continuous story.",
+        name: "The Whole Repair. Your Local Collision Experts.",
       })
       .closest("section");
     expect(servicesSection).not.toBeNull();
@@ -139,7 +139,13 @@ describe("Home", () => {
       ),
     ).not.toBeNull();
     expect(
-      servicesSection!.querySelector('img[src="/images/services/roadside-tow-truck.webp"]'),
+      servicesSection!.querySelector('img[src="/images/Fleet/roadside-towing-verticle.webp"]'),
+    ).not.toBeNull();
+    expect(
+      servicesSection!.querySelector('img[src="/images/Fleet/Fleet-verticle.webp"]'),
+    ).not.toBeNull();
+    expect(
+      servicesSection!.querySelector('img[src="/images/Mechanical/Mechinical.webp"]'),
     ).not.toBeNull();
     expect(
       within(main).getByRole("heading", { level: 2, name: "Credentials behind the repair." }),
@@ -155,8 +161,12 @@ describe("Home", () => {
       }),
     ).toBeInTheDocument();
     expect(
-      within(main).getByRole("heading", { level: 2, name: "Full visibility. Zero guesswork." }),
+      within(main).getByRole("heading", {
+        level: 2,
+        name: "Vehicle Repair Visibility. Zero Guesswork.",
+      }),
     ).toBeInTheDocument();
+    expect(within(main).getByText("Trends Delivers Transparency")).toBeInTheDocument();
     expect(
       within(main).getByRole("heading", { level: 2, name: "Everything we do, under one roof." }),
     ).toBeInTheDocument();
@@ -195,7 +205,7 @@ describe("Home", () => {
     const reel = within(main)
       .getByRole("heading", {
         level: 2,
-        name: "The whole repair. One continuous story.",
+        name: "The Whole Repair. Your Local Collision Experts.",
       })
       .closest("section");
     const process = within(main)
@@ -207,8 +217,11 @@ describe("Home", () => {
     const certifications = within(main)
       .getByRole("heading", { level: 2, name: "Credentials behind the repair." })
       .closest("section");
+    const materials = within(main)
+      .getByRole("heading", { level: 2, name: "Quality starts with what we use." })
+      .closest("section");
     const tracking = within(main)
-      .getByRole("heading", { level: 2, name: "Full visibility. Zero guesswork." })
+      .getByRole("heading", { level: 2, name: "Vehicle Repair Visibility. Zero Guesswork." })
       .closest("section");
     const repairServices = within(main)
       .getByRole("heading", { level: 2, name: "Everything we do, under one roof." })
@@ -223,6 +236,7 @@ describe("Home", () => {
     expect(reel).not.toBeNull();
     expect(process).not.toBeNull();
     expect(certifications).not.toBeNull();
+    expect(materials).not.toBeNull();
     expect(tracking).not.toBeNull();
     expect(repairServices).not.toBeNull();
     expect(questions).not.toBeNull();
@@ -238,14 +252,18 @@ describe("Home", () => {
     expect(reel!.compareDocumentPosition(tracking!) & Node.DOCUMENT_POSITION_FOLLOWING).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING,
     );
-    expect(tracking!.compareDocumentPosition(process!) & Node.DOCUMENT_POSITION_FOLLOWING).toBe(
+    expect(reel!.nextElementSibling).toBe(tracking);
+    expect(
+      tracking!.compareDocumentPosition(certifications!) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+    expect(
+      certifications!.compareDocumentPosition(materials!) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+    expect(materials!.compareDocumentPosition(process!) & Node.DOCUMENT_POSITION_FOLLOWING).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING,
     );
     expect(
-      process!.compareDocumentPosition(certifications!) & Node.DOCUMENT_POSITION_FOLLOWING,
-    ).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
-    expect(
-      certifications!.compareDocumentPosition(repairServices!) & Node.DOCUMENT_POSITION_FOLLOWING,
+      process!.compareDocumentPosition(repairServices!) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
     expect(
       repairServices!.compareDocumentPosition(questions!) & Node.DOCUMENT_POSITION_FOLLOWING,

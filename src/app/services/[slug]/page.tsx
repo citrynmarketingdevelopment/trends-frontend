@@ -4,6 +4,7 @@ import {
   ContactCta,
   PageHero,
   ServiceCapabilities,
+  ServiceChecklist,
   ServiceExperience,
   ServiceFaq,
   ServiceFeature,
@@ -45,12 +46,14 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
         eyebrow={service.name}
         title={serviceSeo[service.slug].heading}
         introduction={service.introduction}
-        image={service.image}
+        image={service.heroImage ?? service.image}
+        mobileImage={service.mobileHeroImage}
         imageAlt={service.imageAlt}
         service={service.slug}
       />
       <ServiceProcess service={service} />
       <ServiceFeature service={service} />
+      <ServiceChecklist service={service} />
       <ServiceExperience service={service} />
       <ServiceCapabilities service={service} />
       <ServiceFaq service={service} />

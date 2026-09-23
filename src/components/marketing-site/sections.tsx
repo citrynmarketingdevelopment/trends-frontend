@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import { business } from "@/content/business";
 import type { Service } from "@/content/services";
 import { serviceSeo } from "@/content/seo";
@@ -11,6 +11,7 @@ export function PageHero({
   title,
   introduction,
   image,
+  mobileImage,
   imageAlt,
   service,
   compact = false,
@@ -19,6 +20,7 @@ export function PageHero({
   title: string;
   introduction: string;
   image: string;
+  mobileImage?: string | undefined;
   imageAlt: string;
   service?: string;
   compact?: boolean;
@@ -26,13 +28,35 @@ export function PageHero({
   const roadside = service === "roadside";
   const localTitle = title.endsWith(" in Bakersfield");
   const heroTitle = localTitle ? title.replace(/ in Bakersfield$/, "") : title;
+  const desktopImageProps = mobileImage
+    ? getImageProps({
+        src: image,
+        alt: imageAlt,
+        fill: true,
+        sizes: "100vw",
+        loading: "eager",
+        fetchPriority: "high",
+        className: styles.heroImage,
+      }).props
+    : null;
+  const mobileImageSet = mobileImage
+    ? getImageProps({ src: mobileImage, alt: imageAlt, fill: true, sizes: "100vw" }).props.srcSet
+    : null;
   return (
     <section
       className={styles.hero}
       data-compact={compact || undefined}
       aria-labelledby="page-heading"
     >
-      <Image src={image} alt={imageAlt} fill preload sizes="100vw" className={styles.heroImage} />
+      {desktopImageProps && mobileImageSet ? (
+        <picture>
+          <source media="(max-width: 767px)" srcSet={mobileImageSet} sizes="100vw" />
+          {/* getImageProps keeps both art-directed sources optimized by Next.js. */}
+          <img {...desktopImageProps} alt={imageAlt} />
+        </picture>
+      ) : (
+        <Image src={image} alt={imageAlt} fill preload sizes="100vw" className={styles.heroImage} />
+      )}
       <div className={styles.heroShade} />
       <div className={styles.heroInner}>
         <nav className={styles.breadcrumbs} aria-label="Breadcrumb">
@@ -111,18 +135,25 @@ export function ServiceProcess({ service }: { service: Service }) {
 }
 
 export function ServiceFeature({ service }: { service: Service }) {
+  const fleetPhoto = service.slug === "fleet-maintenance";
   return (
-    <section className={styles.feature} aria-labelledby="feature-title">
+    <section
+      className={styles.feature}
+      data-portrait={fleetPhoto || undefined}
+      aria-labelledby="feature-title"
+    >
       <div className={styles.featurePhoto}>
         <Image
           src={
-            service.slug === "collision"
-              ? "/images/services/collision-service-detail.jpg"
-              : service.image
+            fleetPhoto
+              ? "/images/Fleet/IMG_4700.jpeg"
+              : service.slug === "collision"
+                ? "/images/services/collision-service-detail.jpg"
+                : service.image
           }
           alt=""
           fill
-          sizes="100vw"
+          sizes={fleetPhoto ? "(max-width: 767px) 100vw, 42vw" : "100vw"}
         />
         <div />
       </div>
@@ -143,10 +174,10 @@ export function ServiceFeature({ service }: { service: Service }) {
 export function ServiceCapabilities({ service }: { service: Service }) {
   const photoSets: Record<string, string[]> = {
     collision: [
-      "/images/services/348s (8).jpg",
-      "/images/services/348s (5).jpg",
-      "/images/services/348s (6).jpg",
-      "/images/services/348s (1).jpg",
+      "/images/Collision/IMG_7732_jpg.jpeg",
+      "/images/Collision/IMG_4697.jpeg",
+      "/images/Paint/IMG_4720.jpeg",
+      "/images/Collision/IMG_4714.jpeg",
     ],
     mechanical: [
       service.detailImage,
@@ -154,7 +185,12 @@ export function ServiceCapabilities({ service }: { service: Service }) {
       "/images/services/348s (7).jpg",
       service.detailImage,
     ],
-    roadside: [service.image, service.image, service.detailImage, service.image],
+    roadside: [
+      "/images/Fleet/roadside-towing-verticle.webp",
+      "/images/Fleet/Towing.webp",
+      "/images/Fleet/Vehicle-recovery.webp",
+      "/images/Fleet/Shop-fleet.webp",
+    ],
     "tires-alignment": [
       service.detailImage,
       service.image,
@@ -162,10 +198,10 @@ export function ServiceCapabilities({ service }: { service: Service }) {
       "/images/services/348s (3).jpg",
     ],
     "fleet-maintenance": [
-      "/images/services/348s (7).jpg",
-      service.detailImage,
-      "/images/services/348s (2).jpg",
-      "/images/services/348s (8).jpg",
+      "/images/Fleet/IMG_4702.jpeg",
+      "/images/Fleet/IMG_4701.jpeg",
+      "/images/Fleet/IMG_4700.jpeg",
+      "/images/Fleet/DSC09769.jpeg",
     ],
   };
   const photos = photoSets[service.slug]!;
@@ -213,6 +249,32 @@ export function ServiceCapabilities({ service }: { service: Service }) {
           ))}
         </div>
       </div>
+    </section>
+  );
+}
+
+export function ServiceChecklist({ service }: { service: Service }) {
+  const { checklist } = service;
+  if (!checklist) return null;
+  return (
+    <section className={styles.section} aria-labelledby="checklist-title">
+      <div className={styles.sectionHeading}>
+        <div>
+          <p className={styles.label}>
+            {service.name} / {checklist.items.length} services
+          </p>
+          <h2 id="checklist-title">{checklist.title}</h2>
+        </div>
+        <p className={styles.muted}>{checklist.note}</p>
+      </div>
+      <ul className={styles.solutionList}>
+        {checklist.items.map((item) => (
+          <li key={item.title}>
+            <h3>{item.title}</h3>
+            <p>{item.body}</p>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }

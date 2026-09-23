@@ -42,13 +42,13 @@ const repairServices = [
   {
     title: ["Body &", "Structure"],
     items: ["Dent repair & removal", "Auto body repair", "Aluminum repair"],
-    image: "/images/repair-services/body-structure.webp",
+    image: "/images/Collision/IMG_7732_jpg.jpeg",
     href: "/services/collision",
   },
   {
     title: ["Paint &", "Finish"],
     items: ["Auto paint repair", "Paint scratch repair", "Fender repair"],
-    image: "/images/repair-services/paint-finish.webp",
+    image: "/images/Paint/IMG_4720.jpeg",
     href: "/services/collision",
   },
   {
@@ -72,6 +72,7 @@ const serviceHighlights = [
   "All insurers",
   "Glasurit refinishing",
   "Limited lifetime paint warranty",
+  "On-site fleet service",
   "Towing & roadside",
 ] as const;
 
@@ -85,10 +86,11 @@ export function RepairTrackingSection() {
 
       <div className={styles.trackingLayout}>
         <div className={styles.trackingIntroduction}>
-          <p>The software we&apos;re building</p>
-          <h2 id="tracking-heading" aria-label="Full visibility. Zero guesswork.">
-            Full visibility.
-            <span>Zero guesswork.</span>
+          <p>The Software We&apos;re Building</p>
+          <p className={styles.trackingStatement}>Trends Delivers Transparency</p>
+          <h2 id="tracking-heading" aria-label="Vehicle Repair Visibility. Zero Guesswork.">
+            Vehicle Repair Visibility.
+            <span>Zero Guesswork.</span>
           </h2>
           <span className={styles.trackingRule} aria-hidden="true" />
           <div className={styles.trackingBody}>
@@ -167,20 +169,24 @@ export function FleetPartnerSection() {
     <section className={styles.fleetSection} id="fleet" aria-labelledby="fleet-heading">
       <div className={styles.fleetInner}>
         <div className={styles.fleetCopy}>
-          <p>Fleets &amp; dealerships</p>
-          <h2 id="fleet-heading">Keep the whole fleet moving.</h2>
+          <p>Fleet services</p>
+          <h2 id="fleet-heading">We come to you.</h2>
           <p>
-            A single vehicle out of service can affect the day&apos;s work. We help fleet contacts
-            understand the repair scope, coordinate approvals, and discuss priorities across
-            bodywork, mechanical service, and tires.
+            Trends Collision Center works with all types of fleet companies and offers much more
+            than collision repair. We&apos;re a resource for ongoing maintenance, repairs, and
+            unexpected vehicle issues.
           </p>
           <p>
-            One team. One trusted partner. Complete vehicle solutions for the businesses and
-            dealerships that keep Kern County moving.
+            Our mobile and on-site services help you handle vehicle needs at your location, reduce
+            downtime, and keep your operation moving.
+          </p>
+          <p className={styles.fleetTrust}>
+            Trusted by fleets like <strong>Amazon</strong>, <strong>Transwest</strong>,{" "}
+            <strong>Cal Water</strong>, and others.
           </p>
           <div className={styles.fleetActions}>
             <Link className={styles.primaryButton} href="/services/fleet-maintenance">
-              FLEET MAINTENANCE
+              FLEET SERVICES
             </Link>
             <Link className={styles.secondaryButton} href="/contact?service=fleet-maintenance">
               TALK TO OUR FLEET TEAM
@@ -219,27 +225,27 @@ export function PremiumMaterialsSection() {
           <p>Premium materials</p>
           <h2 id="materials-heading">Quality starts with what we use.</h2>
           <p>
-            At Trends Collision Center, quality starts with the materials we use. We believe a
-            high-quality repair deserves high-quality products, which is why we use Glasurit premium
-            refinishing products, a trusted name in automotive paint and refinishing.
+            For paint, we use Glasurit, a premium automotive refinish paint brand with over 100
+            years of history. It&apos;s known for its exceptional durability, gloss, and extensive
+            approvals from vehicle manufacturers.
           </p>
           <p>
-            From preparation to the final finish, our team is committed to delivering exceptional
-            color, durability, and long-lasting results.
+            We invest in top-of-the-line refinishing materials because our customers&apos; vehicles
+            deserve a beautiful, long-lasting finish.
           </p>
         </div>
         <dl className={styles.materialsFacts}>
           <div>
-            <dt>Refinishing system</dt>
-            <dd>Glasurit premium products</dd>
+            <dt>Refinish paint</dt>
+            <dd>Glasurit, over 100 years of history</dd>
+          </div>
+          <div>
+            <dt>Known for</dt>
+            <dd>Exceptional durability, gloss, and manufacturer approvals</dd>
           </div>
           <div>
             <dt>Paint workmanship</dt>
             <dd>Limited Lifetime Warranty</dd>
-          </div>
-          <div>
-            <dt>The result</dt>
-            <dd>Exceptional color, durability, and long-lasting results</dd>
           </div>
         </dl>
       </div>

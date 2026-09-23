@@ -9,11 +9,20 @@ export type Service = {
   introduction: string;
   image: string;
   imageAlt: string;
+  homeCardImage?: string;
+  heroImage?: string;
+  mobileHeroImage?: string;
   detailImage: string;
   detailAlt: string;
   featureTitle: string;
   featureBody: string;
   subservices: readonly { title: string; body: string }[];
+  /** Optional complete service checklist shown on the service page. */
+  checklist?: {
+    title: string;
+    note: string;
+    items: readonly { title: string; body: string }[];
+  };
   process: readonly { title: string; body: string }[];
   faqs: readonly { question: string; answer: string }[];
 };
@@ -32,7 +41,7 @@ export const services: readonly Service[] = [
     detailAlt: "Technician welding a vehicle body structure in the workshop",
     featureTitle: "The finish starts beneath the surface.",
     featureBody:
-      "Panel fit, structural work, and surface preparation all contribute to the final result. We believe a high-quality repair deserves high-quality products, which is why we refinish with Glasurit premium products and back our paint workmanship with a Limited Lifetime Warranty.",
+      "Panel fit, structural work, and surface preparation all contribute to the final result. We refinish with Glasurit, a premium automotive refinish paint brand with over 100 years of history, known for its exceptional durability, gloss, and extensive approvals from vehicle manufacturers. Our paint workmanship is backed by a Limited Lifetime Warranty.",
     subservices: [
       {
         title: "Body & panel repair",
@@ -44,7 +53,7 @@ export const services: readonly Service[] = [
       },
       {
         title: "Paint & refinishing",
-        body: "Factory-quality paint and refinishing for a seamless, long-lasting finish, using Glasurit premium refinishing products.",
+        body: "Glasurit premium refinish paint, known for its exceptional durability, gloss, and extensive vehicle manufacturer approvals, for a beautiful, long-lasting finish.",
       },
       {
         title: "Restoration & finishing",
@@ -105,7 +114,9 @@ export const services: readonly Service[] = [
     introduction:
       "Looking for auto repair in Bakersfield? Trends helps with mechanical diagnostics, brake concerns, steering and suspension repairs, and routine maintenance. Tell us what changed so we can discuss an inspection and explain the work before you approve it.",
     image: "/images/repair-services/finishing-safety.webp",
-    imageAlt: "Vehicle service and repair work",
+    imageAlt: "Technician working beneath the hood of a red sports car",
+    homeCardImage: "/images/Mechanical/Mechinical.webp",
+    heroImage: "/images/Mechanical/Mechinical-hero.webp",
     detailImage: "/images/services/348s (7).jpg",
     detailAlt: "Green Ford Mustang with its hood open inside the Trends workshop",
     featureTitle: "More than what you can see.",
@@ -180,7 +191,10 @@ export const services: readonly Service[] = [
     introduction:
       "When you need towing in Bakersfield, call Trends to discuss roadside assistance and vehicle transport. Share your location and what happened so we can confirm availability, access, destination, and the next step for your vehicle.",
     image: "/images/services/roadside-tow-truck.webp",
-    imageAlt: "Tow truck transporting a vehicle",
+    imageAlt: "Trends tow truck parked at dusk",
+    homeCardImage: "/images/Fleet/roadside-towing-verticle.webp",
+    heroImage: "/images/Fleet/roadside-towing-hero.webp",
+    mobileHeroImage: "/images/Fleet/roadside-towing-verticle.webp",
     detailImage: "/images/services/348s (3).jpg",
     detailAlt: "Trucks photographed outside at a vehicle event",
     featureTitle: "From the roadside to the next step.",
@@ -326,59 +340,104 @@ export const services: readonly Service[] = [
     slug: "fleet-maintenance",
     name: "Fleet Maintenance",
     title: "Fleet maintenance",
-    summary: "Dependable vehicle care for the businesses that keep Kern County moving.",
+    summary:
+      "Mobile, on-site fleet service and repair. We come to you and keep your operation moving.",
     introduction:
-      "Trends provides fleet maintenance in Bakersfield for business vehicles and dealerships. Discuss preventive maintenance, commercial vehicle repairs, collision work, and service coordination with one repair partner serving Bakersfield and Kern County.",
+      "Trends Collision Center works with all types of fleet companies in Bakersfield and Kern County, and we offer much more than collision repair. We’re a resource for ongoing maintenance, repairs, and unexpected vehicle issues, with mobile and on-site services that come to you.",
     image: "/images/repair-services/paint-finish.webp",
-    imageAlt: "Vehicle bodywork and refinishing in a repair facility",
+    imageAlt: "Fleet delivery truck parked outside a warehouse at dusk",
+    homeCardImage: "/images/Fleet/Fleet-verticle.webp",
+    heroImage: "/images/Fleet/fleet-hero.webp",
+    mobileHeroImage: "/images/Fleet/Fleet-verticle.webp",
     detailImage: "/images/services/348s (5).jpg",
     detailAlt: "Pickup truck bed being prepared for paint in the workshop",
-    featureTitle: "One repair partner. A wider view.",
+    featureTitle: "We come to you.",
     featureBody:
-      "A single vehicle out of service can affect the day’s work. We help fleet contacts understand the repair scope, coordinate approvals, and discuss priorities across bodywork, mechanical service, and tires.",
+      "Our mobile and on-site services help fleet customers handle vehicle needs at their location, reduce downtime, and keep their operations moving. Fleets like Amazon, Transwest, Cal Water, and others rely on Trends for their fleet vehicle needs.",
     subservices: [
       {
-        title: "Preventive maintenance",
-        body: "Discuss recurring service needs based on vehicle usage, mileage, and manufacturer maintenance guidance.",
+        title: "Mobile & on-site service",
+        body: "We come to your location to handle vehicle needs where your fleet operates, reducing downtime and keeping vehicles in service.",
       },
       {
-        title: "Commercial collision repair",
-        body: "Body, bumper, paint, and structural repair assessment for business vehicles.",
+        title: "Collision & paint repair",
+        body: "Collision repair plus paint and refinishing with Glasurit premium refinish paint for a durable, long-lasting finish.",
       },
       {
-        title: "Mechanical, tires & alignment",
-        body: "Coordinate common repair and wear-item concerns through one shop conversation.",
+        title: "Maintenance & mechanical",
+        body: "Oil changes, routine maintenance, mechanical repair, brakes, suspension, A/C service, and vehicle diagnostics.",
       },
       {
-        title: "Dealership services",
-        body: "Discuss repair preparation, cosmetic work, vehicle transfers, and a consistent approval contact.",
+        title: "Tires, glass & roadside",
+        body: "Tires, wheels, and alignments, glass and windshield repair and replacement, and towing and roadside assistance.",
       },
     ],
+    checklist: {
+      title: "Much more than collision repair.",
+      note: "Trusted by fleets like Amazon, Transwest, Cal Water, and others.",
+      items: [
+        { title: "Collision repair", body: "Structural and cosmetic repairs for fleet vehicles." },
+        {
+          title: "Paint & refinishing",
+          body: "Glasurit premium refinish paint for a long-lasting finish.",
+        },
+        { title: "Mechanical repair", body: "Repairs that get working vehicles back in service." },
+        {
+          title: "Tires & wheels",
+          body: "Tire and wheel service, including installation and balancing.",
+        },
+        {
+          title: "Alignments",
+          body: "Wheel alignments for safety, handling, and longer tire life.",
+        },
+        { title: "Brakes", body: "Brake inspections and replacements." },
+        { title: "Suspension", body: "Suspension diagnostics and repair." },
+        { title: "A/C service", body: "A/C service and repair." },
+        { title: "Diagnostics", body: "Vehicle diagnostics for mechanical and electrical issues." },
+        { title: "Glass & windshields", body: "Glass and windshield repair and replacement." },
+        {
+          title: "Oil changes & maintenance",
+          body: "Oil changes and routine maintenance for working vehicles.",
+        },
+        {
+          title: "Towing & roadside",
+          body: "Towing and roadside assistance for unexpected vehicle issues.",
+        },
+      ],
+    },
     process: [
       {
         title: "Understand",
-        body: "Share your vehicle types, usage, service needs, and primary contact.",
+        body: "Share your vehicle types, locations, service needs, and primary contact.",
       },
       {
-        title: "Prioritize",
-        body: "Discuss assessment, scheduling, and the work needed on each vehicle.",
+        title: "Plan",
+        body: "Decide what we can handle on-site at your location and what comes into the shop.",
       },
       {
-        title: "Coordinate",
-        body: "Keep estimates, approvals, and repair communication with the agreed contact.",
+        title: "Service",
+        body: "Complete maintenance and repairs on-site or in the shop to keep downtime low.",
       },
-      { title: "Return", body: "Review completed work and discuss the next service requirements." },
+      {
+        title: "Keep moving",
+        body: "Review completed work and plan the next service so vehicles stay on the road.",
+      },
     ],
     faqs: [
       {
-        question: "Do you work with small fleets?",
+        question: "Can you come to our location?",
         answer:
-          "Yes. Contact us whether you manage a few business vehicles or a larger fleet. Include the vehicle types and the services you need so we can discuss a suitable arrangement.",
+          "Yes. Our mobile and on-site services let us handle many vehicle needs at your location, which reduces downtime and keeps your operation moving. Tell us where your vehicles are and what they need, and we’ll confirm what can be done on-site.",
       },
       {
-        question: "Can you support dealership repair needs?",
+        question: "What types of fleets do you work with?",
         answer:
-          "Yes. We work with dealerships on vehicle repair needs. Discuss the scope, approval contact, transport, and scheduling expectations with the shop.",
+          "We work with all types of fleet companies, from a few business vehicles to large operations. Fleets like Amazon, Transwest, Cal Water, and others rely on Trends for their fleet vehicle needs.",
+      },
+      {
+        question: "Do you only handle collision repair?",
+        answer:
+          "No. Beyond collision repair and paint, we handle mechanical repair, tires and wheels, alignments, brakes, suspension, A/C, diagnostics, glass and windshields, oil changes and routine maintenance, and towing and roadside assistance.",
       },
       {
         question: "Can you schedule recurring maintenance?",
@@ -393,7 +452,7 @@ export const services: readonly Service[] = [
       {
         question: "What information helps start a fleet conversation?",
         answer:
-          "Include your company name, contact details, approximate vehicle count, vehicle types, and main service needs. You do not need a complete vehicle list to make the first inquiry.",
+          "Include your company name, contact details, approximate vehicle count, vehicle types, where your vehicles are based, and your main service needs. You do not need a complete vehicle list to make the first inquiry.",
       },
     ],
   },
@@ -412,7 +471,7 @@ export const publicPaths = [
 ];
 
 /**
- * The eleven approved service lines Trends offers under one name. Used on the About page
+ * The twelve approved service lines Trends offers under one name. Used on the About page
  * and anywhere the full "complete vehicle solutions" list is shown.
  */
 export const completeSolutions = [
@@ -422,7 +481,7 @@ export const completeSolutions = [
   },
   {
     title: "Paint & Refinishing",
-    body: "Factory-quality paint and refinishing for a seamless, long-lasting finish.",
+    body: "Glasurit premium refinish paint for a beautiful, long-lasting finish.",
   },
   {
     title: "Mechanical Repair",
@@ -436,6 +495,7 @@ export const completeSolutions = [
   { title: "Brakes", body: "Brake inspections, repairs, and replacements." },
   { title: "Suspension", body: "Suspension diagnostics, repair, and replacement." },
   { title: "A/C Service", body: "A/C diagnostics, service, and repair." },
+  { title: "Glass & Windshields", body: "Glass and windshield repair and replacement." },
   {
     title: "Diagnostics",
     body: "Advanced vehicle diagnostics to identify and resolve mechanical and electrical issues.",

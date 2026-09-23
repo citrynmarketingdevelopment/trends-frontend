@@ -10,7 +10,7 @@ const reelServices = serviceContent.map((service) => ({
   image:
     service.slug === "collision"
       ? "/images/services/collision-repair-crashed-car.webp"
-      : service.image,
+      : (service.homeCardImage ?? service.image),
   href: `/services/${service.slug}` as const,
 }));
 
@@ -37,9 +37,9 @@ export function ServiceReel() {
       <div className={styles.serviceHeading}>
         <div>
           <p className={styles.serviceMarker}>Services / Five disciplines</p>
-          <h2 id="services-heading" aria-label="The whole repair. One continuous story.">
-            <span>The whole repair.</span>
-            <span>One continuous story.</span>
+          <h2 id="services-heading" aria-label="The Whole Repair. Your Local Collision Experts.">
+            <span>The Whole Repair.</span>
+            <span>Your Local Collision Experts.</span>
           </h2>
         </div>
         <p className={styles.serviceIntroduction}>

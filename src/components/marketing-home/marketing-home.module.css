@@ -80,7 +80,7 @@
   font-family: var(--font-trends-display), sans-serif;
   font-size: 0.9rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -97,7 +97,7 @@
   min-width: 0;
   font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -125,7 +125,7 @@
   font-size: 0.76rem;
   font-weight: 700;
   line-height: 1;
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
   cursor: pointer;
   transition:
     color 220ms ease,
@@ -217,7 +217,7 @@
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.63rem;
   font-weight: 500;
-  letter-spacing: 0.32em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -228,7 +228,7 @@
   font-size: clamp(5.8rem, 10.5vw, 10rem);
   font-weight: 700;
   line-height: 1;
-  letter-spacing: -0.025em;
+  letter-spacing: 0;
   text-transform: uppercase;
   animation: heroIn 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
@@ -377,7 +377,7 @@
   color: #c1b8af;
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.55rem;
-  letter-spacing: 0.13em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -395,6 +395,17 @@
   isolation: isolate;
   height: 100dvh;
   background: #000;
+}
+
+@media (min-width: 48rem) {
+  .processStory[data-enhanced="true"] {
+    min-height: 300dvh;
+  }
+
+  .processStory[data-enhanced="true"] .processStage {
+    position: sticky;
+    top: 0;
+  }
 }
 
 .processStage::after {
@@ -445,7 +456,7 @@
   color: var(--trends-champagne);
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.62rem;
-  letter-spacing: 0.12em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -454,7 +465,7 @@
   font-size: clamp(1.55rem, 2.8vw, 2.6rem);
   font-weight: 700;
   line-height: 1;
-  letter-spacing: -0.025em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -509,7 +520,7 @@
   font-size: clamp(3.4rem, 5.2vw, 5.9rem);
   font-weight: 900;
   line-height: 0.8;
-  letter-spacing: -0.055em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -552,7 +563,7 @@
   color: var(--trends-champagne);
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.6rem;
-  letter-spacing: 0.08em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -586,7 +597,7 @@
   color: #9f958c;
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.62rem;
-  letter-spacing: 0.08em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -654,7 +665,7 @@
   color: #7f766f;
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.6rem;
-  letter-spacing: 0.1em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -676,57 +687,8 @@
   color: #8f867e;
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.56rem;
-  letter-spacing: 0.08em;
+  letter-spacing: 0;
   text-transform: uppercase;
-}
-
-.sequenceNavigation {
-  position: absolute;
-  right: 0;
-  bottom: 2.1rem;
-  display: flex;
-  gap: 0.6rem;
-}
-
-.sequenceNavigation button {
-  display: flex;
-  gap: 0.8rem;
-  align-items: center;
-  min-height: 3rem;
-  padding: 0.7rem 0.9rem;
-  border: 1px solid rgb(199 173 123 / 32%);
-  border-radius: 0.2rem;
-  color: #c8c0b7;
-  background: rgb(9 9 10 / 78%);
-  cursor: pointer;
-  transition:
-    border-color 180ms ease,
-    color 180ms ease,
-    background 180ms ease;
-}
-
-.sequenceNavigation button:hover:not(:disabled) {
-  border-color: var(--trends-champagne);
-  color: var(--trends-bone);
-  background: rgb(84 17 24 / 42%);
-}
-
-.sequenceNavigation button:disabled {
-  cursor: not-allowed;
-  opacity: 0.38;
-}
-
-.sequenceNavigation kbd,
-.sequenceNavigation span {
-  font-family: var(--font-trends-mono), monospace;
-  font-size: 0.64rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.sequenceNavigation kbd {
-  color: var(--trends-champagne);
 }
 
 .exploreControls {
@@ -785,7 +747,7 @@
   outline-offset: 3px;
 }
 
-/* Interactive three-step process indicator. Phones only; desktop uses the scroll sequence. */
+/* Interactive three-step process indicator. Phones use this instead of the scroll scene. */
 .mobileSteps {
   display: none;
 }
@@ -794,7 +756,7 @@
   color: var(--trends-champagne);
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.62rem;
-  letter-spacing: 0.12em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -862,7 +824,7 @@
   color: #8e867e;
   font-size: 0.7rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0;
   text-transform: uppercase;
   transition: color 220ms ease;
 }
@@ -881,7 +843,7 @@
   color: var(--trends-champagne);
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.62rem;
-  letter-spacing: 0.12em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -890,7 +852,7 @@
   font-size: 1.9rem;
   font-weight: 800;
   line-height: 0.95;
-  letter-spacing: -0.03em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -925,7 +887,7 @@
   color: var(--trends-champagne);
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.62rem;
-  letter-spacing: 0.1em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -934,7 +896,7 @@
   font-size: clamp(2.4rem, 4vw, 4.5rem);
   font-weight: 800;
   line-height: 0.88;
-  letter-spacing: -0.04em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -969,16 +931,16 @@
   color: var(--trends-champagne);
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.58rem;
-  letter-spacing: 0.16em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
 .serviceHeading h2 {
-  max-width: 35rem;
-  font-size: clamp(2.75rem, 3.8vw, 4rem);
+  max-width: 52rem;
+  font-size: clamp(2.75rem, 3.5vw, 3.75rem);
   font-weight: 900;
-  line-height: 0.86;
-  letter-spacing: -0.045em;
+  line-height: 0.96;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -1037,7 +999,7 @@
   color: rgb(242 238 230 / 74%);
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.6rem;
-  letter-spacing: 0.13em;
+  letter-spacing: 0;
 }
 
 .serviceCopy {
@@ -1051,7 +1013,7 @@
   font-size: clamp(1.65rem, 2.8vw, 3.15rem);
   font-weight: 800;
   line-height: 0.88;
-  letter-spacing: -0.035em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -1076,7 +1038,7 @@
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.63rem;
   font-weight: 500;
-  letter-spacing: 0.22em;
+  letter-spacing: 0;
   text-align: center;
   text-transform: uppercase;
 }
@@ -1190,7 +1152,7 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(18rem, 0.58fr) minmax(0, 1.22fr);
+  grid-template-columns: minmax(22rem, 0.75fr) minmax(0, 1.05fr);
   gap: 1.35rem 1.5rem;
   width: min(var(--trends-section-content), calc(100% - var(--trends-gutter) * 2));
   margin-inline: auto;
@@ -1198,7 +1160,7 @@
 }
 
 .trackingIntroduction {
-  max-width: 25.5rem;
+  max-width: 31rem;
   padding-top: 0.2rem;
 }
 
@@ -1207,16 +1169,25 @@
   color: #ed4b59;
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.63rem;
-  letter-spacing: 0.27em;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.trackingStatement {
+  margin-top: 0.85rem;
+  color: var(--trends-bone);
+  font-family: var(--font-trends-mono), monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
 .trackingIntroduction h2 {
   margin-top: 1.65rem;
-  font-size: clamp(3.8rem, 4.25vw, 4.15rem);
+  font-size: clamp(3rem, 3.6vw, 3.7rem);
   font-weight: 800;
-  line-height: 0.88;
-  letter-spacing: -0.04em;
+  line-height: 0.95;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -1274,7 +1245,7 @@
   color: #8e867e;
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.59rem;
-  letter-spacing: 0.17em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -1295,7 +1266,7 @@
   background: rgb(200 29 43 / 8%);
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.57rem;
-  letter-spacing: 0.08em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -1432,7 +1403,7 @@
   color: var(--trends-champagne);
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.6rem;
-  letter-spacing: 0.22em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -1441,7 +1412,7 @@
   max-width: 16ch;
   font-size: clamp(2.6rem, 6vw, 4.25rem);
   line-height: 0.95;
-  letter-spacing: -0.035em;
+  letter-spacing: 0;
   text-transform: uppercase;
   font-weight: 800;
 }
@@ -1455,6 +1426,21 @@
 
 .fleetCopy h2 ~ p + p {
   margin-top: 1.25rem;
+}
+
+.fleetCopy .fleetTrust {
+  max-width: 46ch;
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--trends-line);
+  color: var(--trends-bone);
+  font-size: 0.9375rem;
+  line-height: 1.7;
+}
+
+.fleetTrust strong {
+  color: var(--trends-champagne);
+  font-weight: 700;
 }
 
 .fleetActions {
@@ -1483,7 +1469,7 @@
   color: var(--trends-champagne);
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.68rem;
-  letter-spacing: 0.08em;
+  letter-spacing: 0;
 }
 
 .fleetPoints h3 {
@@ -1534,7 +1520,7 @@
 .materialsCopy > p:first-child {
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.6rem;
-  letter-spacing: 0.22em;
+  letter-spacing: 0;
   text-transform: uppercase;
   color: var(--trends-champagne);
 }
@@ -1574,7 +1560,7 @@
 .materialsFacts dt {
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.55rem;
-  letter-spacing: 0.16em;
+  letter-spacing: 0;
   text-transform: uppercase;
   color: #a9a097;
 }
@@ -1611,7 +1597,7 @@
   color: #ed4b59;
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.61rem;
-  letter-spacing: 0.23em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -1620,7 +1606,7 @@
   font-size: clamp(3.25rem, 4.9vw, 4.85rem);
   font-weight: 800;
   line-height: 0.9;
-  letter-spacing: -0.04em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -1681,7 +1667,7 @@
   font-size: clamp(3.9rem, 5vw, 5rem);
   font-weight: 800;
   line-height: 1;
-  letter-spacing: -0.05em;
+  letter-spacing: 0;
 }
 
 .repairServiceCopy {
@@ -1703,7 +1689,7 @@
   font-size: clamp(2rem, 2.7vw, 2.85rem);
   font-weight: 800;
   line-height: 0.84;
-  letter-spacing: -0.035em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -1727,7 +1713,7 @@
   color: #d3cbc2;
   font-family: var(--font-trends-mono), monospace;
   font-size: clamp(0.55rem, 0.7vw, 0.66rem);
-  letter-spacing: 0.015em;
+  letter-spacing: 0;
 }
 
 .repairServiceCopy li > span {
@@ -1771,7 +1757,7 @@
   color: #a9a097;
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.55rem;
-  letter-spacing: 0.08em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -1812,7 +1798,7 @@
   color: var(--trends-champagne);
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.66rem;
-  letter-spacing: 0.19em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -1821,7 +1807,7 @@
   font-size: clamp(3.6rem, 5.15vw, 4.65rem);
   font-weight: 800;
   line-height: 0.94;
-  letter-spacing: -0.026em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -1853,7 +1839,7 @@
   background: rgb(255 255 255 / 2%);
   font-size: 0.65rem;
   font-weight: 700;
-  letter-spacing: 0.07em;
+  letter-spacing: 0;
   white-space: nowrap;
   transition:
     color 180ms ease,
@@ -1930,7 +1916,7 @@
   color: #8e867e;
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.59rem;
-  letter-spacing: 0.13em;
+  letter-spacing: 0;
 }
 
 .faqQuestion[data-active="true"] .faqNumber {
@@ -1942,7 +1928,7 @@
   font-size: clamp(1.05rem, 1.52vw, 1.38rem);
   font-weight: 700;
   line-height: 1.08;
-  letter-spacing: 0.015em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -1969,7 +1955,7 @@
 
 .faqDetailLabel {
   font-size: 0.61rem;
-  letter-spacing: 0.22em;
+  letter-spacing: 0;
 }
 
 .faqAnswer {
@@ -1999,7 +1985,7 @@
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.58rem;
   line-height: 1.7;
-  letter-spacing: 0.16em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -2062,7 +2048,7 @@
   font-size: clamp(4.5rem, 7.2vw, 7.25rem);
   font-weight: 800;
   line-height: 0.9;
-  letter-spacing: -0.04em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -2306,7 +2292,7 @@
     background: transparent;
     font-family: var(--font-trends-mono), monospace;
     font-size: 0.62rem;
-    letter-spacing: 0.08em;
+    letter-spacing: 0;
     text-transform: uppercase;
   }
 
@@ -2358,7 +2344,7 @@
     font-size: clamp(2rem, 9vw, 2.6rem);
     font-weight: 800;
     line-height: 0.9;
-    letter-spacing: 0.03em;
+    letter-spacing: 0;
     text-align: center;
   }
 
@@ -2408,7 +2394,7 @@
   .eyebrow {
     max-width: none;
     font-size: 0.53rem;
-    letter-spacing: 0.22em;
+    letter-spacing: 0;
   }
 
   .heroDisplayTitle {
@@ -2556,8 +2542,8 @@
   }
 
   .serviceHeading h2 {
-    max-width: 22rem;
-    font-size: clamp(2.8rem, 13vw, 4rem);
+    max-width: 100%;
+    font-size: clamp(2.5rem, 10vw, 3.4rem);
   }
 
   .serviceIntroduction {
@@ -2625,7 +2611,7 @@
 
   .trackingIntroduction h2 {
     max-width: 21rem;
-    font-size: clamp(3.65rem, 17vw, 5rem);
+    font-size: clamp(2.7rem, 12vw, 3.5rem);
   }
 
   .trackingBody {

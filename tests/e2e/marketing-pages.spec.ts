@@ -12,6 +12,45 @@ const pages = [
   ["/contact", "Contact Trends Collision Center in Bakersfield"],
 ] as const;
 
+test("service heroes select the requested desktop and mobile photography", async ({ page }) => {
+  const heroImages = [
+    {
+      path: "/services/roadside",
+      desktop: "/images/Fleet/roadside-towing-hero.webp",
+      mobile: "/images/Fleet/roadside-towing-verticle.webp",
+    },
+    {
+      path: "/services/fleet-maintenance",
+      desktop: "/images/Fleet/fleet-hero.webp",
+      mobile: "/images/Fleet/Fleet-verticle.webp",
+    },
+    {
+      path: "/services/mechanical",
+      desktop: "/images/Mechanical/Mechinical-hero.webp",
+      mobile: "/images/Mechanical/Mechinical-hero.webp",
+    },
+  ] as const;
+
+  for (const width of [1440, 390]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const service of heroImages) {
+      await page.goto(service.path);
+      const heroImage = page.locator('section[aria-labelledby="page-heading"] img');
+      await expect(heroImage).toHaveCount(1);
+      await expect
+        .poll(() =>
+          heroImage.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0),
+        )
+        .toBe(true);
+      const selectedImage = await heroImage.evaluate((image: HTMLImageElement) => {
+        const url = new URL(image.currentSrc);
+        return url.searchParams.get("url") ?? url.pathname;
+      });
+      expect(selectedImage).toBe(width === 390 ? service.mobile : service.desktop);
+    }
+  }
+});
+
 for (const [path, title] of pages) {
   test(`@a11y ${path} renders complete, accessible content at desktop and mobile widths`, async ({
     page,

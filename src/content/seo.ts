@@ -69,7 +69,7 @@ export const serviceSeo: Record<ServiceSlug, ServiceSeo> = {
     heading: "Fleet Maintenance in Bakersfield",
     title: "Fleet Maintenance in Bakersfield | Trends Collision Center",
     description:
-      "Fleet maintenance in Bakersfield for business vehicles and dealerships. Coordinate preventive maintenance, collision repairs, mechanical service, and tires.",
-    servicesHeading: "Fleet repair & commercial vehicle service",
+      "Mobile, on-site fleet maintenance in Bakersfield. Trends works with all types of fleets for collision, mechanical, tires, brakes, A/C, glass, and towing.",
+    servicesHeading: "On-site fleet service & repair",
   },
 };

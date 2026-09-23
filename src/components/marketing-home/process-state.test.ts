@@ -1,12 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { canEnhanceCar, canEnhanceLogo } from "./experience-state";
-import {
-  cameraOwnershipAfterProgressChange,
-  cameraPoseAt,
-  nextSequenceIndex,
-  processPhaseAt,
-} from "./process-state";
+import { cameraOwnershipAfterProgressChange, cameraPoseAt, processPhaseAt } from "./process-state";
 
 const capableDesktop = {
   width: 1280,
@@ -85,13 +80,5 @@ describe("process direction", () => {
     expect(cameraOwnershipAfterProgressChange("orbit", 0.95, 0.9)).toBe("returning");
     expect(cameraOwnershipAfterProgressChange("orbit", 0.95, 0.948)).toBe("orbit");
     expect(cameraOwnershipAfterProgressChange("story", 0.95, 0.5)).toBe("story");
-  });
-
-  it("advances one chapter at a time and rejects input while locked", () => {
-    expect(nextSequenceIndex(0, 1, false)).toBe(1);
-    expect(nextSequenceIndex(1, 1, false)).toBe(2);
-    expect(nextSequenceIndex(1, 1, true)).toBeNull();
-    expect(nextSequenceIndex(4, 1, false)).toBeNull();
-    expect(nextSequenceIndex(0, -1, false)).toBeNull();
   });
 });

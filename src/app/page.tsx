@@ -64,8 +64,8 @@ export default function Home() {
                 <Link className={styles.primaryButton} href="/contact">
                   START A REPAIR
                 </Link>
-                <Link className={styles.secondaryButton} href="#process">
-                  OUR PROCESS
+                <Link className={styles.secondaryButton} href="#faq-index">
+                  INSURANCE CLAIMS
                 </Link>
               </div>
             </div>
@@ -76,12 +76,11 @@ export default function Home() {
           </section>
 
           <ServiceReel />
-          <FleetPartnerSection />
-
           <RepairTrackingSection />
-          <ProcessStory />
+          <FleetPartnerSection />
           <CertificationShowcase />
           <PremiumMaterialsSection />
+          <ProcessStory />
           <RepairServicesSection />
           <PostProcessSections />
         </main>

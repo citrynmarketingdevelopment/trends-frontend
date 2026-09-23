@@ -10,7 +10,7 @@ h1,
 h2 {
   font-family: var(--font-display);
   font-weight: 700;
-  letter-spacing: -0.055em;
+  letter-spacing: 0;
   text-wrap: balance;
 }
 

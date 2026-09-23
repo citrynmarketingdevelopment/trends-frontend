@@ -27,19 +27,19 @@ const values = [
 ];
 const gallery = [
   {
-    image: "/images/services/348s (6).jpg",
-    alt: "Technician refinishing a red vehicle panel",
-    caption: "Care in every coat.",
+    image: "/images/Collision/IMG_7732_jpg.jpeg",
+    alt: "Trends technician carefully working on the front panel of a white car",
+    caption: "Care in every repair.",
   },
   {
-    image: "/images/services/348s (4).jpg",
-    alt: "Paint being measured and mixed in the workshop",
-    caption: "The details behind the finish.",
+    image: "/images/Paint/IMG_4725.jpeg",
+    alt: "Painter spraying a red vehicle panel in the paint booth",
+    caption: "Precision in every coat.",
   },
   {
-    image: "/images/services/348s.jpg",
-    alt: "Customized trucks and a classic car at a community event",
-    caption: "A shared love for the automobile.",
+    image: "/images/Fleet/IMG_4701.jpeg",
+    alt: "Fleet service truck raised for wheel and brake work at Trends",
+    caption: "One team for every vehicle.",
   },
 ];
 
@@ -92,6 +92,16 @@ export default function AboutPage() {
           <Link className={styles.textLink} href="/#certifications">
             Explore our credentials <span aria-hidden="true">↗</span>
           </Link>
+          <figure className={styles.shopFigure}>
+            <Image
+              src="/images/The%20Shop/IMG_4414.jpeg"
+              alt="Exterior of Trends Collision Center in Bakersfield"
+              width={1206}
+              height={669}
+              sizes="(max-width: 767px) 100vw, 60vw"
+            />
+            <figcaption>Trends Collision Center / Bakersfield, California</figcaption>
+          </figure>
         </div>
       </section>
       <section className={`${styles.section} ${styles.split}`} aria-labelledby="mission-title">
@@ -149,15 +159,15 @@ export default function AboutPage() {
             <p className={styles.label}>Premium materials</p>
             <h2 id="materials-title">Quality starts with what we use.</h2>
             <p>
-              At Trends Collision Center, quality starts with the materials we use. We believe a
-              high-quality repair deserves high-quality products, which is why we use Glasurit
-              premium refinishing products, a trusted name in automotive paint and refinishing.
+              For paint, we use Glasurit, a premium automotive refinish paint brand with over 100
+              years of history. It’s known for its exceptional durability, gloss, and extensive
+              approvals from vehicle manufacturers.
             </p>
             <p>
-              From preparation to the final finish, our team is committed to delivering exceptional
-              color, durability, and long-lasting results. For added confidence, our paint
-              workmanship is backed by a Limited Lifetime Warranty, giving our customers peace of
-              mind long after their vehicle leaves our facility.
+              We invest in top-of-the-line refinishing materials because our customers’ vehicles
+              deserve a beautiful, long-lasting finish. For added confidence, our paint workmanship
+              is backed by a Limited Lifetime Warranty, giving our customers peace of mind long
+              after their vehicle leaves our facility.
             </p>
             <Link className={styles.textLink} href="/services/collision">
               See our paint &amp; refinishing work <span aria-hidden="true">↗</span>
@@ -180,13 +190,14 @@ export default function AboutPage() {
         <div className={styles.gallery}>
           {gallery.map((photo) => (
             <figure key={photo.image}>
-              <Image
-                src={photo.image}
-                alt={photo.alt}
-                width={348}
-                height={348}
-                sizes="(max-width: 640px) 85vw, 348px"
-              />
+              <div className={styles.galleryFrame}>
+                <Image
+                  src={photo.image}
+                  alt={photo.alt}
+                  fill
+                  sizes="(max-width: 767px) 85vw, (max-width: 1100px) 30vw, 348px"
+                />
+              </div>
               <figcaption>{photo.caption}</figcaption>
             </figure>
           ))}

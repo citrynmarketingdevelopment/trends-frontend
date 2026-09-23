@@ -3,7 +3,6 @@ export type PaintId = "oxblood" | "obsidian" | "champagne" | "pearl";
 export type SceneLifecycle = "poster" | "eligible" | "loading" | "ready" | "failed" | "paused";
 export type CameraOwnership = "story" | "orbit" | "returning";
 export type ViewportTier = "mobile" | "tablet" | "desktop";
-export type SequenceDirection = -1 | 1;
 
 export interface CameraPose {
   position: [number, number, number];
@@ -43,8 +42,6 @@ export const paintOptions: ReadonlyArray<{ id: PaintId; label: string; color: st
   { id: "champagne", label: "Champagne", color: "#c7ad7b" },
   { id: "pearl", label: "Pearl", color: "#f2eee6" },
 ] as const;
-
-export const processSequenceStops = [0, 0.25, 0.5, 0.75, 1] as const;
 
 const keyframes: ReadonlyArray<{ progress: number; pose: CameraPose }> = [
   {
@@ -92,17 +89,6 @@ export function processPhaseAt(progress: number): ProcessPhaseId {
   if (value < 0.625) return "restore";
   if (value < 0.875) return "reveal";
   return "explore";
-}
-
-export function nextSequenceIndex(
-  currentIndex: number,
-  direction: SequenceDirection,
-  locked: boolean,
-) {
-  if (locked) return null;
-  const nextIndex = currentIndex + direction;
-  if (nextIndex < 0 || nextIndex >= processSequenceStops.length) return null;
-  return nextIndex;
 }
 
 export function cameraOwnershipAfterProgressChange(

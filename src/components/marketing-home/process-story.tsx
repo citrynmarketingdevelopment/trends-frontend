@@ -3,7 +3,6 @@
 import { Environment, Lightformer, OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import gsap from "gsap";
-import { Observer } from "gsap/Observer";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   Component,
@@ -30,11 +29,9 @@ import { canEnhanceCar, readCapabilitySnapshot, useExperienceState } from "./exp
 import {
   cameraOwnershipAfterProgressChange,
   cameraPoseAt,
-  nextSequenceIndex,
   paintOptions,
   processPhaseAt,
   processPhases,
-  processSequenceStops,
   type CameraOwnership,
   type PaintId,
   type ProcessPhaseId,
@@ -44,7 +41,7 @@ import {
 import { ProcessStepsMobile } from "./process-steps-mobile";
 import styles from "./marketing-home.module.css";
 
-gsap.registerPlugin(Observer, ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger);
 
 const sequenceChapters = [
   { id: "assess", label: "Assess" },
@@ -156,6 +153,7 @@ function CameraDirector({
         enableDamping
         dampingFactor={0.055}
         enablePan={false}
+        enableZoom={viewportTier === "mobile"}
         minDistance={4.65}
         maxDistance={9.5}
         minPolarAngle={Math.PI * 0.3}
@@ -296,12 +294,9 @@ export function ProcessStory() {
   const stageRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef(0);
   const lastProgressRef = useRef(0);
+  const phaseRef = useRef<ProcessPhaseId>("establish");
   const ownershipRef = useRef<CameraOwnership>("story");
   const sequenceIndexRef = useRef(0);
-  const sequenceActiveRef = useRef(false);
-  const sequenceLockedRef = useRef(false);
-  const sequenceObserverRef = useRef<Observer | null>(null);
-  const sequenceControlRef = useRef<(direction: -1 | 1) => void>(() => undefined);
   const sequenceProgressRef = useRef<HTMLDivElement>(null);
   const sequenceProgressFillRef = useRef<HTMLSpanElement>(null);
   const invalidateSceneRef = useRef<() => void>(() => undefined);
@@ -318,10 +313,10 @@ export function ProcessStory() {
   const [paintId, setPaintId] = useState<PaintId>("oxblood");
   const [capable, setCapable] = useState(false);
   const [sequenceIndex, setSequenceIndex] = useState(0);
-  const [sequencePlaying, setSequencePlaying] = useState(false);
   const mobileLayout = viewportTier === "mobile";
   const sceneEligible = capable && !reducedMotion && lifecycle !== "failed";
-  const sequenceEligible = sceneEligible && !mobileLayout;
+  const enhancementActive = sceneEnabled && sceneEligible;
+  const sequenceEligible = enhancementActive && !mobileLayout;
   const shouldOwnScene = stageVisible && sceneEligible;
 
   const commitOwnership = useCallback((nextOwnership: CameraOwnership) => {
@@ -349,6 +344,23 @@ export function ProcessStory() {
 
     const timeout = window.setTimeout(preload, 1200);
     return () => window.clearTimeout(timeout);
+  }, [capable, mobileLayout, reducedMotion]);
+
+  useEffect(() => {
+    if (mobileLayout || !capable || reducedMotion) return;
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) return;
+        preloadRevueltoAssets();
+        observer.disconnect();
+      },
+      { rootMargin: "250% 0px", threshold: 0 },
+    );
+    observer.observe(section);
+    return () => observer.disconnect();
   }, [capable, mobileLayout, reducedMotion]);
 
   useEffect(() => {
@@ -387,298 +399,52 @@ export function ProcessStory() {
 
   useEffect(() => {
     const section = sectionRef.current;
-    const stage = stageRef.current;
-    if (!section || !stage || !sequenceEligible) return;
+    if (!section || !sequenceEligible) return;
 
-    let tween: gsap.core.Tween | null = null;
-    let armTimer: number | null = null;
-    let intentFrame: number | null = null;
-    let repositionFrame: number | null = null;
-    let releaseFrame: number | null = null;
-    let gestureArmed = true;
-    let lastIntentAt = 0;
-    let repositioning = false;
-    let releaseDirection: -1 | 0 | 1 = 0;
-    let captureSide: -1 | 1 = 1;
-
-    const clearArmTimer = () => {
-      if (armTimer !== null) window.clearTimeout(armTimer);
-      armTimer = null;
-    };
-
-    const armAfterInputSettles = () => {
-      clearArmTimer();
-      const settle = () => {
-        const remaining = 360 - (performance.now() - lastIntentAt);
-        if (remaining > 0) {
-          armTimer = window.setTimeout(settle, remaining);
-          return;
-        }
-        if (!sequenceLockedRef.current) gestureArmed = true;
-      };
-      armTimer = window.setTimeout(settle, 360);
-    };
-
-    const clearFrame = (frame: number | null) => {
-      if (frame !== null) window.cancelAnimationFrame(frame);
-    };
-
-    const deactivateSequence = () => {
-      sequenceObserverRef.current?.disable();
-      sequenceActiveRef.current = false;
-    };
-
-    const parkSequence = (self: ScrollTrigger, side: -1 | 1) => {
-      captureSide = side;
-      repositioning = true;
-      clearFrame(repositionFrame);
-      self.scroll(side > 0 ? self.start + 2 : self.end - 2);
-      repositionFrame = window.requestAnimationFrame(() => {
-        repositioning = false;
-        repositionFrame = null;
-      });
-    };
-
-    const releaseSequence = (direction: -1 | 1) => {
-      releaseDirection = direction;
-      deactivateSequence();
-      trigger.scroll(direction > 0 ? trigger.end + 2 : trigger.start - 2);
-      clearFrame(releaseFrame);
-      releaseFrame = window.requestAnimationFrame(() => {
-        releaseFrame = window.requestAnimationFrame(() => {
-          releaseDirection = 0;
-          releaseFrame = null;
-        });
-      });
-    };
-
-    const runSequence = (direction: -1 | 1, directControl = false) => {
-      lastIntentAt = performance.now();
-      if (
-        ownershipRef.current !== "story" ||
-        !sequenceActiveRef.current ||
-        sequenceLockedRef.current ||
-        (!gestureArmed && !directControl)
-      ) {
-        return;
-      }
-
-      const nextIndex = nextSequenceIndex(sequenceIndexRef.current, direction, false);
-      if (nextIndex === null) {
-        releaseSequence(direction);
-        return;
-      }
-
-      const targetProgress = processSequenceStops[nextIndex];
-      if (targetProgress === undefined) return;
-
-      gestureArmed = false;
-      sequenceLockedRef.current = true;
-      sequenceIndexRef.current = nextIndex;
-      setSequenceIndex(nextIndex);
-      setSequencePlaying(true);
-      setPhase(processPhaseAt(targetProgress));
-
+    const updateProgress = (progress: number) => {
+      const value = THREE.MathUtils.clamp(progress, 0, 1);
       const nextOwnership = cameraOwnershipAfterProgressChange(
         ownershipRef.current,
         lastProgressRef.current,
-        targetProgress,
+        value,
       );
       if (nextOwnership !== ownershipRef.current) {
         commitOwnership(nextOwnership);
         setAutoRotate(false);
       }
 
-      tween?.kill();
-      tween = gsap.to(progressRef, {
-        current: targetProgress,
-        duration: 1.65,
-        ease: "power2.inOut",
-        overwrite: true,
-        onUpdate: () => {
-          const value = THREE.MathUtils.clamp(progressRef.current, 0, 1);
-          sequenceProgressRef.current?.setAttribute(
-            "aria-valuenow",
-            String(Math.round(value * 100)),
-          );
-          if (sequenceProgressFillRef.current) {
-            sequenceProgressFillRef.current.style.transform = `scaleX(${value})`;
-          }
-          invalidateSceneRef.current();
-        },
-        onComplete: () => {
-          lastProgressRef.current = targetProgress;
-          sequenceLockedRef.current = false;
-          setSequencePlaying(false);
-          invalidateSceneRef.current();
-          armAfterInputSettles();
-        },
-      });
-    };
+      progressRef.current = value;
+      lastProgressRef.current = value;
 
-    sequenceControlRef.current = (direction) => runSequence(direction, true);
+      const nextPhase = processPhaseAt(value);
+      if (nextPhase !== phaseRef.current) {
+        phaseRef.current = nextPhase;
+        setPhase(nextPhase);
+      }
 
-    const queueSequenceIntent = (direction: -1 | 1) => {
-      clearFrame(intentFrame);
-      intentFrame = window.requestAnimationFrame(() => {
-        intentFrame = null;
-        runSequence(direction);
-      });
-    };
+      const nextIndex = sequenceChapters.findIndex((chapter) => chapter.id === nextPhase) + 1;
+      if (nextIndex !== sequenceIndexRef.current) {
+        sequenceIndexRef.current = nextIndex;
+        setSequenceIndex(nextIndex);
+      }
 
-    const observer = Observer.create({
-      target: window,
-      type: "wheel,touch",
-      allowClicks: true,
-      preventDefault: true,
-      tolerance: 14,
-      onChangeY: (self) => {
-        lastIntentAt = performance.now();
-        runSequence(self.deltaY > 0 ? 1 : -1);
-      },
-      onStop: armAfterInputSettles,
-      onStopDelay: 0.18,
-    });
-    observer.disable();
-    sequenceObserverRef.current = observer;
-
-    const activateSequence = (self: ScrollTrigger, direction: -1 | 1) => {
-      if (releaseDirection !== 0 || repositioning || sequenceActiveRef.current) return;
-      sequenceActiveRef.current = true;
-      parkSequence(self, direction);
-      if (ownershipRef.current !== "orbit") observer.enable();
-      queueSequenceIntent(direction);
-    };
-
-    const recaptureOvershoot = (self: ScrollTrigger, direction: -1 | 1) => {
-      const finalIndex = processSequenceStops.length - 1;
-      const hasChapter =
-        direction > 0 ? sequenceIndexRef.current < finalIndex : sequenceIndexRef.current > 0;
-      if (!hasChapter || ownershipRef.current === "orbit") return false;
-
-      sequenceActiveRef.current = true;
-      parkSequence(self, direction);
-      observer.enable();
-      queueSequenceIntent(direction);
-      return true;
-    };
-
-    const returnCameraToStory = (self: ScrollTrigger) => {
-      commitOwnership("returning");
-      setAutoRotate(false);
-      parkSequence(self, captureSide);
-      observer.enable();
+      sequenceProgressRef.current?.setAttribute("aria-valuenow", String(Math.round(value * 100)));
+      if (sequenceProgressFillRef.current) {
+        sequenceProgressFillRef.current.style.transform = `scaleX(${value})`;
+      }
+      invalidateSceneRef.current();
     };
 
     const trigger = ScrollTrigger.create({
       trigger: section,
-      pin: stage,
-      pinSpacing: true,
       start: "top top",
-      end: () => `+=${Math.max(window.innerHeight, stage.offsetHeight, 720)}`,
-      anticipatePin: 1,
-      invalidateOnRefresh: true,
-      onEnter: (self) => activateSequence(self, 1),
-      onEnterBack: (self) => activateSequence(self, -1),
-      onUpdate: (self) => {
-        if (
-          sequenceActiveRef.current &&
-          ownershipRef.current === "orbit" &&
-          releaseDirection === 0 &&
-          !repositioning
-        ) {
-          returnCameraToStory(self);
-        }
-      },
-      onLeave: (self) => {
-        if (releaseDirection !== 0) {
-          deactivateSequence();
-          return;
-        }
-        if (ownershipRef.current === "orbit") {
-          returnCameraToStory(self);
-          return;
-        }
-        if (recaptureOvershoot(self, 1)) return;
-        deactivateSequence();
-      },
-      onLeaveBack: (self) => {
-        if (releaseDirection !== 0) {
-          deactivateSequence();
-          return;
-        }
-        if (ownershipRef.current === "orbit") {
-          returnCameraToStory(self);
-          return;
-        }
-        if (recaptureOvershoot(self, -1)) return;
-        deactivateSequence();
-      },
+      end: "bottom bottom",
+      onUpdate: (self) => updateProgress(self.progress),
+      onRefresh: (self) => updateProgress(self.progress),
     });
+    updateProgress(trigger.progress);
 
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (!sequenceActiveRef.current || ownershipRef.current === "orbit") return;
-      if (
-        event.target instanceof Element &&
-        event.target.closest("a, button, input, select, textarea")
-      ) {
-        return;
-      }
-
-      const forward = ["ArrowDown", "PageDown", " "];
-      const backward = ["ArrowUp", "PageUp"];
-      if (forward.includes(event.key)) {
-        event.preventDefault();
-        runSequence(1);
-      } else if (backward.includes(event.key)) {
-        event.preventDefault();
-        runSequence(-1);
-      }
-    };
-    window.addEventListener("keydown", onKeyDown);
-
-    const refreshFrame = window.requestAnimationFrame(() => {
-      ScrollTrigger.refresh();
-      const currentScroll = trigger.scroll();
-      if (sequenceActiveRef.current || releaseDirection !== 0) return;
-
-      if (currentScroll >= trigger.start && currentScroll <= trigger.end) {
-        const side = currentScroll <= (trigger.start + trigger.end) / 2 ? 1 : -1;
-        activateSequence(trigger, side);
-        return;
-      }
-
-      const runway = trigger.end - trigger.start;
-      const sectionRect = section.getBoundingClientRect();
-      if (
-        currentScroll > trigger.end &&
-        currentScroll - trigger.end <= runway &&
-        sectionRect.bottom > 0
-      ) {
-        recaptureOvershoot(trigger, 1);
-      } else if (
-        currentScroll < trigger.start &&
-        trigger.start - currentScroll <= runway &&
-        sectionRect.top < window.innerHeight
-      ) {
-        recaptureOvershoot(trigger, -1);
-      }
-    });
-    return () => {
-      window.cancelAnimationFrame(refreshFrame);
-      window.removeEventListener("keydown", onKeyDown);
-      clearArmTimer();
-      clearFrame(intentFrame);
-      clearFrame(repositionFrame);
-      clearFrame(releaseFrame);
-      tween?.kill();
-      observer.kill();
-      trigger.kill();
-      sequenceObserverRef.current = null;
-      sequenceControlRef.current = () => undefined;
-      sequenceActiveRef.current = false;
-      sequenceLockedRef.current = false;
-    };
+    return () => trigger.kill();
   }, [commitOwnership, sequenceEligible]);
 
   const selectedPaint = paintOptions.find((paint) => paint.id === paintId) ?? paintOptions[0];
@@ -689,18 +455,15 @@ export function ProcessStory() {
     if (ownsSceneRef.current) setLifecycle("failed");
   }, []);
   const enterExplore = () => {
-    sequenceObserverRef.current?.disable();
     commitOwnership("orbit");
     setAutoRotate(!mobileLayout);
   };
   const returnToStory = () => {
     commitOwnership("returning");
     setAutoRotate(false);
-    if (sequenceActiveRef.current) sequenceObserverRef.current?.enable();
   };
   const finishReturnToStory = useCallback(() => {
     commitOwnership("story");
-    if (sequenceActiveRef.current) sequenceObserverRef.current?.enable();
   }, [commitOwnership]);
 
   const canvasActive = stageVisible && documentVisible && sceneOwner === "car";
@@ -711,7 +474,6 @@ export function ProcessStory() {
       ? "always"
       : "demand";
 
-  const enhancementActive = sceneEnabled && sceneEligible;
   const ownsScene = enhancementActive && sceneOwner === "car";
 
   useLayoutEffect(() => {
@@ -734,7 +496,6 @@ export function ProcessStory() {
       data-phase={phase}
       data-viewport-tier={viewportTier}
       data-sequence-index={sequenceIndex}
-      data-sequence-playing={sequencePlaying || undefined}
     >
       <div ref={stageRef} className={styles.processStage} data-process-stage>
         {enhancementActive && sceneOwner === "car" ? (
@@ -766,6 +527,13 @@ export function ProcessStory() {
                   invalidateSceneRef.current = invalidate;
                   gl.setClearColor("#000000", 1);
                   gl.domElement.addEventListener("webglcontextlost", markFailed, { once: true });
+                  if (!mobileLayout) {
+                    gl.domElement.addEventListener(
+                      "wheel",
+                      (event) => event.stopImmediatePropagation(),
+                      { capture: true, passive: true },
+                    );
+                  }
                 }}
               >
                 <Suspense fallback={null}>
@@ -849,43 +617,15 @@ export function ProcessStory() {
             ))}
           </div>
           <p className={styles.sequenceInstruction}>
-            {sequencePlaying
-              ? `Sequence ${Math.max(1, sequenceIndex)} of 4 in motion`
-              : sequenceIndex === 4
-                ? "Explore freely or scroll to continue"
-                : "Scroll once to advance the next sequence"}
+            {ownership === "orbit"
+              ? "Drag to rotate. Scroll to continue."
+              : "Scroll to follow the repair."}
           </p>
-          {sequenceEligible ? (
-            <div className={styles.sequenceNavigation} aria-label="Process chapter controls">
-              <button
-                type="button"
-                aria-label="Previous process chapter (Page Up)"
-                disabled={sequencePlaying || sequenceIndex === 0}
-                onClick={() => sequenceControlRef.current(-1)}
-              >
-                <kbd>Page Up</kbd>
-                <span>Previous</span>
-              </button>
-              <button
-                type="button"
-                aria-label="Next process chapter (Page Down)"
-                disabled={sequencePlaying}
-                onClick={() => sequenceControlRef.current(1)}
-              >
-                <kbd>Page Down</kbd>
-                <span>{sequenceIndex === 4 ? "Continue" : "Next"}</span>
-              </button>
-            </div>
-          ) : null}
         </div>
 
         <div
           className={styles.exploreControls}
-          data-visible={
-            enhancementActive && lifecycle === "ready" && (mobileLayout || phase === "explore")
-              ? true
-              : undefined
-          }
+          data-visible={enhancementActive && lifecycle === "ready" ? true : undefined}
         >
           {ownership !== "orbit" ? (
             <button type="button" className={styles.primaryButton} onClick={enterExplore}>

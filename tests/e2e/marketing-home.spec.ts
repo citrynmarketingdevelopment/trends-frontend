@@ -255,15 +255,18 @@ test("service imagery and homepage section order match the current launch layout
   await page.goto("/");
 
   await expect(page.locator('img[src*="collision-repair-crashed-car.webp"]').first()).toBeVisible();
-  await expect(page.locator('img[src*="roadside-tow-truck.webp"]').first()).toBeVisible();
+  await expect(page.locator('img[src*="roadside-towing-verticle.webp"]').first()).toBeVisible();
+  await expect(page.locator('img[src*="Fleet-verticle.webp"]').first()).toBeVisible();
+  await expect(page.locator('img[src*="Mechinical.webp"]').first()).toBeVisible();
   await expect(page.locator('section[aria-labelledby="repair-services-heading"] img')).toHaveCount(
     4,
   );
 
   const sections = page.locator("#main-content > section");
-  await expect(sections.nth(2)).toContainText("Full visibility.");
+  await expect(sections.nth(2)).toHaveAttribute("id", "quality");
+  await expect(sections.nth(3)).toContainText("We come to you.");
   const trackingIndex = await sections.evaluateAll((items) =>
-    items.findIndex((item) => item.textContent?.includes("Full visibility.")),
+    items.findIndex((item) => item.id === "quality"),
   );
   const certificationIndex = await sections.evaluateAll((items) =>
     items.findIndex((item) => item.textContent?.includes("Credentials behind the repair.")),
@@ -271,9 +274,17 @@ test("service imagery and homepage section order match the current launch layout
   const repairServicesIndex = await sections.evaluateAll((items) =>
     items.findIndex((item) => item.textContent?.includes("Everything we do, under one roof.")),
   );
+  const materialsIndex = await sections.evaluateAll((items) =>
+    items.findIndex((item) => item.textContent?.includes("Quality starts with what we use.")),
+  );
+  const processIndex = await sections.evaluateAll((items) =>
+    items.findIndex((item) => item.id === "process"),
+  );
   expect(trackingIndex).toBe(2);
-  expect(certificationIndex).toBeGreaterThan(trackingIndex);
-  expect(repairServicesIndex).toBe(certificationIndex + 1);
+  expect(certificationIndex).toBe(trackingIndex + 2);
+  expect(materialsIndex).toBe(certificationIndex + 1);
+  expect(processIndex).toBe(materialsIndex + 1);
+  expect(repairServicesIndex).toBe(processIndex + 1);
 });
 
 test("supplied certifications filter and update their detail panel", async ({ page }) => {
@@ -363,9 +374,7 @@ test("returning to the hero restores its scene without showing the loader again"
   await expect(page.locator("canvas")).toHaveCount(1);
 });
 
-test("scroll intent advances one locked sequence at a time in both directions", async ({
-  page,
-}) => {
+test("desktop process follows natural scrolling in both directions", async ({ page }) => {
   test.slow();
   await useCapableDesktop(page);
   await page.route(`**${CAR_MODEL_PATH}`, (route) =>
@@ -376,81 +385,46 @@ test("scroll intent advances one locked sequence at a time in both directions", 
   );
   await page.goto("/");
   const process = page.locator("#process");
-  expect(await page.evaluate(() => window.scrollY)).toBe(0);
-
   const processTop = await process.evaluate(
     (element) => element.getBoundingClientRect().top + window.scrollY,
   );
   const viewportHeight = await page.evaluate(() => window.innerHeight);
-  await page.mouse.wheel(0, Math.max(1, Math.floor(processTop - viewportHeight * 1.15)));
+  await page.evaluate(
+    (top) => window.scrollTo({ top, behavior: "instant" }),
+    Math.max(1, processTop - viewportHeight * 1.15),
+  );
   await expect(process).toHaveAttribute("data-enhanced", "true");
   await expect(page.locator('[data-lifecycle="ready"]')).toBeVisible({ timeout: 30_000 });
-
-  const remainingDistance = await process.evaluate(
-    (element) => element.getBoundingClientRect().top,
-  );
-  await page.mouse.move(160, 360);
-  await page.mouse.wheel(0, Math.ceil(remainingDistance + 320));
-  await page.mouse.wheel(0, 2400);
-
-  await expect(process).toHaveAttribute("data-sequence-index", "1");
-  await expect(process).toHaveAttribute("data-phase", "assess");
-  await expect(
-    process.locator('article[data-active="true"] h3[aria-label="See the whole picture."]'),
-  ).toBeVisible();
-  const pinnedScroll = await page.evaluate(() => window.scrollY);
-  const pinnedStageTop = await process
+  await page.evaluate((top) => window.scrollTo({ top, behavior: "instant" }), processTop);
+  await expect(process).toHaveAttribute("data-sequence-index", "0");
+  const stageTop = await process
     .locator("[data-process-stage]")
     .evaluate((element) => element.getBoundingClientRect().top);
-  expect(Math.abs(pinnedStageTop)).toBeLessThan(2);
+  expect(Math.abs(stageTop)).toBeLessThan(2);
 
-  await page.mouse.wheel(0, 2400);
-  await page.mouse.wheel(0, 2400);
+  await page.mouse.move(1040, 360);
+  await page.mouse.wheel(0, 420);
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(processTop + 350);
+  await expect(process).toHaveAttribute("data-phase", "assess");
   await expect(process).toHaveAttribute("data-sequence-index", "1");
-  expect(Math.abs((await page.evaluate(() => window.scrollY)) - pinnedScroll)).toBeLessThan(3);
-  await expect(process).not.toHaveAttribute("data-sequence-playing", "true", { timeout: 4000 });
-  await page.waitForTimeout(450);
-
-  const nextChapter = page.getByRole("button", {
-    name: "Next process chapter (Page Down)",
-  });
-  const previousChapter = page.getByRole("button", {
-    name: "Previous process chapter (Page Up)",
-  });
-  await clickAtCenter(page, nextChapter);
-  await expect(process).toHaveAttribute("data-sequence-index", "2");
-  await expect(process).not.toHaveAttribute("data-sequence-playing", "true", { timeout: 4000 });
-  await clickAtCenter(page, previousChapter);
-  await expect(process).toHaveAttribute("data-sequence-index", "1");
-  await expect(process).not.toHaveAttribute("data-sequence-playing", "true", { timeout: 4000 });
-  await page.waitForTimeout(450);
-
-  const advance = async (index: number, phase: string, direction: 1 | -1 = 1) => {
-    await page.mouse.wheel(0, direction * 620);
-    await expect(process).toHaveAttribute("data-sequence-index", String(index));
-    await expect(process).toHaveAttribute("data-sequence-playing", "true");
-    await expect(process).not.toHaveAttribute("data-sequence-playing", "true", {
-      timeout: 10_000,
-    });
-    await expect(process).toHaveAttribute("data-phase", phase);
-    await page.waitForTimeout(450);
-  };
-
-  await advance(2, "restore");
-  await expect(
-    process.locator(
-      'article[data-active="true"] h3[aria-label="Bring every line back into order."]',
+  expect(
+    Math.abs(
+      await process
+        .locator("[data-process-stage]")
+        .evaluate((element) => element.getBoundingClientRect().top),
     ),
-  ).toBeVisible();
-  await advance(3, "reveal");
-  await expect(
-    process.locator('article[data-active="true"] h3[aria-label="Let the surface tell the truth."]'),
-  ).toBeVisible();
-  await advance(2, "restore", -1);
-  await advance(3, "reveal");
-  await advance(4, "explore");
+  ).toBeLessThan(2);
+
+  await page.mouse.wheel(0, -420);
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThan(processTop + 50);
+  await expect(process).toHaveAttribute("data-sequence-index", "0");
+
+  await page.keyboard.press("PageDown");
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(processTop + 300);
+  await expect(process).toHaveAttribute("data-phase", "restore");
 
   await clickAtCenter(page, page.getByRole("button", { name: "Explore 360" }));
+  await expect(process).toHaveAttribute("data-camera-ownership", "orbit");
   const oxblood = page.getByRole("button", { name: "Oxblood" });
   const champagne = page.getByRole("button", { name: "Champagne" });
   await expect(oxblood).toHaveAttribute("aria-pressed", "true");
@@ -463,7 +437,11 @@ test("scroll intent advances one locked sequence at a time in both directions", 
     "aria-pressed",
     "false",
   );
-  await clickAtCenter(page, page.getByRole("button", { name: "Return to story" }));
+  const orbitScroll = await page.evaluate(() => window.scrollY);
+  await page.mouse.move(1040, 360);
+  await page.mouse.wheel(0, 240);
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(orbitScroll + 150);
+  await expect(process).toHaveAttribute("data-camera-ownership", "returning");
 });
 
 test("reduced motion and failed WebGL retain the readable static experience", async ({ page }) => {
@@ -524,7 +502,10 @@ test.describe("without JavaScript", () => {
     await expect(heroDisplayTitle.locator("span").nth(0)).toHaveText("Trends");
     await expect(heroDisplayTitle.locator("span").nth(1)).toHaveText("Collision Center");
     await expect(
-      page.getByRole("heading", { level: 2, name: "Full visibility. Zero guesswork." }),
+      page.getByRole("heading", {
+        level: 2,
+        name: "Vehicle Repair Visibility. Zero Guesswork.",
+      }),
     ).toBeVisible();
     await expect(
       page.getByRole("heading", { level: 2, name: "Questions are part of the process." }),
