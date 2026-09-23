@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { PremiumMaterialsSection } from "@/components/marketing-home/post-process-sections";
 import { MarketingShell } from "@/components/marketing-site/marketing-shell";
 import {
   ContactCta,
@@ -53,6 +54,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
       />
       <ServiceProcess service={service} />
       <ServiceFeature service={service} />
+      {service.slug === "collision" && <PremiumMaterialsSection />}
       <ServiceChecklist service={service} />
       <ServiceExperience service={service} />
       <ServiceCapabilities service={service} />

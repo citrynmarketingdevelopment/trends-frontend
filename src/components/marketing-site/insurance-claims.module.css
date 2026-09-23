@@ -1,0 +1,423 @@
+.bodyCopy {
+  max-width: 34rem;
+  color: #c5bdb4;
+  font-size: 0.9375rem;
+  line-height: 1.85;
+}
+
+.pickupPhoto img {
+  object-fit: cover;
+  filter: saturate(0.65);
+}
+
+.pageNav {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  padding: 1.5rem max(6.1vw, calc((100vw - 79rem) / 2));
+  border-block: 1px solid var(--trends-line);
+  color: var(--trends-champagne);
+  background: var(--trends-carbon);
+  font-family: var(--font-trends-mono), monospace;
+  font-size: 0.65rem;
+  line-height: 1.7;
+  text-transform: uppercase;
+}
+
+.pageNav a:hover,
+.resources a:hover,
+.sourceNote a:hover {
+  color: var(--trends-bone);
+  text-decoration: underline;
+}
+
+.anchor {
+  scroll-margin-top: 5.75rem;
+}
+
+.sectionIntro {
+  max-width: 23rem;
+  color: var(--trends-muted);
+  font-size: 0.875rem;
+  line-height: 1.8;
+}
+
+.sourceNote {
+  margin-top: 1.6rem;
+  color: var(--trends-muted);
+  font-size: 0.72rem;
+  line-height: 1.8;
+}
+
+.sourceNote a {
+  color: var(--trends-champagne);
+}
+
+.preparation,
+.choice,
+.support {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 6vw, 6rem);
+}
+
+.bodyCopy {
+  margin-block: 1.5rem;
+}
+
+.dmvNote {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: var(--trends-carbon);
+  border-left: 2px solid var(--trends-champagne);
+}
+
+.dmvNote h3,
+.checklists h3,
+.supportList h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.dmvNote p,
+.checklists li,
+.supportList p {
+  color: var(--trends-muted);
+  font-size: 0.8125rem;
+  line-height: 1.85;
+}
+
+.dmvNote a {
+  margin-top: 1.2rem;
+}
+
+.checklists > div + div {
+  margin-top: 2rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--trends-line);
+}
+
+.checklists ul,
+.pickupCopy ul {
+  display: grid;
+  gap: 0.65rem;
+  padding-left: 1.15rem;
+  margin-block: 1.1rem 0;
+}
+
+.checklists li::marker,
+.pickupCopy li::marker {
+  color: var(--trends-red);
+}
+
+.choice {
+  background: var(--trends-carbon);
+  align-items: center;
+}
+
+.requestCard {
+  padding: clamp(1.5rem, 3vw, 2.75rem);
+  border: 1px solid var(--trends-line-strong);
+  border-top: 3px solid var(--trends-red);
+  background: #09090a;
+}
+
+.requestCard blockquote {
+  margin: 1.25rem 0 1.75rem;
+  font-family: var(--font-trends-editorial), serif;
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  line-height: 1.4;
+}
+
+.shopDetails {
+  display: grid;
+  gap: 0.4rem;
+  padding-top: 1.3rem;
+  border-top: 1px solid var(--trends-line);
+  font-size: 0.75rem;
+  line-height: 1.8;
+}
+
+.shopDetails span {
+  color: var(--trends-muted);
+}
+
+.shopDetails a {
+  width: fit-content;
+  color: var(--trends-champagne);
+}
+
+.insurers {
+  overflow: hidden;
+}
+
+.insurerRail {
+  padding-block: 1.3rem 2rem;
+  border-block: 1px solid var(--trends-line);
+}
+
+.railHeading {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 2.75rem;
+  gap: 1.5rem;
+}
+
+.railHeading h3 {
+  margin: 0;
+  color: var(--trends-champagne);
+  font-family: var(--font-trends-mono), monospace;
+  font-size: 0.63rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.motionToggle {
+  position: absolute;
+  right: 0;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--trends-line);
+  color: var(--trends-muted);
+  background: transparent;
+  font-size: 0.65rem;
+  cursor: pointer;
+}
+
+.motionToggle:hover {
+  color: var(--trends-bone);
+  border-color: var(--trends-champagne);
+}
+
+.logoViewport {
+  margin-top: 1.5rem;
+}
+
+.insurerLinks {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.insurerLinks a {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  padding-block: 1.1rem;
+  border-bottom: 1px solid var(--trends-line);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.insurerLinks a > span:last-child,
+.insurerLinks a:hover {
+  color: var(--trends-champagne);
+}
+
+.supportList {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.supportList li {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: 1rem;
+  padding-block: 1.5rem;
+  border-top: 1px solid var(--trends-line);
+}
+
+.supportList li > span {
+  color: #ed6a72;
+  font-family: var(--font-trends-mono), monospace;
+  font-size: 0.7rem;
+}
+
+.pickup {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  background: var(--trends-carbon);
+}
+
+.pickupPhoto {
+  position: relative;
+  min-height: 34rem;
+}
+
+.pickupPhoto img {
+  object-position: center;
+}
+
+.pickupCopy {
+  align-self: center;
+  max-width: 50rem;
+  padding: 4.5rem clamp(2rem, 5vw, 5rem);
+}
+
+.pickupCopy h2 {
+  margin-block: 1.2rem 1.75rem;
+  font-size: clamp(3.5rem, 5vw, 4.7rem);
+  font-weight: 800;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.pickupCopy p:not(:first-child),
+.pickupCopy li {
+  color: #c5bdb4;
+  font-size: 0.875rem;
+  line-height: 1.85;
+}
+
+.pickupCopy ul {
+  margin-bottom: 2rem;
+}
+
+.pickupCopy p.pickupNote {
+  margin-top: 1.5rem;
+  color: var(--trends-muted);
+  font-size: 0.72rem;
+}
+
+.resources {
+  padding: 2.5rem max(6.1vw, calc((100vw - 79rem) / 2));
+  border-block: 1px solid var(--trends-line);
+  background: #050506;
+}
+
+.resources > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem 2rem;
+  margin-block: 1rem;
+  font-size: 0.75rem;
+  line-height: 1.8;
+}
+
+.resources > p:last-child {
+  max-width: 54rem;
+  color: var(--trends-muted);
+  font-size: 0.7rem;
+  line-height: 1.8;
+}
+
+.finalCta {
+  background: linear-gradient(115deg, #190b0d, #050506 72%);
+}
+
+@media (min-width: 768px) and (max-width: 1100px) {
+  .heroCopy h1 {
+    font-size: 4.5rem;
+  }
+
+  .heroLayout {
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .preparation,
+  .choice,
+  .support,
+  .pickup {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .pageNav {
+    grid-template-columns: 1fr 1fr;
+    padding: 1rem 1.25rem;
+  }
+
+  .pageNav a {
+    padding-block: 0.5rem;
+  }
+
+  .insurerLinks {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1.25rem;
+  }
+
+  .railHeading {
+    justify-content: space-between;
+  }
+
+  .motionToggle {
+    position: static;
+  }
+
+  .pickup {
+    gap: 0;
+  }
+
+  .pickupPhoto {
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+  }
+
+  .pickupPhoto img {
+    object-position: center 50%;
+  }
+
+  .pickupCopy {
+    padding: 3rem 1.25rem;
+  }
+
+  .resources {
+    padding: 2.5rem 1.25rem;
+  }
+}
+
+@media (max-width: 479px) {
+  .claimsSteps {
+    grid-template-columns: 1fr;
+  }
+
+  .claimsSteps li:nth-child(n) {
+    padding: 1.5rem 0;
+    border-right: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motionToggle {
+    display: none;
+  }
+
+  .logoViewport {
+    overflow-x: auto;
+    mask-image: none;
+  }
+
+  .logoViewport > div {
+    width: 100%;
+  }
+
+  .logoViewport ul {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+    gap: 2rem 1rem;
+    width: 100%;
+    padding: 0;
+  }
+
+  .logoViewport ul[aria-hidden="true"] {
+    display: none;
+  }
+
+  .logoViewport li {
+    max-width: 100%;
+  }
+}

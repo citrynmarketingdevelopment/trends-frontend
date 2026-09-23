@@ -8,8 +8,8 @@ const pages = [
   ["/services/roadside", "Towing in Bakersfield"],
   ["/services/tires-alignment", "Wheel Alignment in Bakersfield"],
   ["/services/fleet-maintenance", "Fleet Maintenance in Bakersfield"],
-  ["/about", "About Trends Collision Center in Bakersfield"],
-  ["/contact", "Contact Trends Collision Center in Bakersfield"],
+  ["/about", "Trends Collision Center in Bakersfield"],
+  ["/contact", "Tell us what brings you in."],
 ] as const;
 
 test("service heroes select the requested desktop and mobile photography", async ({ page }) => {
@@ -49,6 +49,55 @@ test("service heroes select the requested desktop and mobile photography", async
       expect(selectedImage).toBe(width === 390 ? service.mobile : service.desktop);
     }
   }
+});
+
+test("service hero content fits in the viewport", async ({ page }) => {
+  for (const viewport of [
+    { width: 1368, height: 768 },
+    { width: 390, height: 844 },
+  ]) {
+    await page.setViewportSize(viewport);
+
+    for (const path of [
+      "/services/collision",
+      "/services/mechanical",
+      "/services/roadside",
+      "/services/tires-alignment",
+      "/services/fleet-maintenance",
+    ]) {
+      await page.goto(path);
+      const hero = page.locator('section[aria-labelledby="page-heading"]');
+      const heroBox = await hero.boundingBox();
+      const lastActionBox = await hero.locator("a").last().boundingBox();
+
+      expect(heroBox).not.toBeNull();
+      expect(lastActionBox).not.toBeNull();
+      if (heroBox && lastActionBox) {
+        expect(heroBox.height).toBeLessThanOrEqual(viewport.height);
+        expect(lastActionBox.y + lastActionBox.height).toBeLessThanOrEqual(viewport.height);
+      }
+    }
+  }
+});
+
+test("premium materials moved from home to Collision and About uses the requested shop photo", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await expect(
+    page.getByRole("heading", { level: 2, name: "Quality starts with what we use." }),
+  ).toHaveCount(0);
+
+  await page.goto("/services/collision");
+  await expect(
+    page.getByRole("heading", { level: 2, name: "Quality starts with what we use." }),
+  ).toBeVisible();
+
+  await page.goto("/about");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    "Trends Collision Center in Bakersfield",
+  );
+  await expect(page.locator('img[src*="IMG_4413.jpeg"]')).toBeVisible();
 });
 
 for (const [path, title] of pages) {
@@ -112,11 +161,34 @@ test("service submenu works with keyboard, hover, Escape, and mobile navigation"
     await primaryNavigation.evaluate((element) => getComputedStyle(element).backdropFilter),
   ).not.toBe("none");
   expect(await page.locator("html").evaluate((element) => element.style.overflow)).toBe("hidden");
-  expect(
-    await primaryNavigation
-      .getByRole("link", { name: "Start a repair", exact: true })
-      .evaluate((element) => getComputedStyle(element).boxShadow),
-  ).not.toBe("none");
+  const startRepair = primaryNavigation.getByRole("link", {
+    name: "Start a repair",
+    exact: true,
+  });
+  expect(await startRepair.evaluate((element) => getComputedStyle(element).boxShadow)).not.toBe(
+    "none",
+  );
+  const insuranceClaims = primaryNavigation.getByRole("link", {
+    name: "Insurance claims",
+    exact: true,
+  });
+  await expect(insuranceClaims).toBeVisible();
+  await expect(insuranceClaims).toHaveAttribute("href", "/insurance-claims");
+  const [startRepairBox, insuranceClaimsBox] = await Promise.all([
+    startRepair.boundingBox(),
+    insuranceClaims.boundingBox(),
+  ]);
+  expect(startRepairBox).not.toBeNull();
+  expect(insuranceClaimsBox).not.toBeNull();
+  if (startRepairBox && insuranceClaimsBox) {
+    expect(insuranceClaimsBox.y).toBeGreaterThan(startRepairBox.y + startRepairBox.height);
+  }
+  const insuranceStyle = await insuranceClaims.evaluate((element) => ({
+    borderColor: getComputedStyle(element).borderColor,
+    boxShadow: getComputedStyle(element).boxShadow,
+  }));
+  expect(insuranceStyle.borderColor).toBe("rgb(255, 255, 255)");
+  expect(insuranceStyle.boxShadow).not.toBe("none");
   const homeLink = primaryNavigation.getByRole("link", { name: "Home", exact: true });
   const homeBox = await homeLink.boundingBox();
   expect(homeBox).not.toBeNull();

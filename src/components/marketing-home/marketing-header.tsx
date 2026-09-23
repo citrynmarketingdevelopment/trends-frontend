@@ -170,9 +170,19 @@ export function MarketingHeader() {
           >
             Contact Us
           </Link>
-          <Link className={styles.headerCta} href="/contact" onClick={closeMenus}>
-            Start a repair
-          </Link>
+          <div className={styles.mobileCtas}>
+            <Link className={styles.headerCta} href="/contact" onClick={closeMenus}>
+              Start a repair
+            </Link>
+            <Link
+              className={styles.insuranceCta}
+              href="/insurance-claims"
+              aria-current={pathname === "/insurance-claims" ? "page" : undefined}
+              onClick={closeMenus}
+            >
+              Insurance claims
+            </Link>
+          </div>
         </nav>
       </div>
     </header>

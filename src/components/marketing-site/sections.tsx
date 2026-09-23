@@ -46,6 +46,7 @@ export function PageHero({
     <section
       className={styles.hero}
       data-compact={compact || undefined}
+      data-service={service || undefined}
       aria-labelledby="page-heading"
     >
       {desktopImageProps && mobileImageSet ? (

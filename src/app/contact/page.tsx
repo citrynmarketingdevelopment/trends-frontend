@@ -36,16 +36,6 @@ export default async function ContactPage({
           <span aria-hidden="true">/</span>
           <span aria-current="page">Contact Us</span>
         </nav>
-        <p className={styles.label}>Bakersfield / Let’s talk</p>
-        <h1>
-          Contact Trends
-          <br />
-          Collision Center <span className={styles.heroLocation}>in Bakersfield</span>
-        </h1>
-        <p>
-          A repair question, a service visit, or a fleet to care for. Tell us a little about your
-          vehicle and we’ll help you work out what comes next.
-        </p>
       </header>
       <section
         className={`${styles.section} ${styles.contactLayout}`}
@@ -53,12 +43,12 @@ export default async function ContactPage({
       >
         <div>
           <p className={styles.label}>Start a conversation</p>
-          <h2 id="inquiry-title">Tell us what brings you in.</h2>
+          <h1 id="inquiry-title">Tell us what brings you in.</h1>
           <ContactForm available={isContactEmailConfigured()} initialService={service} />
         </div>
         <aside className={styles.contactAside} aria-label="Shop contact information">
           <div>
-            <h3>Talk to the team</h3>
+            <h2>Talk to the team</h2>
             <Link className={styles.phoneLink} href={business.phoneHref}>
               {business.phone}
             </Link>
@@ -67,7 +57,7 @@ export default async function ContactPage({
             </p>
           </div>
           <div>
-            <h3>Find Trends</h3>
+            <h2>Find Trends</h2>
             <address>
               {business.name}
               <br />
@@ -85,7 +75,7 @@ export default async function ContactPage({
             </Link>
           </div>
           <div>
-            <h3>Shop hours</h3>
+            <h2>Shop hours</h2>
             <p>
               {business.hours}
               <br />
@@ -93,21 +83,21 @@ export default async function ContactPage({
             </p>
           </div>
           <div>
-            <h3>Roadside or towing?</h3>
+            <h2>Roadside or towing?</h2>
             <p>
               Call to confirm availability, destination, and timing. Online inquiries are reviewed
               during business hours and do not dispatch assistance.
             </p>
           </div>
           <div>
-            <h3>What happens next</h3>
+            <h2>What happens next</h2>
             <p>
               We review your inquiry, contact you to discuss the vehicle, and arrange an assessment
               if needed. An inspection helps establish the scope, estimate, and schedule.
             </p>
           </div>
           <div>
-            <h3>Follow Trends</h3>
+            <h2>Follow Trends</h2>
             <div className={styles.socials}>
               {business.socials.map((social) => (
                 <Link href={social.href} key={social.label} target="_blank" rel="noreferrer">

@@ -53,7 +53,7 @@ export default function AboutPage() {
       />
       <PageHero
         eyebrow="About Us"
-        title={pageSeo.about.heading}
+        title="Trends Collision Center in Bakersfield"
         introduction="More than a repair facility. A complete automotive service partner built on quality, trust, and a commitment to doing things the right way."
         image="/images/repair-services/paint-finish.webp"
         imageAlt="Automotive paint and body repair"
@@ -94,10 +94,10 @@ export default function AboutPage() {
           </Link>
           <figure className={styles.shopFigure}>
             <Image
-              src="/images/The%20Shop/IMG_4414.jpeg"
+              src="/images/The%20Shop/IMG_4413.jpeg"
               alt="Exterior of Trends Collision Center in Bakersfield"
               width={1206}
-              height={669}
+              height={661}
               sizes="(max-width: 767px) 100vw, 60vw"
             />
             <figcaption>Trends Collision Center / Bakersfield, California</figcaption>

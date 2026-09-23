@@ -38,6 +38,7 @@ describe("SEO route configuration", () => {
       "https://example.com/services/tires-alignment",
       "https://example.com/services/fleet-maintenance",
       "https://example.com/about",
+      "https://example.com/insurance-claims",
       "https://example.com/contact",
     ]);
     expect(robots()).toEqual({

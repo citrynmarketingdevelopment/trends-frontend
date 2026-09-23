@@ -10,7 +10,7 @@ import styles from "@/components/marketing-home/marketing-home.module.css";
 import {
   FleetPartnerSection,
   PostProcessSections,
-  PremiumMaterialsSection,
+  RepairStartPoster,
   RepairServicesSection,
   RepairTrackingSection,
 } from "@/components/marketing-home/post-process-sections";
@@ -64,7 +64,7 @@ export default function Home() {
                 <Link className={styles.primaryButton} href="/contact">
                   START A REPAIR
                 </Link>
-                <Link className={styles.secondaryButton} href="#faq-index">
+                <Link className={styles.secondaryButton} href="/insurance-claims">
                   INSURANCE CLAIMS
                 </Link>
               </div>
@@ -79,7 +79,7 @@ export default function Home() {
           <RepairTrackingSection />
           <FleetPartnerSection />
           <CertificationShowcase />
-          <PremiumMaterialsSection />
+          <RepairStartPoster />
           <ProcessStory />
           <RepairServicesSection />
           <PostProcessSections />

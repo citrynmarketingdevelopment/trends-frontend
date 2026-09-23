@@ -86,8 +86,7 @@ export function RepairTrackingSection() {
 
       <div className={styles.trackingLayout}>
         <div className={styles.trackingIntroduction}>
-          <p>The Software We&apos;re Building</p>
-          <p className={styles.trackingStatement}>Trends Delivers Transparency</p>
+          <p>Trends Delivers Transparency</p>
           <h2 id="tracking-heading" aria-label="Vehicle Repair Visibility. Zero Guesswork.">
             Vehicle Repair Visibility.
             <span>Zero Guesswork.</span>
@@ -333,7 +332,7 @@ export function RepairStartPoster() {
         <h2 id="start-heading">Send us the damage.</h2>
         <p id="start-note">
           Photos, vehicle details, and claim information if available are enough to prepare for the
-          first conversation. Tell us about your vehicle and we?ll discuss the next step.
+          first conversation. Tell us about your vehicle and we&apos;ll discuss the next step.
         </p>
         <div className={styles.repairPosterActions}>
           <Link className={styles.primaryButton} href="/contact">
@@ -349,10 +348,5 @@ export function RepairStartPoster() {
 }
 
 export function PostProcessSections() {
-  return (
-    <>
-      <QuestionsSection />
-      <RepairStartPoster />
-    </>
-  );
+  return <QuestionsSection />;
 }

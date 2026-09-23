@@ -467,6 +467,7 @@ export const publicPaths = [
   "/services",
   ...services.map(({ slug }) => `/services/${slug}`),
   "/about",
+  "/insurance-claims",
   "/contact",
 ];
 

@@ -27,6 +27,12 @@ export const pageSeo = {
       "Contact Trends Collision Center at (661) 398-2029. Visit 4321 Stine Rd, Bakersfield, CA 93313, Monday-Friday, 8am-5pm, or ask about vehicle repair services.",
     heading: "Contact Trends Collision Center in Bakersfield",
   },
+  insuranceClaims: {
+    title: "Auto Insurance Claims Guide | Trends Collision Center",
+    description:
+      "Learn how to report an auto insurance claim, choose Trends Collision Center in Bakersfield, arrange vehicle pickup, and prepare for collision repairs.",
+    heading: "Insurance claims. A clear next step.",
+  },
 } as const;
 
 export type ServiceSeo = {

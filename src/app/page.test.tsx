@@ -72,7 +72,7 @@ describe("Home", () => {
     }
     expect(within(main).getByRole("link", { name: "INSURANCE CLAIMS" })).toHaveAttribute(
       "href",
-      "#faq-index",
+      "/insurance-claims",
     );
     expect(
       within(main).getByRole("heading", {
@@ -167,6 +167,7 @@ describe("Home", () => {
       }),
     ).toBeInTheDocument();
     expect(within(main).getByText("Trends Delivers Transparency")).toBeInTheDocument();
+    expect(within(main).queryByText("The Software We're Building")).not.toBeInTheDocument();
     expect(
       within(main).getByRole("heading", { level: 2, name: "Everything we do, under one roof." }),
     ).toBeInTheDocument();
@@ -217,9 +218,6 @@ describe("Home", () => {
     const certifications = within(main)
       .getByRole("heading", { level: 2, name: "Credentials behind the repair." })
       .closest("section");
-    const materials = within(main)
-      .getByRole("heading", { level: 2, name: "Quality starts with what we use." })
-      .closest("section");
     const tracking = within(main)
       .getByRole("heading", { level: 2, name: "Vehicle Repair Visibility. Zero Guesswork." })
       .closest("section");
@@ -236,11 +234,13 @@ describe("Home", () => {
     expect(reel).not.toBeNull();
     expect(process).not.toBeNull();
     expect(certifications).not.toBeNull();
-    expect(materials).not.toBeNull();
     expect(tracking).not.toBeNull();
     expect(repairServices).not.toBeNull();
     expect(questions).not.toBeNull();
     expect(start).not.toBeNull();
+    expect(
+      within(main).queryByRole("heading", { level: 2, name: "Quality starts with what we use." }),
+    ).not.toBeInTheDocument();
     expect(
       within(main).queryByRole("heading", {
         name: "The details matter before the paint ever does.",
@@ -256,10 +256,10 @@ describe("Home", () => {
     expect(
       tracking!.compareDocumentPosition(certifications!) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
-    expect(
-      certifications!.compareDocumentPosition(materials!) & Node.DOCUMENT_POSITION_FOLLOWING,
-    ).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
-    expect(materials!.compareDocumentPosition(process!) & Node.DOCUMENT_POSITION_FOLLOWING).toBe(
+    expect(certifications!.compareDocumentPosition(start!) & Node.DOCUMENT_POSITION_FOLLOWING).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+    expect(start!.compareDocumentPosition(process!) & Node.DOCUMENT_POSITION_FOLLOWING).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING,
     );
     expect(
@@ -268,8 +268,5 @@ describe("Home", () => {
     expect(
       repairServices!.compareDocumentPosition(questions!) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
-    expect(questions!.compareDocumentPosition(start!) & Node.DOCUMENT_POSITION_FOLLOWING).toBe(
-      Node.DOCUMENT_POSITION_FOLLOWING,
-    );
   });
 });

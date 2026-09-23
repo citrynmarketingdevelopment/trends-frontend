@@ -274,17 +274,20 @@ test("service imagery and homepage section order match the current launch layout
   const repairServicesIndex = await sections.evaluateAll((items) =>
     items.findIndex((item) => item.textContent?.includes("Everything we do, under one roof.")),
   );
-  const materialsIndex = await sections.evaluateAll((items) =>
-    items.findIndex((item) => item.textContent?.includes("Quality starts with what we use.")),
+  const repairCtaIndex = await sections.evaluateAll((items) =>
+    items.findIndex((item) => item.textContent?.includes("Send us the damage.")),
   );
   const processIndex = await sections.evaluateAll((items) =>
     items.findIndex((item) => item.id === "process"),
   );
   expect(trackingIndex).toBe(2);
   expect(certificationIndex).toBe(trackingIndex + 2);
-  expect(materialsIndex).toBe(certificationIndex + 1);
-  expect(processIndex).toBe(materialsIndex + 1);
+  expect(repairCtaIndex).toBe(certificationIndex + 1);
+  expect(processIndex).toBe(repairCtaIndex + 1);
   expect(repairServicesIndex).toBe(processIndex + 1);
+  await expect(
+    page.getByRole("heading", { level: 2, name: "Quality starts with what we use." }),
+  ).toHaveCount(0);
 });
 
 test("supplied certifications filter and update their detail panel", async ({ page }) => {
