@@ -33,6 +33,18 @@ export const pageSeo = {
       "Learn how to report an auto insurance claim, choose Trends Collision Center in Bakersfield, arrange vehicle pickup, and prepare for collision repairs.",
     heading: "Insurance claims. A clear next step.",
   },
+  certifications: {
+    title: "Certified Auto Body Shop in Bakersfield | Trends",
+    description:
+      "See the OEM certifications, I-CAR Gold Class training, and repair network credentials behind every repair at Trends Collision Center in Bakersfield.",
+    heading: "Credentials behind the repair.",
+  },
+  software: {
+    title: "Vehicle Repair Visibility | Trends Collision Center",
+    description:
+      "A preview of the shop workflow platform Trends is building to give every vehicle one secure repair record, from check-in through delivery.",
+    heading: "Vehicle Repair Visibility. Zero Guesswork.",
+  },
 } as const;
 
 export type ServiceSeo = {
@@ -75,7 +87,7 @@ export const serviceSeo: Record<ServiceSlug, ServiceSeo> = {
     heading: "Fleet Maintenance in Bakersfield",
     title: "Fleet Maintenance in Bakersfield | Trends Collision Center",
     description:
-      "Mobile, on-site fleet maintenance in Bakersfield. Trends works with all types of fleets for collision, mechanical, tires, brakes, A/C, glass, and towing.",
+      "Mobile, on-site fleet maintenance in Bakersfield. Trends works with all types of fleets for collision, mechanical, tires, brakes, A/C, and towing.",
     servicesHeading: "On-site fleet service & repair",
   },
 };

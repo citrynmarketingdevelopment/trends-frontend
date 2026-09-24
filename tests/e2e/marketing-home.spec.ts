@@ -223,11 +223,11 @@ test("service cards expand on desktop hover and return to the default reel", asy
 
   const dealerRail = page.locator("[data-dealer-logo-track]");
   const dealerViewport = page.getByRole("region", {
-    name: "Vehicle makes represented by dealers that trust Trends",
+    name: "Vehicle makes Trends is manufacturer certified for",
   });
   await dealerViewport.scrollIntoViewIfNeeded();
   await expect(
-    page.getByRole("heading", { level: 3, name: "Dealers that trust Trends" }),
+    page.getByRole("heading", { level: 3, name: "Manufacturer Certified" }),
   ).toBeVisible();
   await expect(page.getByAltText("Hyundai")).toBeVisible();
   for (const make of ["Ram", "Kia", "Corvette"]) {
@@ -258,33 +258,22 @@ test("service imagery and homepage section order match the current launch layout
   await expect(page.locator('img[src*="roadside-towing-verticle.webp"]').first()).toBeVisible();
   await expect(page.locator('img[src*="Fleet-verticle.webp"]').first()).toBeVisible();
   await expect(page.locator('img[src*="Mechinical.webp"]').first()).toBeVisible();
-  await expect(page.locator('section[aria-labelledby="repair-services-heading"] img')).toHaveCount(
-    4,
-  );
+  await expect(page.locator('section[aria-labelledby="repair-services-heading"]')).toHaveCount(0);
 
   const sections = page.locator("#main-content > section");
-  await expect(sections.nth(2)).toHaveAttribute("id", "quality");
-  await expect(sections.nth(3)).toContainText("We come to you.");
-  const trackingIndex = await sections.evaluateAll((items) =>
-    items.findIndex((item) => item.id === "quality"),
-  );
-  const certificationIndex = await sections.evaluateAll((items) =>
-    items.findIndex((item) => item.textContent?.includes("Credentials behind the repair.")),
-  );
-  const repairServicesIndex = await sections.evaluateAll((items) =>
-    items.findIndex((item) => item.textContent?.includes("Everything we do, under one roof.")),
-  );
+  await expect(sections.nth(1)).toHaveAttribute("aria-labelledby", "cert-strip-heading");
+  await expect(sections.nth(1).locator("img")).toHaveCount(4);
+  await expect(sections.nth(3)).toHaveAttribute("id", "fleet");
+  await expect(page.locator("#quality")).toHaveCount(0);
+  await expect(page.locator("#certifications")).toHaveCount(0);
   const repairCtaIndex = await sections.evaluateAll((items) =>
     items.findIndex((item) => item.textContent?.includes("Send us the damage.")),
   );
   const processIndex = await sections.evaluateAll((items) =>
     items.findIndex((item) => item.id === "process"),
   );
-  expect(trackingIndex).toBe(2);
-  expect(certificationIndex).toBe(trackingIndex + 2);
-  expect(repairCtaIndex).toBe(certificationIndex + 1);
+  expect(repairCtaIndex).toBe(4);
   expect(processIndex).toBe(repairCtaIndex + 1);
-  expect(repairServicesIndex).toBe(processIndex + 1);
   await expect(
     page.getByRole("heading", { level: 2, name: "Quality starts with what we use." }),
   ).toHaveCount(0);
@@ -292,12 +281,11 @@ test("service imagery and homepage section order match the current launch layout
 
 test("supplied certifications filter and update their detail panel", async ({ page }) => {
   await useCapableDesktop(page);
-  await page.goto("/");
+  await page.goto("/certifications");
 
   const section = page.locator("#certifications");
-  await section.scrollIntoViewIfNeeded();
   await expect(
-    section.getByRole("heading", { level: 2, name: "Credentials behind the repair." }),
+    section.getByRole("heading", { level: 1, name: "Credentials behind the repair." }),
   ).toBeVisible();
   await expect(section.locator("[data-certification-grid] button")).toHaveCount(6);
   await expect(

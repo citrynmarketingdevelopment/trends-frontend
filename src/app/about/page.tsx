@@ -55,8 +55,8 @@ export default function AboutPage() {
         eyebrow="About Us"
         title="Trends Collision Center in Bakersfield"
         introduction="More than a repair facility. A complete automotive service partner built on quality, trust, and a commitment to doing things the right way."
-        image="/images/repair-services/paint-finish.webp"
-        imageAlt="Automotive paint and body repair"
+        image="/images/The%20Shop/about-us-shop.webp"
+        imageAlt="Trends Collision Center shop exterior in Bakersfield"
         compact
       />
       <section className={`${styles.section} ${styles.split}`} aria-labelledby="story-title">
@@ -89,7 +89,7 @@ export default function AboutPage() {
             behind our work, and become the automotive partner our customers can depend on for the
             road ahead.
           </p>
-          <Link className={styles.textLink} href="/#certifications">
+          <Link className={styles.textLink} href="/certifications">
             Explore our credentials <span aria-hidden="true">↗</span>
           </Link>
           <figure className={styles.shopFigure}>

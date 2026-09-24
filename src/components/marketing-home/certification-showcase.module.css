@@ -39,7 +39,7 @@
   text-transform: uppercase;
 }
 
-.certificationHeader h2 {
+.certificationHeader h1 {
   max-width: 18ch;
   margin: 0;
   font-size: clamp(3.35rem, 6vw, 6.25rem);
@@ -434,7 +434,7 @@
     padding: clamp(5rem, 20vw, 7rem) 1rem;
   }
 
-  .certificationHeader h2 {
+  .certificationHeader h1 {
     max-width: 9ch;
     font-size: clamp(3.1rem, 16vw, 4.9rem);
   }

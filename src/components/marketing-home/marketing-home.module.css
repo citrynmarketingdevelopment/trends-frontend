@@ -89,6 +89,20 @@
   height: 2.7rem !important;
 }
 
+.headerBrandText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  line-height: 1.1;
+}
+
+.headerBrandTagline {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--trends-champagne);
+}
+
 .navigation {
   display: flex;
   gap: clamp(1rem, 2vw, 2rem);
@@ -913,6 +927,49 @@
   color: var(--trends-muted);
 }
 
+.certStrip {
+  width: 100%;
+  padding-inline: var(--trends-gutter);
+  background: #070708;
+}
+
+.certStripInner {
+  width: min(var(--trends-section-content), 100%);
+  margin-inline: auto;
+  padding-block: 1.45rem 1.6rem;
+  border-bottom: 1px solid var(--trends-line);
+}
+
+.certStrip h2 {
+  color: var(--trends-champagne);
+  font-family: var(--font-trends-mono), monospace;
+  font-size: 0.63rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.certStripLogos {
+  display: flex;
+  gap: clamp(2rem, 5vw, 5.5rem);
+  align-items: center;
+  justify-content: center;
+  margin: 1.2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.certStripLogos li {
+  position: relative;
+  flex: 0 1 7.5rem;
+  height: 5.25rem;
+}
+
+.certStripLogo {
+  object-fit: contain;
+}
+
 .services {
   width: 100%;
   padding: clamp(5.5rem, 9vw, 8rem) var(--trends-gutter) 2.2rem;
@@ -1181,7 +1238,7 @@
   text-transform: uppercase;
 }
 
-.trackingIntroduction h2 {
+.trackingIntroduction h1 {
   margin-top: 1.65rem;
   font-size: clamp(3rem, 3.6vw, 3.7rem);
   font-weight: 800;
@@ -1190,7 +1247,7 @@
   text-transform: uppercase;
 }
 
-.trackingIntroduction h2 span {
+.trackingIntroduction h1 span {
   display: block;
 }
 
@@ -1617,7 +1674,7 @@
 
 .repairServicesRail {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 0.85rem;
   margin-top: 2.2rem;
 }
@@ -1685,7 +1742,7 @@
 }
 
 .repairServiceCopy h3 {
-  font-size: clamp(2rem, 2.7vw, 2.85rem);
+  font-size: clamp(1.7rem, 2.15vw, 2.45rem);
   font-weight: 800;
   line-height: 0.84;
   letter-spacing: 0;
@@ -2224,6 +2281,14 @@
     min-height: 29rem;
   }
 
+  .repairServiceCard:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  .repairServiceCopy h3 {
+    font-size: clamp(2rem, 4.2vw, 2.85rem);
+  }
+
   .repairServicesFooter {
     grid-template-columns: 1fr;
     gap: 1.25rem;
@@ -2573,6 +2638,25 @@
     width: calc(100% - 2rem);
   }
 
+  .certStrip {
+    padding-inline: 1rem;
+  }
+
+  .certStripInner {
+    padding-block: 1.25rem 1.4rem;
+  }
+
+  .certStripLogos {
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .certStripLogos li {
+    flex: 1 1 0;
+    max-width: 5.5rem;
+    height: 4rem;
+  }
+
   .services {
     padding: 5.5rem 1rem 2rem;
   }
@@ -2650,7 +2734,7 @@
     min-height: 27rem;
   }
 
-  .trackingIntroduction h2 {
+  .trackingIntroduction h1 {
     max-width: 21rem;
     font-size: clamp(2.7rem, 12vw, 3.5rem);
   }

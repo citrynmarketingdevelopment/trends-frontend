@@ -66,6 +66,7 @@ export function MarketingFooter() {
           <Link href="/">Home</Link>
           <Link href="/services">Services</Link>
           <Link href="/about">About Us</Link>
+          <Link href="/certifications">Certifications</Link>
           <Link href="/insurance-claims">Insurance Claims</Link>
           <Link href="/contact">Contact Us</Link>
         </div>

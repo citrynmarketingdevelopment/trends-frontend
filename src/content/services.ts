@@ -368,8 +368,8 @@ export const services: readonly Service[] = [
         body: "Oil changes, routine maintenance, mechanical repair, brakes, suspension, A/C service, and vehicle diagnostics.",
       },
       {
-        title: "Tires, glass & roadside",
-        body: "Tires, wheels, and alignments, glass and windshield repair and replacement, and towing and roadside assistance.",
+        title: "Tires & roadside",
+        body: "Tires, wheels, and alignments, and towing and roadside assistance.",
       },
     ],
     checklist: {
@@ -394,7 +394,6 @@ export const services: readonly Service[] = [
         { title: "Suspension", body: "Suspension diagnostics and repair." },
         { title: "A/C service", body: "A/C service and repair." },
         { title: "Diagnostics", body: "Vehicle diagnostics for mechanical and electrical issues." },
-        { title: "Glass & windshields", body: "Glass and windshield repair and replacement." },
         {
           title: "Oil changes & maintenance",
           body: "Oil changes and routine maintenance for working vehicles.",
@@ -437,7 +436,7 @@ export const services: readonly Service[] = [
       {
         question: "Do you only handle collision repair?",
         answer:
-          "No. Beyond collision repair and paint, we handle mechanical repair, tires and wheels, alignments, brakes, suspension, A/C, diagnostics, glass and windshields, oil changes and routine maintenance, and towing and roadside assistance.",
+          "No. Beyond collision repair and paint, we handle mechanical repair, tires and wheels, alignments, brakes, suspension, A/C, diagnostics, oil changes and routine maintenance, and towing and roadside assistance.",
       },
       {
         question: "Can you schedule recurring maintenance?",
@@ -467,6 +466,7 @@ export const publicPaths = [
   "/services",
   ...services.map(({ slug }) => `/services/${slug}`),
   "/about",
+  "/certifications",
   "/insurance-claims",
   "/contact",
 ];

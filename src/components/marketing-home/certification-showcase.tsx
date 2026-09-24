@@ -232,7 +232,7 @@ export function CertificationShowcase() {
       <div className={styles.certificationInner}>
         <header className={styles.certificationHeader}>
           <p>Certifications &amp; recognition</p>
-          <h2 id="certifications-heading">Credentials behind the repair.</h2>
+          <h1 id="certifications-heading">Credentials behind the repair.</h1>
           <span>
             Browse the supplied certificate artwork and the dates shown on each credential.
           </span>

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { marketingClassName, MarketingFooter } from "@/components/marketing-site/marketing-shell";
 
 import { BrandLogo } from "@/components/brand-logo";
-import { CertificationShowcase } from "@/components/marketing-home/certification-showcase";
+import { CertificationStrip } from "@/components/marketing-home/certification-strip";
 import { ExperienceProvider } from "@/components/marketing-home/experience-state";
 import { HeroLogo3D } from "@/components/marketing-home/hero-logo-3d";
 import { MarketingHeader } from "@/components/marketing-home/marketing-header";
@@ -11,8 +11,6 @@ import {
   FleetPartnerSection,
   PostProcessSections,
   RepairStartPoster,
-  RepairServicesSection,
-  RepairTrackingSection,
 } from "@/components/marketing-home/post-process-sections";
 import { ProcessStory } from "@/components/marketing-home/process-story";
 import { ServiceReel } from "@/components/marketing-home/service-reel";
@@ -75,13 +73,11 @@ export default function Home() {
             </div>
           </section>
 
+          <CertificationStrip />
           <ServiceReel />
-          <RepairTrackingSection />
           <FleetPartnerSection />
-          <CertificationShowcase />
           <RepairStartPoster />
           <ProcessStory />
-          <RepairServicesSection />
           <PostProcessSections />
         </main>
 

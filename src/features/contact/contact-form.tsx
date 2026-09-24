@@ -15,6 +15,7 @@ type TextFieldName =
   | "vehicleYear"
   | "vehicleMake"
   | "vehicleModel"
+  | "vehicleVin"
   | "company"
   | "insurance";
 
@@ -45,6 +46,7 @@ export function ContactForm({
       vehicleYear: "",
       vehicleMake: "",
       vehicleModel: "",
+      vehicleVin: "",
       company: "",
       insurance: "",
       message: "",
@@ -107,7 +109,15 @@ export function ContactForm({
           placeholder={options.placeholder}
           required={options.required}
           maxLength={
-            name === "email" ? 254 : name === "phone" ? 30 : name === "vehicleYear" ? 4 : 120
+            name === "email"
+              ? 254
+              : name === "phone"
+                ? 30
+                : name === "vehicleYear"
+                  ? 4
+                  : name === "vehicleVin"
+                    ? 17
+                    : 120
           }
           aria-invalid={Boolean(errors[name])}
           aria-describedby={errors[name] ? `${name}-error` : undefined}
@@ -205,6 +215,7 @@ export function ContactForm({
                 {field("vehicleYear", "Vehicle year (optional)", { placeholder: "e.g. 2022" })}
                 {field("vehicleMake", "Make (optional)", { placeholder: "e.g. Toyota" })}
                 {field("vehicleModel", "Model (optional)", { placeholder: "e.g. Camry" })}
+                {field("vehicleVin", "VIN (optional)", { placeholder: "17-character VIN" })}
                 {field(
                   "company",
                   selectedService === "fleet-maintenance"

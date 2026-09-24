@@ -21,6 +21,7 @@ const input: ContactInput = {
   vehicleYear: "",
   vehicleMake: "",
   vehicleModel: "",
+  vehicleVin: "",
   company: "",
   insurance: "",
   message: "<script>alert('x')</script>",

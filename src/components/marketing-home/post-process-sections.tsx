@@ -40,27 +40,33 @@ const trackingFeatures = [
 
 const repairServices = [
   {
-    title: ["Body &", "Structure"],
-    items: ["Dent repair & removal", "Auto body repair", "Aluminum repair"],
-    image: "/images/Collision/IMG_7732_jpg.jpeg",
+    title: ["Collision &", "Frame Repair"],
+    items: ["Auto body repair", "Dent repair", "Structural and frame repair"],
+    image: "/images/Collision/IMG_6085.jpeg",
     href: "/services/collision",
   },
   {
-    title: ["Paint &", "Finish"],
-    items: ["Auto paint repair", "Paint scratch repair", "Fender repair"],
+    title: ["Paint &", "Refinishing"],
+    items: ["Paint repair", "Color matching", "Glasurit refinishing"],
     image: "/images/Paint/IMG_4720.jpeg",
     href: "/services/collision",
   },
   {
-    title: ["Glass &", "Weather"],
-    items: ["Auto glass repair", "Windshield replacement", "Hail damage repair"],
-    image: "/images/repair-services/glass-weather.webp",
-    href: "/services/collision",
+    title: ["Wheels &", "Alignment"],
+    items: ["Tires and wheels", "Wheel service", "Alignment"],
+    image: "/images/Fleet/IMG_4700.jpeg",
+    href: "/services/tires-alignment",
   },
   {
-    title: ["Finishing", "& Safety"],
-    items: ["Paintless dent repair", "Bumper repair", "ADAS calibrations"],
-    image: "/images/repair-services/finishing-safety.webp",
+    title: ["Towing &", "Roadside"],
+    items: ["Vehicle towing", "Roadside assistance", "Mobile tire support"],
+    image: "/images/Fleet/Towing.webp",
+    href: "/services/roadside",
+  },
+  {
+    title: ["Mechanical", "Services"],
+    items: ["Diagnostics", "Brakes & suspension", "Select mechanical repairs"],
+    image: "/images/services/348s (7).jpg",
     href: "/services/mechanical",
   },
 ] as const;
@@ -87,10 +93,10 @@ export function RepairTrackingSection() {
       <div className={styles.trackingLayout}>
         <div className={styles.trackingIntroduction}>
           <p>Trends Delivers Transparency</p>
-          <h2 id="tracking-heading" aria-label="Vehicle Repair Visibility. Zero Guesswork.">
+          <h1 id="tracking-heading" aria-label="Vehicle Repair Visibility. Zero Guesswork.">
             Vehicle Repair Visibility.
             <span>Zero Guesswork.</span>
-          </h2>
+          </h1>
           <span className={styles.trackingRule} aria-hidden="true" />
           <div className={styles.trackingBody}>
             <p>
@@ -258,7 +264,7 @@ export function RepairServicesSection() {
       <div className={styles.repairServicesInner}>
         <header className={styles.repairServicesHeader}>
           <div>
-            <p>Four bays / Twelve services</p>
+            <p>Five disciplines / Fifteen services</p>
             <h2 id="repair-services-heading">Everything we do, under one roof.</h2>
           </div>
           <p>
@@ -278,7 +284,7 @@ export function RepairServicesSection() {
                 alt=""
                 className={styles.repairServiceImage}
                 fill
-                sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 25vw"
+                sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 20vw"
                 src={service.image}
               />
               <div className={styles.repairServiceGrade} aria-hidden="true" />

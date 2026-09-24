@@ -37,6 +37,10 @@ export const contactSchema = z.object({
     ),
   vehicleMake: singleLine(60),
   vehicleModel: singleLine(80),
+  vehicleVin: singleLine(17).refine(
+    (value) => !value || /^[A-HJ-NPR-Z0-9]+$/i.test(value),
+    "Enter a valid VIN (letters and numbers, no I, O, or Q).",
+  ),
   company: singleLine(120),
   insurance: singleLine(120),
   message: z

@@ -9,6 +9,7 @@ const pages = [
   ["/services/tires-alignment", "Wheel Alignment in Bakersfield"],
   ["/services/fleet-maintenance", "Fleet Maintenance in Bakersfield"],
   ["/about", "Trends Collision Center in Bakersfield"],
+  ["/certifications", "Credentials behind the repair."],
   ["/contact", "Tell us what brings you in."],
 ] as const;
 

@@ -99,7 +99,7 @@ describe("Home", () => {
     expect(
       within(servicesSection!).getByRole("heading", {
         level: 3,
-        name: "Dealers that trust Trends",
+        name: "Manufacturer Certified",
       }),
     ).toBeInTheDocument();
     for (const make of [
@@ -148,12 +148,9 @@ describe("Home", () => {
       servicesSection!.querySelector('img[src="/images/Mechanical/Mechinical.webp"]'),
     ).not.toBeNull();
     expect(
-      within(main).getByRole("heading", { level: 2, name: "Credentials behind the repair." }),
-    ).toBeInTheDocument();
-    expect(within(main).queryByText("Official asset pending")).not.toBeInTheDocument();
-    expect(within(main).getAllByText("GM Collision Repair Network")).toHaveLength(3);
-    expect(main.querySelectorAll('img[src^="/certifications/"]')).toHaveLength(7);
-    expect(main.querySelector('img[src="/certifications/insurance.webp"]')).toBeNull();
+      within(main).queryByRole("heading", { name: "Credentials behind the repair." }),
+    ).not.toBeInTheDocument();
+    expect(main.querySelectorAll('img[src^="/certifications/"]')).toHaveLength(4);
     expect(
       within(main).getByRole("heading", {
         level: 2,
@@ -161,21 +158,13 @@ describe("Home", () => {
       }),
     ).toBeInTheDocument();
     expect(
-      within(main).getByRole("heading", {
-        level: 2,
-        name: "Vehicle Repair Visibility. Zero Guesswork.",
-      }),
-    ).toBeInTheDocument();
-    expect(within(main).getByText("Trends Delivers Transparency")).toBeInTheDocument();
-    expect(within(main).queryByText("The Software We're Building")).not.toBeInTheDocument();
+      within(main).queryByRole("heading", { name: "Vehicle Repair Visibility. Zero Guesswork." }),
+    ).not.toBeInTheDocument();
+    expect(within(main).queryByText("Trends Delivers Transparency")).not.toBeInTheDocument();
     expect(
-      within(main).getByRole("heading", { level: 2, name: "Everything we do, under one roof." }),
-    ).toBeInTheDocument();
-    expect(
-      main
-        .querySelector('section[aria-labelledby="repair-services-heading"]')
-        ?.querySelectorAll("img"),
-    ).toHaveLength(4);
+      within(main).queryByRole("heading", { name: "Everything we do, under one roof." }),
+    ).not.toBeInTheDocument();
+    expect(main.querySelector('section[aria-labelledby="repair-services-heading"]')).toBeNull();
     expect(
       within(main).getByRole("heading", { level: 2, name: "Questions are part of the process." }),
     ).toBeInTheDocument();
@@ -215,14 +204,8 @@ describe("Home", () => {
         name: "Three stages. One continuous standard.",
       })
       .closest("section");
-    const certifications = within(main)
-      .getByRole("heading", { level: 2, name: "Credentials behind the repair." })
-      .closest("section");
-    const tracking = within(main)
-      .getByRole("heading", { level: 2, name: "Vehicle Repair Visibility. Zero Guesswork." })
-      .closest("section");
-    const repairServices = within(main)
-      .getByRole("heading", { level: 2, name: "Everything we do, under one roof." })
+    const fleet = within(main)
+      .getByRole("heading", { level: 2, name: "We come to you." })
       .closest("section");
     const questions = within(main)
       .getByRole("heading", { level: 2, name: "Questions are part of the process." })
@@ -233,9 +216,7 @@ describe("Home", () => {
     expect(hero).not.toBeNull();
     expect(reel).not.toBeNull();
     expect(process).not.toBeNull();
-    expect(certifications).not.toBeNull();
-    expect(tracking).not.toBeNull();
-    expect(repairServices).not.toBeNull();
+    expect(fleet).not.toBeNull();
     expect(questions).not.toBeNull();
     expect(start).not.toBeNull();
     expect(
@@ -246,27 +227,18 @@ describe("Home", () => {
         name: "The details matter before the paint ever does.",
       }),
     ).not.toBeInTheDocument();
-    expect(hero!.compareDocumentPosition(reel!) & Node.DOCUMENT_POSITION_FOLLOWING).toBe(
-      Node.DOCUMENT_POSITION_FOLLOWING,
-    );
-    expect(reel!.compareDocumentPosition(tracking!) & Node.DOCUMENT_POSITION_FOLLOWING).toBe(
-      Node.DOCUMENT_POSITION_FOLLOWING,
-    );
-    expect(reel!.nextElementSibling).toBe(tracking);
-    expect(
-      tracking!.compareDocumentPosition(certifications!) & Node.DOCUMENT_POSITION_FOLLOWING,
-    ).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
-    expect(certifications!.compareDocumentPosition(start!) & Node.DOCUMENT_POSITION_FOLLOWING).toBe(
-      Node.DOCUMENT_POSITION_FOLLOWING,
-    );
+    const certStrip = within(main)
+      .getByRole("heading", { level: 2, name: "Certifications" })
+      .closest("section");
+    expect(certStrip).not.toBeNull();
+    expect(certStrip!.querySelectorAll("img")).toHaveLength(4);
+    expect(hero!.nextElementSibling).toBe(certStrip);
+    expect(certStrip!.nextElementSibling).toBe(reel);
+    expect(reel!.nextElementSibling).toBe(fleet);
+    expect(fleet!.nextElementSibling).toBe(start);
     expect(start!.compareDocumentPosition(process!) & Node.DOCUMENT_POSITION_FOLLOWING).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING,
     );
-    expect(
-      process!.compareDocumentPosition(repairServices!) & Node.DOCUMENT_POSITION_FOLLOWING,
-    ).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
-    expect(
-      repairServices!.compareDocumentPosition(questions!) & Node.DOCUMENT_POSITION_FOLLOWING,
-    ).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+    expect(process!.nextElementSibling).toBe(questions);
   });
 });

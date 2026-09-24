@@ -61,7 +61,10 @@ export function MarketingHeader() {
       <div className={styles.headerInner}>
         <Link className={styles.headerBrand} href="/" aria-label="Trends Collision Center home">
           <BrandLogo className={styles.headerLogo} preload />
-          <span>Trends Collision Center</span>
+          <span className={styles.headerBrandText}>
+            <span>Trends Collision Center</span>
+            <span className={styles.headerBrandTagline}>More Than Collision</span>
+          </span>
         </Link>
 
         <button
@@ -162,6 +165,13 @@ export function MarketingHeader() {
             onClick={closeMenus}
           >
             About Us
+          </Link>
+          <Link
+            href="/certifications"
+            aria-current={pathname === "/certifications" ? "page" : undefined}
+            onClick={closeMenus}
+          >
+            Certifications
           </Link>
           <Link
             href="/contact"

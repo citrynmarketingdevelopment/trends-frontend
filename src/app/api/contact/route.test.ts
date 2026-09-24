@@ -19,6 +19,7 @@ const valid = {
   vehicleYear: "2022",
   vehicleMake: "Toyota",
   vehicleModel: "Camry",
+  vehicleVin: "1HGCM82633A004352",
   company: "",
   insurance: "",
   message: "Please help assess my bumper damage.",
@@ -60,6 +61,7 @@ describe("contact endpoint", () => {
       { ...valid, website: "spam" },
       { ...valid, service: "unknown" },
       { ...valid, name: "Name\r\nBcc: victim@example.test" },
+      { ...valid, vehicleVin: "not-a-vin!" },
     ])
       expect((await POST(request(body))).status).toBe(400);
     expect(sendContactEmails).not.toHaveBeenCalled();

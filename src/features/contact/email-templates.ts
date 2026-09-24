@@ -27,6 +27,7 @@ export function createContactEmails(input: ContactInput) {
       [input.vehicleYear, input.vehicleMake, input.vehicleModel].filter(Boolean).join(" ") ||
         "Not provided",
     ],
+    ["VIN", input.vehicleVin || "Not provided"],
     ["Company", input.company || "Not provided"],
     ["Insurance company", input.insurance || "Not provided"],
   ];

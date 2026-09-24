@@ -78,11 +78,11 @@ export function ServiceReel() {
       </div>
 
       <div className={styles.dealerTrust}>
-        <h3>Dealers that trust Trends</h3>
+        <h3>Manufacturer Certified</h3>
         <div
           className={styles.dealerLogoViewport}
           role="region"
-          aria-label="Vehicle makes represented by dealers that trust Trends"
+          aria-label="Vehicle makes Trends is manufacturer certified for"
           tabIndex={0}
         >
           <div className={styles.dealerLogoTrack} data-dealer-logo-track>
