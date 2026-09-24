@@ -518,22 +518,6 @@
   font-size: 1.35rem;
   line-height: 1.65;
 }
-.shopFigure {
-  margin: 2.5rem 0 0;
-}
-.shopFigure img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-.shopFigure figcaption {
-  margin-top: 0.75rem;
-  color: var(--trends-muted);
-  font-family: var(--font-trends-mono), monospace;
-  font-size: 0.65rem;
-  letter-spacing: 0;
-  text-transform: uppercase;
-}
 .values {
   background: var(--trends-carbon);
 }

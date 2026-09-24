@@ -92,16 +92,6 @@ export default function AboutPage() {
           <Link className={styles.textLink} href="/certifications">
             Explore our credentials <span aria-hidden="true">↗</span>
           </Link>
-          <figure className={styles.shopFigure}>
-            <Image
-              src="/images/The%20Shop/IMG_4413.jpeg"
-              alt="Exterior of Trends Collision Center in Bakersfield"
-              width={1206}
-              height={661}
-              sizes="(max-width: 767px) 100vw, 60vw"
-            />
-            <figcaption>Trends Collision Center / Bakersfield, California</figcaption>
-          </figure>
         </div>
       </section>
       <section className={`${styles.section} ${styles.split}`} aria-labelledby="mission-title">

@@ -98,7 +98,6 @@ test("premium materials moved from home to Collision and About uses the requeste
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     "Trends Collision Center in Bakersfield",
   );
-  await expect(page.locator('img[src*="IMG_4413.jpeg"]')).toBeVisible();
 });
 
 for (const [path, title] of pages) {
