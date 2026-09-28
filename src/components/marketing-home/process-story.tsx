@@ -325,12 +325,17 @@ export function ProcessStory() {
   }, []);
 
   useEffect(() => {
+    const updateViewportTier = () => setViewportTier(viewportTierFor(window.innerWidth));
     const timeout = window.setTimeout(() => {
       const snapshot = readCapabilitySnapshot();
       setViewportTier(viewportTierFor(snapshot.width));
       setCapable(canEnhanceCar(snapshot));
     }, 0);
-    return () => window.clearTimeout(timeout);
+    window.addEventListener("resize", updateViewportTier);
+    return () => {
+      window.clearTimeout(timeout);
+      window.removeEventListener("resize", updateViewportTier);
+    };
   }, []);
 
   useEffect(() => {

@@ -173,6 +173,25 @@ test("mobile process shows one passive car before unlocking 3D exploration", asy
   await expect(process.getByRole("button", { name: "Exit 3D" })).toBeVisible();
 });
 
+test("process layout follows viewport changes across the mobile breakpoint", async ({ page }) => {
+  await disableWebGL(page);
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto("/");
+
+  const process = page.locator("#process");
+  await expect(process).toHaveAttribute("data-viewport-tier", "desktop");
+  const mobileSteps = process.locator('section[aria-labelledby="process-steps-heading"]');
+  await expect(mobileSteps).toBeHidden();
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(process).toHaveAttribute("data-viewport-tier", "mobile");
+  await expect(mobileSteps).toBeVisible();
+
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await expect(process).toHaveAttribute("data-viewport-tier", "desktop");
+  await expect(mobileSteps).toBeHidden();
+});
+
 test("the hero retries once after a transient WebGL context loss", async ({ page }) => {
   await useCapableDesktop(page);
   await page.goto("/");
