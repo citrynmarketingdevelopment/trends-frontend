@@ -3,6 +3,7 @@ import { marketingClassName, MarketingFooter } from "@/components/marketing-site
 
 import { BrandLogo } from "@/components/brand-logo";
 import { CertificationStrip } from "@/components/marketing-home/certification-strip";
+import { DealerStrip } from "@/components/marketing-home/dealer-strip";
 import { ExperienceProvider } from "@/components/marketing-home/experience-state";
 import { HeroLogo3D } from "@/components/marketing-home/hero-logo-3d";
 import { MarketingHeader } from "@/components/marketing-home/marketing-header";
@@ -73,8 +74,9 @@ export default function Home() {
             </div>
           </section>
 
-          <CertificationStrip />
+          <DealerStrip />
           <ServiceReel />
+          <CertificationStrip />
           <FleetPartnerSection />
           <RepairStartPoster />
           <ProcessStory />

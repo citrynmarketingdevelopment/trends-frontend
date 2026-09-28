@@ -14,23 +14,6 @@ const reelServices = serviceContent.map((service) => ({
   href: `/services/${service.slug}` as const,
 }));
 
-const dealerBrands: ReadonlyArray<{ name: string; image: string; negative?: boolean }> = [
-  { name: "GM", image: "/images/vehicle-makes/gm-logo.svg" },
-  { name: "Dodge", image: "/images/vehicle-makes/dodge-logo.png" },
-  { name: "Ram", image: "/images/vehicle-makes/ram-wordmark.svg" },
-  { name: "SRT", image: "/images/vehicle-makes/srt-logo.png", negative: true },
-  { name: "Nissan", image: "/images/vehicle-makes/nissan-logo.svg" },
-  { name: "Hyundai", image: "/images/vehicle-makes/hyundai-logo.svg" },
-  { name: "Jeep", image: "/images/vehicle-makes/jeep-logo.svg" },
-  { name: "Kia", image: "/images/vehicle-makes/kia-wordmark.svg" },
-  { name: "Mazda", image: "/images/vehicle-makes/mazda-logo.svg" },
-  { name: "Chrysler", image: "/images/vehicle-makes/chrysler-logo.svg" },
-  { name: "Honda", image: "/images/vehicle-makes/honda-logo.svg" },
-  { name: "Infiniti", image: "/images/vehicle-makes/infiniti-logo.svg" },
-  { name: "Corvette", image: "/images/vehicle-makes/corvette-logo.svg" },
-  { name: "Cadillac", image: "/images/vehicle-makes/cadillac-logo.svg" },
-];
-
 export function ServiceReel() {
   return (
     <section className={styles.services} id="services" aria-labelledby="services-heading">
@@ -75,40 +58,6 @@ export function ServiceReel() {
             </div>
           </Link>
         ))}
-      </div>
-
-      <div className={styles.dealerTrust}>
-        <h3>Manufacturer Certified</h3>
-        <div
-          className={styles.dealerLogoViewport}
-          role="region"
-          aria-label="Vehicle makes Trends is manufacturer certified for"
-          tabIndex={0}
-        >
-          <div className={styles.dealerLogoTrack} data-dealer-logo-track>
-            {[0, 1].map((copyIndex) => (
-              <ul
-                className={styles.dealerLogoGroup}
-                aria-hidden={copyIndex === 1 || undefined}
-                key={copyIndex}
-              >
-                {dealerBrands.map((brand) => (
-                  <li key={brand.name}>
-                    <Image
-                      alt={copyIndex === 0 ? brand.name : ""}
-                      className={`${styles.dealerLogo} ${brand.negative ? styles.dealerLogoNegative : ""}`}
-                      fill
-                      loading="eager"
-                      sizes="(max-width: 767px) 7rem, 9rem"
-                      src={brand.image}
-                      unoptimized={brand.image.endsWith(".svg")}
-                    />
-                  </li>
-                ))}
-              </ul>
-            ))}
-          </div>
-        </div>
       </div>
     </section>
   );

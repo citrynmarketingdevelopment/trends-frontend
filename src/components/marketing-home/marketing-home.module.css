@@ -930,13 +930,16 @@
 .certStrip {
   width: 100%;
   padding-inline: var(--trends-gutter);
+  padding-bottom: 2.2rem;
   background: #070708;
 }
 
 .certStripInner {
   width: min(var(--trends-section-content), 100%);
   margin-inline: auto;
+  margin-top: 1.35rem;
   padding-block: 1.45rem 1.6rem;
+  border-top: 1px solid var(--trends-line);
   border-bottom: 1px solid var(--trends-line);
 }
 
@@ -972,7 +975,7 @@
 
 .services {
   width: 100%;
-  padding: clamp(5.5rem, 9vw, 8rem) var(--trends-gutter) 2.2rem;
+  padding: clamp(5.5rem, 9vw, 8rem) var(--trends-gutter) 0;
   background: #070708;
 }
 
@@ -1091,14 +1094,18 @@
 }
 
 .dealerTrust {
-  margin-top: 1.35rem;
   padding-block: 1.45rem 1.6rem;
   overflow: hidden;
-  border-top: 1px solid var(--trends-line);
   border-bottom: 1px solid var(--trends-line);
 }
 
-.dealerTrust h3 {
+.dealerStrip {
+  width: 100%;
+  padding-inline: var(--trends-gutter);
+  background: #070708;
+}
+
+.dealerTrust h2 {
   color: var(--trends-champagne);
   font-family: var(--font-trends-mono), monospace;
   font-size: 0.63rem;
@@ -2640,6 +2647,7 @@
 
   .certStrip {
     padding-inline: 1rem;
+    padding-bottom: 2rem;
   }
 
   .certStripInner {
@@ -2658,7 +2666,11 @@
   }
 
   .services {
-    padding: 5.5rem 1rem 2rem;
+    padding: 5.5rem 1rem 0;
+  }
+
+  .dealerStrip {
+    padding-inline: 1rem;
   }
 
   .serviceHeading {
@@ -2689,7 +2701,6 @@
   }
 
   .dealerTrust {
-    margin-top: 1rem;
     padding-block: 1.25rem 1.4rem;
   }
 

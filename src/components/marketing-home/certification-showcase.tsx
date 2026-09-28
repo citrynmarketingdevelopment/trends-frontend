@@ -77,6 +77,21 @@ const certificationItems: readonly CertificationItem[] = [
     ],
   },
   {
+    id: "mazda-certified-collision-center",
+    title: "Mazda-certified Collision Center",
+    category: "oem",
+    asset: "/certifications/Mazda-certification.webp",
+    issuer: "Mazda Collision Network",
+    record: "Member since March 2026",
+    description:
+      "The supplied plaque recognizes Trends Collision Center as a Mazda-certified Collision Center.",
+    details: [
+      "Mazda-certified Collision Center",
+      "Facility name shown: Trends Collision Center",
+      "Member since March 2026",
+    ],
+  },
+  {
     id: "infiniti-certified-collision-repair-center",
     title: "Infiniti Certified Collision Repair Center",
     category: "oem",

@@ -96,10 +96,13 @@ describe("Home", () => {
       })
       .closest("section");
     expect(servicesSection).not.toBeNull();
+    const dealerSection = within(main)
+      .getByRole("heading", { level: 2, name: "Manufacturer Certified" })
+      .closest("section");
+    expect(dealerSection).not.toBeNull();
     expect(
-      within(servicesSection!).getByRole("heading", {
-        level: 3,
-        name: "Manufacturer Certified",
+      within(dealerSection!).getByRole("region", {
+        name: "Vehicle makes Trends is manufacturer certified for",
       }),
     ).toBeInTheDocument();
     for (const make of [
@@ -118,17 +121,17 @@ describe("Home", () => {
       "Corvette",
       "Cadillac",
     ]) {
-      expect(within(servicesSection!).getByRole("img", { name: make })).toBeInTheDocument();
+      expect(within(dealerSection!).getByRole("img", { name: make })).toBeInTheDocument();
     }
-    expect(within(servicesSection!).getByRole("img", { name: "Ram" })).toHaveAttribute(
+    expect(within(dealerSection!).getByRole("img", { name: "Ram" })).toHaveAttribute(
       "src",
       "/images/vehicle-makes/ram-wordmark.svg",
     );
-    expect(within(servicesSection!).getByRole("img", { name: "Kia" })).toHaveAttribute(
+    expect(within(dealerSection!).getByRole("img", { name: "Kia" })).toHaveAttribute(
       "src",
       "/images/vehicle-makes/kia-wordmark.svg",
     );
-    expect(within(servicesSection!).getByRole("img", { name: "Corvette" })).toHaveAttribute(
+    expect(within(dealerSection!).getByRole("img", { name: "Corvette" })).toHaveAttribute(
       "src",
       "/images/vehicle-makes/corvette-logo.svg",
     );
@@ -150,7 +153,10 @@ describe("Home", () => {
     expect(
       within(main).queryByRole("heading", { name: "Credentials behind the repair." }),
     ).not.toBeInTheDocument();
-    expect(main.querySelectorAll('img[src^="/certifications/"]')).toHaveLength(4);
+    expect(main.querySelectorAll('img[src^="/certifications/"]')).toHaveLength(5);
+    expect(
+      main.querySelector('img[src="/certifications/training-industry-03.webp"]'),
+    ).not.toBeNull();
     expect(
       within(main).getByRole("heading", {
         level: 2,
@@ -231,10 +237,11 @@ describe("Home", () => {
       .getByRole("heading", { level: 2, name: "Certifications" })
       .closest("section");
     expect(certStrip).not.toBeNull();
-    expect(certStrip!.querySelectorAll("img")).toHaveLength(4);
-    expect(hero!.nextElementSibling).toBe(certStrip);
-    expect(certStrip!.nextElementSibling).toBe(reel);
-    expect(reel!.nextElementSibling).toBe(fleet);
+    expect(certStrip!.querySelectorAll("img")).toHaveLength(5);
+    expect(hero!.nextElementSibling).toBe(dealerSection);
+    expect(dealerSection!.nextElementSibling).toBe(reel);
+    expect(reel!.nextElementSibling).toBe(certStrip);
+    expect(certStrip!.nextElementSibling).toBe(fleet);
     expect(fleet!.nextElementSibling).toBe(start);
     expect(start!.compareDocumentPosition(process!) & Node.DOCUMENT_POSITION_FOLLOWING).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING,

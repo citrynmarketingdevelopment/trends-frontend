@@ -6,6 +6,7 @@ const certifications = [
   { name: "Amica Repair Assistance Program", image: "/certifications/insurance.webp" },
   { name: "I-CAR Gold Class 2022-2023", image: "/certifications/training-industry-01.webp" },
   { name: "I-CAR Gold Class 2024-2025", image: "/certifications/training-industry-02.webp" },
+  { name: "GM Collision Repair Network", image: "/certifications/training-industry-03.webp" },
   {
     name: "Assured Performance Network Certified Repair Provider",
     image: "/certifications/training-industry-04.webp",

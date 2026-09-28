@@ -41,7 +41,7 @@ describe("CertificationShowcase", () => {
     const section = screen.getByRole("region", { name: "Credentials behind the repair." });
     const grid = section.querySelector<HTMLElement>("[data-certification-grid]");
     expect(grid).not.toBeNull();
-    expect(within(grid!).getAllByRole("button")).toHaveLength(6);
+    expect(within(grid!).getAllByRole("button")).toHaveLength(7);
     expect(
       within(section).getByRole("heading", { level: 3, name: "GM Collision Repair Network" }),
     ).toBeInTheDocument();
@@ -53,10 +53,20 @@ describe("CertificationShowcase", () => {
     expect(oemFilter).toHaveAttribute("aria-pressed", "true");
 
     await user.click(within(section).getByRole("button", { name: "All" }));
-    expect(within(grid!).getAllByRole("button")).toHaveLength(10);
+    expect(within(grid!).getAllByRole("button")).toHaveLength(11);
 
     await user.click(oemFilter);
-    expect(within(grid!).getAllByRole("button")).toHaveLength(6);
+    expect(within(grid!).getAllByRole("button")).toHaveLength(7);
+
+    await user.click(
+      within(section).getByRole("button", {
+        name: "Mazda-certified Collision Center. OEM certifications.",
+      }),
+    );
+    expect(
+      section.querySelector("[data-selected-certificate='mazda-certified-collision-center']"),
+    ).not.toBeNull();
+    expect(within(section).getAllByText("Member since March 2026")).toHaveLength(2);
 
     await user.click(
       within(section).getByRole("button", {
