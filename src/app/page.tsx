@@ -13,7 +13,6 @@ import {
   PostProcessSections,
   RepairStartPoster,
 } from "@/components/marketing-home/post-process-sections";
-import { ProcessStory } from "@/components/marketing-home/process-story";
 import { ServiceReel } from "@/components/marketing-home/service-reel";
 import { pageSeo } from "@/content/seo";
 import { marketingMetadata } from "@/lib/marketing-metadata";
@@ -79,7 +78,6 @@ export default function Home() {
           <CertificationStrip />
           <FleetPartnerSection />
           <RepairStartPoster />
-          <ProcessStory />
           <PostProcessSections />
         </main>
 

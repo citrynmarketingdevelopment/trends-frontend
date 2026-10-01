@@ -17,7 +17,6 @@ const input: ContactInput = {
   email: "customer@example.test",
   phone: "6615550101",
   service: "mechanical",
-  preferredContact: "phone",
   vehicleYear: "",
   vehicleMake: "",
   vehicleModel: "",

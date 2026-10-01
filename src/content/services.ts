@@ -35,8 +35,8 @@ export const services: readonly Service[] = [
     summary: "Body, structure, and finish. Attention to every layer of the repair.",
     introduction:
       "For collision repair in Bakersfield, bring your vehicle to Trends Collision Center on Stine Road. Our family-owned auto body shop helps you move from damage assessment to body, frame, and paint repairs with a clear plan before work begins.",
-    image: "/images/services/collision-service-hero.jpg",
-    imageAlt: "Older vehicle photographed on a city street",
+    image: "/images/Collision/Collision-Highway-desktop.webp",
+    imageAlt: "Collision-damaged sedan and pickup on a highway at sunset",
     detailImage: "/images/services/348s (8).jpg",
     detailAlt: "Technician welding a vehicle body structure in the workshop",
     featureTitle: "The finish starts beneath the surface.",
@@ -338,8 +338,8 @@ export const services: readonly Service[] = [
   },
   {
     slug: "fleet-maintenance",
-    name: "Fleet Maintenance",
-    title: "Fleet maintenance",
+    name: "Fleet Management",
+    title: "Fleet Management",
     summary:
       "Mobile, on-site fleet service and repair. We come to you and keep your operation moving.",
     introduction:
@@ -466,6 +466,7 @@ export const publicPaths = [
   "/services",
   ...services.map(({ slug }) => `/services/${slug}`),
   "/about",
+  "/process",
   "/certifications",
   "/insurance-claims",
   "/contact",

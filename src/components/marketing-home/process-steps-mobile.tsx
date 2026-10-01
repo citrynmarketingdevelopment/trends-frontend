@@ -14,7 +14,8 @@ function labelFor(phase: (typeof processPhases)[number]) {
   return stepLabels[phase.id] ?? phase.label;
 }
 
-export function ProcessStepsMobile() {
+export function ProcessStepsMobile({ headingLevel = 3 }: { headingLevel?: 2 | 3 }) {
+  const Heading = headingLevel === 2 ? "h2" : "h3";
   const [activeIndex, setActiveIndex] = useState(0);
   const activePhase = processPhases[activeIndex] ?? processPhases[0]!;
 
@@ -46,7 +47,7 @@ export function ProcessStepsMobile() {
         data-phase={activePhase.id}
       >
         <span>{labelFor(activePhase)}</span>
-        <h3>{activePhase.heading}</h3>
+        <Heading>{activePhase.heading}</Heading>
         <p>{activePhase.body}</p>
       </div>
     </section>

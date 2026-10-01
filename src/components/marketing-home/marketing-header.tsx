@@ -167,6 +167,13 @@ export function MarketingHeader() {
             About Us
           </Link>
           <Link
+            href="/process"
+            aria-current={pathname === "/process" ? "page" : undefined}
+            onClick={closeMenus}
+          >
+            Our Process
+          </Link>
+          <Link
             href="/certifications"
             aria-current={pathname === "/certifications" ? "page" : undefined}
             onClick={closeMenus}

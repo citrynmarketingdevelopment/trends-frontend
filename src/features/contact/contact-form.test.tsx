@@ -39,6 +39,8 @@ describe("contact form", () => {
     vi.stubGlobal("fetch", fetchMock);
     render(<ContactForm available initialService="mechanical" />);
     expect(screen.getByLabelText("Service *")).toHaveValue("mechanical");
+    expect(screen.queryByLabelText(/preferred/i)).not.toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "Fleet Management" })).toBeInTheDocument();
     const user = await fillInquiry();
     await user.click(screen.getByRole("button", { name: "Send inquiry" }));
     expect(

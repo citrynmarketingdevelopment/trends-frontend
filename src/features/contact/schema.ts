@@ -23,7 +23,6 @@ export const contactSchema = z.object({
     "Enter a valid phone number.",
   ),
   service: z.enum(serviceChoices),
-  preferredContact: z.enum(["email", "phone"]),
   vehicleYear: z
     .string()
     .trim()

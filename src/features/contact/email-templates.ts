@@ -21,7 +21,6 @@ export function createContactEmails(input: ContactInput) {
     ["Email", input.email],
     ["Phone", input.phone],
     ["Service", service],
-    ["Preferred contact", input.preferredContact],
     [
       "Vehicle",
       [input.vehicleYear, input.vehicleMake, input.vehicleModel].filter(Boolean).join(" ") ||

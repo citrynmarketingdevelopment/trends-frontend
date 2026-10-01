@@ -7,7 +7,8 @@ const pages = [
   ["/services/mechanical", "Auto Repair in Bakersfield"],
   ["/services/roadside", "Towing in Bakersfield"],
   ["/services/tires-alignment", "Wheel Alignment in Bakersfield"],
-  ["/services/fleet-maintenance", "Fleet Maintenance in Bakersfield"],
+  ["/services/fleet-maintenance", "Fleet Management in Bakersfield"],
+  ["/process", "Three stages. One continuous standard."],
   ["/about", "Trends Collision Center in Bakersfield"],
   ["/certifications", "Credentials behind the repair."],
   ["/contact", "Tell us what brings you in."],
@@ -15,6 +16,11 @@ const pages = [
 
 test("service heroes select the requested desktop and mobile photography", async ({ page }) => {
   const heroImages = [
+    {
+      path: "/services/collision",
+      desktop: "/images/Collision/Collision-Highway-desktop.webp",
+      mobile: "/images/Collision/Collision-Highway-desktop.webp",
+    },
     {
       path: "/services/roadside",
       desktop: "/images/Fleet/roadside-towing-hero.webp",
@@ -92,6 +98,9 @@ test("premium materials moved from home to Collision and About uses the requeste
   await page.goto("/services/collision");
   await expect(
     page.getByRole("heading", { level: 2, name: "Quality starts with what we use." }),
+  ).toBeVisible();
+  await expect(
+    page.locator('#materials img[alt="Glasurit automotive refinish paint"]'),
   ).toBeVisible();
 
   await page.goto("/about");
@@ -239,6 +248,12 @@ test("service feature uses one full background image and service cards share the
     }),
   });
   await expect(capabilities.locator("article")).toHaveCount(4);
+  const imageSources = await capabilities
+    .locator("article img")
+    .evaluateAll((images) =>
+      images.map((image) => new URL((image as HTMLImageElement).src).searchParams.get("url")),
+    );
+  expect(new Set(imageSources).size).toBe(4);
   for (const number of ["01", "02", "03", "04"]) {
     await expect(capabilities.getByText(number, { exact: true })).toBeVisible();
   }

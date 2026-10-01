@@ -15,7 +15,6 @@ const valid = {
   email: "customer@example.test",
   phone: "6615550101",
   service: "collision",
-  preferredContact: "email",
   vehicleYear: "2022",
   vehicleMake: "Toyota",
   vehicleModel: "Camry",

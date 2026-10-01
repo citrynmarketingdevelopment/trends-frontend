@@ -289,7 +289,9 @@ function viewportTierFor(width: number): ViewportTier {
   return "desktop";
 }
 
-export function ProcessStory() {
+export function ProcessStory({ headingLevel = 2 }: { headingLevel?: 1 | 2 }) {
+  const Heading = headingLevel === 1 ? "h1" : "h2";
+  const PhaseHeading = headingLevel === 1 ? "h2" : "h3";
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef(0);
@@ -562,20 +564,20 @@ export function ProcessStory() {
 
         <div className={styles.processHeading}>
           <span>Vehicle process study</span>
-          <h2 id="process-heading">
+          <Heading id="process-heading">
             <span>Three stages.</span>{" "}
             <span className={styles.outlineText}>One continuous standard.</span>
-          </h2>
+          </Heading>
         </div>
 
         <div className={styles.phaseNarrative} aria-live="polite">
           {processPhases.map((item) => (
             <article key={item.id} data-active={phase === item.id || undefined}>
               <span>{item.label}</span>
-              <h3 aria-label={item.heading}>
+              <PhaseHeading aria-label={item.heading}>
                 <span>{phaseHeadingLines[item.id][0]}</span>{" "}
                 <span className={styles.outlineText}>{phaseHeadingLines[item.id][1]}</span>
-              </h3>
+              </PhaseHeading>
               <p>{item.body}</p>
             </article>
           ))}
@@ -669,13 +671,13 @@ export function ProcessStory() {
         </div>
       </div>
 
-      <ProcessStepsMobile />
+      <ProcessStepsMobile headingLevel={headingLevel === 1 ? 2 : 3} />
 
       <div className={styles.phaseCards} data-process-phase-cards>
         {processPhases.map((item) => (
           <article key={item.id}>
             <span>{item.label}</span>
-            <h3>{item.heading}</h3>
+            <PhaseHeading>{item.heading}</PhaseHeading>
             <p>{item.body}</p>
           </article>
         ))}

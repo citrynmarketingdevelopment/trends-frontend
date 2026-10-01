@@ -46,14 +46,6 @@ vi.mock("@/components/marketing-home/hero-logo-3d", () => ({
   HeroLogo3D: () => <div data-testid="hero-logo-enhancement" aria-hidden="true" />,
 }));
 
-vi.mock("@/components/marketing-home/process-story", () => ({
-  ProcessStory: () => (
-    <section id="process" aria-labelledby="process-heading">
-      <h2 id="process-heading">Three stages. One continuous standard.</h2>
-    </section>
-  ),
-}));
-
 describe("Home", () => {
   it("server-renders the complete marketing shell around optional 3D enhancements", () => {
     render(<Home />);
@@ -85,7 +77,7 @@ describe("Home", () => {
       "Mechanical",
       "Roadside",
       "Tires & Alignment",
-      "Fleet Maintenance",
+      "Fleet Management",
     ]) {
       expect(within(main).getByRole("heading", { level: 3, name: service })).toBeInTheDocument();
     }
@@ -158,11 +150,16 @@ describe("Home", () => {
       main.querySelector('img[src="/certifications/training-industry-03.webp"]'),
     ).not.toBeNull();
     expect(
-      within(main).getByRole("heading", {
+      within(main).queryByRole("heading", {
         level: 2,
         name: "Three stages. One continuous standard.",
       }),
-    ).toBeInTheDocument();
+    ).not.toBeInTheDocument();
+    expect(
+      screen
+        .getByRole("navigation", { name: "Primary navigation" })
+        .querySelector('a[href="/process"]'),
+    ).toHaveTextContent("Our Process");
     expect(
       within(main).queryByRole("heading", { name: "Vehicle Repair Visibility. Zero Guesswork." }),
     ).not.toBeInTheDocument();
@@ -204,14 +201,8 @@ describe("Home", () => {
         name: "The Whole Repair. Your Local Collision Experts.",
       })
       .closest("section");
-    const process = within(main)
-      .getByRole("heading", {
-        level: 2,
-        name: "Three stages. One continuous standard.",
-      })
-      .closest("section");
     const fleet = within(main)
-      .getByRole("heading", { level: 2, name: "We come to you." })
+      .getByRole("heading", { level: 2, name: "Fleet Management" })
       .closest("section");
     const questions = within(main)
       .getByRole("heading", { level: 2, name: "Questions are part of the process." })
@@ -221,7 +212,6 @@ describe("Home", () => {
       .closest("section");
     expect(hero).not.toBeNull();
     expect(reel).not.toBeNull();
-    expect(process).not.toBeNull();
     expect(fleet).not.toBeNull();
     expect(questions).not.toBeNull();
     expect(start).not.toBeNull();
@@ -243,9 +233,6 @@ describe("Home", () => {
     expect(reel!.nextElementSibling).toBe(certStrip);
     expect(certStrip!.nextElementSibling).toBe(fleet);
     expect(fleet!.nextElementSibling).toBe(start);
-    expect(start!.compareDocumentPosition(process!) & Node.DOCUMENT_POSITION_FOLLOWING).toBe(
-      Node.DOCUMENT_POSITION_FOLLOWING,
-    );
-    expect(process!.nextElementSibling).toBe(questions);
+    expect(start!.nextElementSibling).toBe(questions);
   });
 });

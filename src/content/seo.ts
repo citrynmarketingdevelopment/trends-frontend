@@ -12,7 +12,7 @@ export const pageSeo = {
   services: {
     title: "Auto Services in Bakersfield | Trends Collision Center",
     description:
-      "Explore auto services in Bakersfield at Trends: collision repair, mechanical repairs, towing, tires and wheel alignment, and commercial fleet maintenance.",
+      "Explore auto services in Bakersfield at Trends: collision repair, mechanical repairs, towing, tires and wheel alignment, and commercial fleet management.",
     heading: "Auto Services in Bakersfield",
   },
   about: {
@@ -38,6 +38,12 @@ export const pageSeo = {
     description:
       "See the OEM certifications, I-CAR Gold Class training, and repair network credentials behind every repair at Trends Collision Center in Bakersfield.",
     heading: "Credentials behind the repair.",
+  },
+  process: {
+    title: "Our Repair Process in Bakersfield | Trends Collision Center",
+    description:
+      "Explore the three stages of vehicle repair at Trends Collision Center in Bakersfield: assess the damage, restore the vehicle, and reveal the finished repair.",
+    heading: "Three stages. One continuous standard.",
   },
   software: {
     title: "Vehicle Repair Visibility | Trends Collision Center",
@@ -84,10 +90,10 @@ export const serviceSeo: Record<ServiceSlug, ServiceSeo> = {
     servicesHeading: "Tire services, wheels & alignment",
   },
   "fleet-maintenance": {
-    heading: "Fleet Maintenance in Bakersfield",
-    title: "Fleet Maintenance in Bakersfield | Trends Collision Center",
+    heading: "Fleet Management in Bakersfield",
+    title: "Fleet Management in Bakersfield | Trends Collision Center",
     description:
-      "Mobile, on-site fleet maintenance in Bakersfield. Trends works with all types of fleets for collision, mechanical, tires, brakes, A/C, and towing.",
+      "Mobile, on-site fleet management in Bakersfield. Trends works with all types of fleets for collision, mechanical, tires, brakes, A/C, and towing.",
     servicesHeading: "On-site fleet service & repair",
   },
 };

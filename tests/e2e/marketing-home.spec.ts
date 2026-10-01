@@ -147,7 +147,7 @@ test("mobile process shows one passive car before unlocking 3D exploration", asy
     await carRequestGate;
     await route.continue();
   });
-  await page.goto("/");
+  await page.goto("/process");
 
   const process = page.locator("#process");
   await process.evaluate((element) => element.scrollIntoView({ block: "start" }));
@@ -176,7 +176,7 @@ test("mobile process shows one passive car before unlocking 3D exploration", asy
 test("process layout follows viewport changes across the mobile breakpoint", async ({ page }) => {
   await disableWebGL(page);
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto("/");
+  await page.goto("/process");
 
   const process = page.locator("#process");
   await expect(process).toHaveAttribute("data-viewport-tier", "desktop");
@@ -280,9 +280,11 @@ test("service imagery and homepage section order match the current launch layout
   await expect(page.locator('section[aria-labelledby="repair-services-heading"]')).toHaveCount(0);
 
   const sections = page.locator("#main-content > section");
-  await expect(sections.nth(1)).toHaveAttribute("aria-labelledby", "cert-strip-heading");
-  await expect(sections.nth(1).locator("img")).toHaveCount(4);
-  await expect(sections.nth(3)).toHaveAttribute("id", "fleet");
+  await expect(sections.nth(3)).toHaveAttribute("aria-labelledby", "cert-strip-heading");
+  await expect(sections.nth(3).locator("img")).toHaveCount(5);
+  await expect(sections.nth(4)).toHaveAttribute("id", "fleet");
+  await expect(page.locator("#fleet > div > div > p").first()).toHaveText("We come to you.");
+  await expect(page.getByRole("heading", { level: 2, name: "Fleet Management" })).toBeVisible();
   await expect(page.locator("#quality")).toHaveCount(0);
   await expect(page.locator("#certifications")).toHaveCount(0);
   const repairCtaIndex = await sections.evaluateAll((items) =>
@@ -291,8 +293,12 @@ test("service imagery and homepage section order match the current launch layout
   const processIndex = await sections.evaluateAll((items) =>
     items.findIndex((item) => item.id === "process"),
   );
-  expect(repairCtaIndex).toBe(4);
-  expect(processIndex).toBe(repairCtaIndex + 1);
+  expect(repairCtaIndex).toBe(5);
+  expect(processIndex).toBe(-1);
+  await expect(page.getByRole("link", { name: "Our Process" }).first()).toHaveAttribute(
+    "href",
+    "/process",
+  );
   await expect(
     page.getByRole("heading", { level: 2, name: "Quality starts with what we use." }),
   ).toHaveCount(0);
@@ -336,7 +342,7 @@ test("the car request begins near the process and the live scene becomes ready",
   const carResponse = page.waitForResponse(
     (response) => new URL(response.url()).pathname === CAR_MODEL_PATH,
   );
-  await page.goto("/");
+  await page.goto("/process");
   const process = page.locator("#process");
   await process.scrollIntoViewIfNeeded();
   expect((await carResponse).ok()).toBe(true);
@@ -344,9 +350,7 @@ test("the car request begins near the process and the live scene becomes ready",
   await expect(page.locator("canvas")).toHaveCount(1);
 });
 
-test("returning to the hero restores its scene without showing the loader again", async ({
-  page,
-}) => {
+test("the process page links back to the homepage and its hero", async ({ page }) => {
   test.slow();
   await useCapableDesktop(page);
   await page.route(`**${CAR_MODEL_PATH}`, (route) =>
@@ -355,32 +359,18 @@ test("returning to the hero restores its scene without showing the loader again"
       contentType: "model/gltf-binary",
     }),
   );
-  await page.goto("/");
-
-  const heroScene = page.locator("[data-attempt]");
-  const loader = heroScene.locator("[data-hero-loader]");
-  await expect(heroScene).toHaveAttribute("data-ready", "true", { timeout: 20_000 });
-  await expect(heroScene).toHaveAttribute("data-presented", "true");
-
-  const process = page.locator("#process");
-  const processTop = await process.evaluate(
-    (element) => element.getBoundingClientRect().top + window.scrollY,
-  );
-  const viewportHeight = await page.evaluate(() => window.innerHeight);
-  await page.evaluate(
-    (top) => window.scrollTo({ top, behavior: "instant" }),
-    Math.max(1, processTop - viewportHeight * 1.15),
-  );
-  await expect(process).toHaveAttribute("data-enhanced", "true");
+  await page.goto("/process");
+  await expect(page.locator("#process")).toHaveAttribute("data-enhanced", "true");
   await expect(page.locator('[data-lifecycle="ready"]')).toBeVisible({ timeout: 30_000 });
-  await expect(page.locator("canvas")).toHaveCount(1);
-
-  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
-  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-  await expect(heroScene).not.toHaveAttribute("data-loading", "true");
-  await expect(loader).toHaveCSS("opacity", "0");
-  await expect(heroScene).toHaveAttribute("data-ready", "true", { timeout: 20_000 });
-  await expect(heroScene).toHaveAttribute("data-rotation", "rotating");
+  await page
+    .getByRole("navigation", { name: "Primary navigation" })
+    .getByRole("link", { name: "Home", exact: true })
+    .click();
+  await expect(page).toHaveURL(/\/$/);
+  await expect(page.locator("#process")).toHaveCount(0);
+  await expect(page.locator("[data-attempt]")).toHaveAttribute("data-ready", "true", {
+    timeout: 20_000,
+  });
   await expect(page.locator("canvas")).toHaveCount(1);
 });
 
@@ -393,7 +383,7 @@ test("desktop process follows natural scrolling in both directions", async ({ pa
       contentType: "model/gltf-binary",
     }),
   );
-  await page.goto("/");
+  await page.goto("/process");
   const process = page.locator("#process");
   const processTop = await process.evaluate(
     (element) => element.getBoundingClientRect().top + window.scrollY,
@@ -466,8 +456,12 @@ test("reduced motion and failed WebGL retain the readable static experience", as
       .locator("[data-dealer-logo-track]")
       .evaluate((element) => getComputedStyle(element).animationName),
   ).toBe("none");
+  await page.goto("/process");
   await expect(
-    page.getByRole("heading", { level: 3, name: "See the whole picture." }).last(),
+    page.getByRole("heading", { level: 1, name: "Three stages. One continuous standard." }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { level: 2, name: "See the whole picture." }).last(),
   ).toBeVisible();
   await expect(page.getByText("The complete process remains below.", { exact: false })).toHaveCount(
     0,
@@ -511,12 +505,11 @@ test.describe("without JavaScript", () => {
     const heroDisplayTitle = page.locator("[data-hero-display-title]");
     await expect(heroDisplayTitle.locator("span").nth(0)).toHaveText("Trends");
     await expect(heroDisplayTitle.locator("span").nth(1)).toHaveText("Collision Center");
-    await expect(
-      page.getByRole("heading", {
-        level: 2,
-        name: "Vehicle Repair Visibility. Zero Guesswork.",
-      }),
-    ).toBeVisible();
+    await expect(page.locator("#process")).toHaveCount(0);
+    await expect(page.getByRole("link", { name: "Our Process" }).last()).toHaveAttribute(
+      "href",
+      "/process",
+    );
     await expect(
       page.getByRole("heading", { level: 2, name: "Questions are part of the process." }),
     ).toBeVisible();

@@ -482,7 +482,7 @@
   text-transform: uppercase;
 }
 
-.processHeading h2 {
+.processHeading :is(h1, h2) {
   margin-top: 0.45rem;
   font-size: clamp(1.55rem, 2.8vw, 2.6rem);
   font-weight: 700;
@@ -491,11 +491,11 @@
   text-transform: uppercase;
 }
 
-.processHeading h2 > span {
+.processHeading :is(h1, h2) > span {
   display: block;
 }
 
-.processHeading h2 .outlineText {
+.processHeading :is(h1, h2) .outlineText {
   -webkit-text-stroke-width: 1px;
   text-stroke-width: 1px;
 }
@@ -537,7 +537,7 @@
   transform: translateX(-50%);
 }
 
-.phaseNarrative h3 {
+.phaseNarrative :is(h2, h3) {
   margin-top: 0.8rem;
   font-size: clamp(3.4rem, 5.2vw, 5.9rem);
   font-weight: 900;
@@ -546,11 +546,11 @@
   text-transform: uppercase;
 }
 
-.phaseNarrative h3 > span {
+.phaseNarrative :is(h2, h3) > span {
   display: block;
 }
 
-.phaseNarrative h3 .outlineText {
+.phaseNarrative :is(h2, h3) .outlineText {
   -webkit-text-stroke-width: 1px;
   text-stroke-width: 1px;
 }
@@ -869,7 +869,7 @@
   text-transform: uppercase;
 }
 
-.mobileStepDetail h3 {
+.mobileStepDetail :is(h2, h3) {
   margin: 0.85rem 0 0;
   font-size: 1.9rem;
   font-weight: 800;
@@ -913,7 +913,7 @@
   text-transform: uppercase;
 }
 
-.phaseCards h3 {
+.phaseCards :is(h2, h3) {
   margin-top: 5rem;
   font-size: clamp(2.4rem, 4vw, 4.5rem);
   font-weight: 800;
@@ -1608,6 +1608,14 @@
 
 .materialsCopy h2 ~ p + p {
   margin-top: 1.5rem;
+}
+
+.materialsLogo {
+  display: block;
+  width: 11rem;
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 1.75rem;
 }
 
 .materialsFacts {
@@ -2568,11 +2576,11 @@
     font-size: 0.8rem;
   }
 
-  .processHeading h2 {
+  .processHeading :is(h1, h2) {
     font-size: 3.1rem;
   }
 
-  .processHeading h2 .outlineText {
+  .processHeading :is(h1, h2) .outlineText {
     -webkit-text-stroke-width: 2px;
     text-stroke-width: 2px;
   }
@@ -2637,7 +2645,7 @@
     min-height: 17rem;
   }
 
-  .phaseCards h3 {
+  .phaseCards :is(h2, h3) {
     margin-top: 4rem;
   }
 

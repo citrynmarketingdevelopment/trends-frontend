@@ -42,7 +42,6 @@ export function ContactForm({
       email: "",
       phone: "",
       service: initialService,
-      preferredContact: "email",
       vehicleYear: "",
       vehicleMake: "",
       vehicleModel: "",
@@ -183,13 +182,6 @@ export function ContactForm({
                   type: "tel",
                   autoComplete: "tel",
                 })}
-                <div className={styles.field}>
-                  <label htmlFor="preferredContact">Preferred reply</label>
-                  <select id="preferredContact" {...register("preferredContact")}>
-                    <option value="email">Email</option>
-                    <option value="phone">Phone call</option>
-                  </select>
-                </div>
               </div>
             </fieldset>
             <fieldset className={styles.formGroup} disabled={isSubmitting}>

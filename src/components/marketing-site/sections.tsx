@@ -181,9 +181,9 @@ export function ServiceCapabilities({ service }: { service: Service }) {
       "/images/Collision/IMG_4714.jpeg",
     ],
     mechanical: [
-      service.detailImage,
       service.image,
-      "/images/services/348s (7).jpg",
+      "/images/Fleet/IMG_4701.jpeg",
+      "/images/Fleet/IMG_4700.jpeg",
       service.detailImage,
     ],
     roadside: [

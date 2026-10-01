@@ -174,8 +174,8 @@ export function FleetPartnerSection() {
     <section className={styles.fleetSection} id="fleet" aria-labelledby="fleet-heading">
       <div className={styles.fleetInner}>
         <div className={styles.fleetCopy}>
-          <p>Fleet services</p>
-          <h2 id="fleet-heading">We come to you.</h2>
+          <p>We come to you.</p>
+          <h2 id="fleet-heading">Fleet Management</h2>
           <p>
             Trends Collision Center works with all types of fleet companies and offers much more
             than collision repair. We&apos;re a resource for ongoing maintenance, repairs, and
@@ -191,7 +191,7 @@ export function FleetPartnerSection() {
           </p>
           <div className={styles.fleetActions}>
             <Link className={styles.primaryButton} href="/services/fleet-maintenance">
-              FLEET SERVICES
+              FLEET MANAGEMENT
             </Link>
             <Link className={styles.secondaryButton} href="/contact?service=fleet-maintenance">
               TALK TO OUR FLEET TEAM
@@ -239,20 +239,30 @@ export function PremiumMaterialsSection() {
             deserve a beautiful, long-lasting finish.
           </p>
         </div>
-        <dl className={styles.materialsFacts}>
-          <div>
-            <dt>Refinish paint</dt>
-            <dd>Glasurit, over 100 years of history</dd>
-          </div>
-          <div>
-            <dt>Known for</dt>
-            <dd>Exceptional durability, gloss, and manufacturer approvals</dd>
-          </div>
-          <div>
-            <dt>Paint workmanship</dt>
-            <dd>Limited Lifetime Warranty</dd>
-          </div>
-        </dl>
+        <div>
+          <Image
+            src="/images/Collision/image.png"
+            alt="Glasurit automotive refinish paint"
+            width={685}
+            height={691}
+            sizes="176px"
+            className={styles.materialsLogo}
+          />
+          <dl className={styles.materialsFacts}>
+            <div>
+              <dt>Refinish paint</dt>
+              <dd>Glasurit, over 100 years of history</dd>
+            </div>
+            <div>
+              <dt>Known for</dt>
+              <dd>Exceptional durability, gloss, and manufacturer approvals</dd>
+            </div>
+            <div>
+              <dt>Paint workmanship</dt>
+              <dd>Limited Lifetime Warranty</dd>
+            </div>
+          </dl>
+        </div>
       </div>
     </section>
   );

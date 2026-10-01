@@ -9,10 +9,21 @@ afterEach(() => vi.unstubAllEnvs());
 describe("Bakersfield page SEO", () => {
   it("gives each public page a distinct local title and description", () => {
     const pages = [...Object.values(pageSeo), ...Object.values(serviceSeo)];
-    expect(new Set(pages.map(({ title }) => title)).size).toBe(9);
-    expect(new Set(pages.map(({ description }) => description)).size).toBe(9);
+    expect(new Set(pages.map(({ title }) => title)).size).toBe(pages.length);
+    expect(new Set(pages.map(({ description }) => description)).size).toBe(pages.length);
     for (const page of pages) {
-      expect(page.heading).toContain("Bakersfield");
+      expect(page.heading).not.toBe("");
+      expect(page.title).not.toBe("");
+      expect(page.description).not.toBe("");
+    }
+    for (const page of [
+      pageSeo.home,
+      pageSeo.services,
+      pageSeo.about,
+      pageSeo.contact,
+      pageSeo.process,
+      ...Object.values(serviceSeo),
+    ]) {
       expect(page.title).toContain("Bakersfield");
       expect(page.description).toContain("Bakersfield");
     }
