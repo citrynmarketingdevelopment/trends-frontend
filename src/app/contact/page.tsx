@@ -52,9 +52,11 @@ export default async function ContactPage({
             <Link className={styles.phoneLink} href={business.phoneHref}>
               {business.phone}
             </Link>
-            <p>
-              <Link href={`mailto:${business.email}`}>{business.email}</Link>
-            </p>
+            {business.contactEmails.map((email) => (
+              <p key={email}>
+                <Link href={`mailto:${email}`}>{email}</Link>
+              </p>
+            ))}
           </div>
           <div>
             <h2>Find Trends</h2>

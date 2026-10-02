@@ -87,7 +87,11 @@ export function MarketingFooter() {
             {business.locality}
           </Link>
           <Link href={business.phoneHref}>{business.phone}</Link>
-          <Link href={`mailto:${business.email}`}>{business.email}</Link>
+          {business.contactEmails.map((email) => (
+            <Link key={email} href={`mailto:${email}`}>
+              {email}
+            </Link>
+          ))}
           <p>
             {business.hours}
             <br />
