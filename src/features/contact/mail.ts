@@ -5,6 +5,9 @@ import { business } from "@/content/business";
 import { createContactEmails } from "./email-templates";
 import type { ContactInput } from "./schema";
 
+// SMTP.com signs mail for citryn.com; the Trends domain is not authenticated there yet.
+const contactSender = "contactforms@citryn.com";
+
 const contactRecipients = [
   "info@trendsautocollision.com",
   "Paulbarelatb@gmail.com",
@@ -32,7 +35,7 @@ function readMailConfig() {
   return mailConfig.safeParse({
     apiKey: process.env.SMTP_API,
     channel: process.env.SMTP_CHANNEL,
-    from: process.env.CONTACT_FROM_EMAIL,
+    from: contactSender,
   });
 }
 

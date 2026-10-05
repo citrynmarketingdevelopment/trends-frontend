@@ -25,7 +25,7 @@ beforeEach(() => {
   for (const [name, value] of Object.entries({
     SMTP_API: "test-api-key",
     SMTP_CHANNEL: "test-channel",
-    CONTACT_FROM_EMAIL: "sender@example.test",
+    CONTACT_FROM_EMAIL: "info@trendsautocollision.com",
   }))
     vi.stubEnv(name, value);
 });
@@ -41,7 +41,7 @@ describe("contact email", () => {
     vi.stubEnv("SMTP_API", "");
     expect(isContactEmailConfigured()).toBe(false);
   });
-  it("sends the shop inquiry first, then the acknowledgment with a fixed sender", async () => {
+  it("uses the authenticated sender despite the legacy From environment value", async () => {
     const send = vi.fn().mockResolvedValue({
       ok: true,
       json: async () => ({ status: "success", data: { msg_id: "accepted-id" } }),
@@ -67,7 +67,7 @@ describe("contact email", () => {
         ],
       },
       originator: {
-        from: { address: "sender@example.test" },
+        from: { address: "contactforms@citryn.com" },
         reply_to: { address: input.email },
       },
       body: { parts: [{ type: "text/plain" }, { type: "text/html" }] },
