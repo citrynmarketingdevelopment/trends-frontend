@@ -108,13 +108,13 @@ Configure `NEXT_PUBLIC_SITE_ORIGIN` at production build time to enable canonical
 
 ### Activate contact emails
 
-Contact delivery runs in the Next.js Node server and is independent of the future repair-workflow backend. Add `SMTP_HOST`, `SMTP_PORT` (587 for STARTTLS or 465 for TLS), `SMTP_USER`, `SMTP_PASSWORD`, `CONTACT_FROM_EMAIL`, and `CONTACT_TO_EMAIL` from `.env.example` to the deployment's server environment, then restart/redeploy. Use a sender address authorized by your SMTP provider; set the recipient to the shop inbox that should receive inquiries. None of these values belong in `NEXT_PUBLIC_` variables.
+Contact delivery runs in the Next.js Node server and is independent of the future repair-workflow backend. Set `SMTP_API` (the SMTP.com API key), `SMTP_CHANNEL` (the active SMTP.com sending channel name), `CONTACT_FROM_EMAIL`, and `CONTACT_TO_EMAIL` in the deployment's server environment, then restart/redeploy. Use a sender address authorized by SMTP.com; set the recipient to the shop inbox that should receive inquiries. SMTP username, password, host, and port are not needed. None of these values belong in `NEXT_PUBLIC_` variables.
 
 With incomplete configuration, the form displays the shop's phone/email and disables online submission. It never simulates a successful delivery. Once configured, `POST /api/contact` validates the inquiry, sends the shop notification, then sends the customer a branded HTML/plain-text acknowledgment with next steps. If only the acknowledgment fails, the customer sees that the shop received the inquiry and is told not to resubmit. Photos are requested during follow-up; there are no uploads, database records, automatic delivery retries, or SMS notifications in this flow.
 
-The endpoint checks the request origin, limits body size, validates and escapes content, and uses a honeypot plus bounded per-process request limits. For multi-instance hosting, configure a shared/edge rate limit before enabling public delivery. SMTP logs record failures without customer message contents or credentials. Verify both inboxes with a controlled test after configuration; automated tests use mocks and send no real email.
+The endpoint checks the request origin, limits body size, validates and escapes content, and uses a honeypot plus bounded per-process request limits. For multi-instance hosting, configure a shared/edge rate limit before enabling public delivery. Failure logs omit customer message contents and the API key. Verify both inboxes with a controlled test after configuration; automated tests use mocks and send no real email.
 
-Email templates live in `src/features/contact/email-templates.ts`. The SMTP transport lives in `src/features/contact/mail.ts`. Customer emails describe inspection and follow-up without promising a booked appointment or a fixed turnaround time.
+Email templates live in `src/features/contact/email-templates.ts`. The SMTP.com API request lives in `src/features/contact/mail.ts`. Customer emails describe inspection and follow-up without promising a booked appointment or a fixed turnaround time.
 
 `NEXT_PUBLIC_SITE_ORIGIN` must be the approved bare HTTPS origin in production. Until it is supplied, canonical and Open Graph URLs are omitted, the sitemap stays empty, and robots deny indexing so an incomplete preview cannot be mistaken for a launch artifact.
 

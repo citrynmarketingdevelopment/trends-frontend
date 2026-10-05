@@ -74,7 +74,7 @@ export async function POST(request: Request) {
     const result = await sendContactEmails(parsed.data);
     return respond({ ok: true, ...result }, 200);
   } catch {
-    // Do not put customer details or SMTP credentials in logs.
+    // Do not put customer details or the API key in logs.
     console.error("Contact inquiry email could not be delivered to the shop.");
     return respond(
       {

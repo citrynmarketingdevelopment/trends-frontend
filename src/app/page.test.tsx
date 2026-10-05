@@ -159,7 +159,7 @@ describe("Home", () => {
       screen
         .getByRole("navigation", { name: "Primary navigation" })
         .querySelector('a[href="/process"]'),
-    ).toHaveTextContent("Our Process");
+    ).toBeNull();
     expect(
       within(main).queryByRole("heading", { name: "Vehicle Repair Visibility. Zero Guesswork." }),
     ).not.toBeInTheDocument();

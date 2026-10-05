@@ -1,12 +1,6 @@
 // @vitest-environment node
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 vi.mock("server-only", () => ({}));
-const { sendMail, close, createTransport } = vi.hoisted(() => ({
-  sendMail: vi.fn(),
-  close: vi.fn(),
-  createTransport: vi.fn(),
-}));
-vi.mock("nodemailer", () => ({ default: { createTransport } }));
 import { isContactEmailConfigured, sendContactEmails } from "./mail";
 import { createContactEmails } from "./email-templates";
 import { allowContactAttempt } from "./rate-limit";
@@ -28,12 +22,9 @@ const input: ContactInput = {
 };
 beforeEach(() => {
   vi.clearAllMocks();
-  createTransport.mockReturnValue({ sendMail, close });
   for (const [name, value] of Object.entries({
-    SMTP_HOST: "smtp.example.test",
-    SMTP_PORT: "587",
-    SMTP_USER: "test",
-    SMTP_PASSWORD: "test",
+    SMTP_API: "test-api-key",
+    SMTP_CHANNEL: "test-channel",
     CONTACT_FROM_EMAIL: "sender@example.test",
     CONTACT_TO_EMAIL: "shop@example.test",
   }))
@@ -41,46 +32,59 @@ beforeEach(() => {
 });
 afterEach(() => {
   vi.unstubAllEnvs();
+  vi.unstubAllGlobals();
 });
 
 describe("contact email", () => {
   it("requires complete server-only configuration", () => {
     expect(isContactEmailConfigured()).toBe(true);
-    vi.stubEnv("SMTP_PASSWORD", "");
+    vi.stubEnv("SMTP_API", "");
     expect(isContactEmailConfigured()).toBe(false);
   });
   it("sends the shop inquiry first, then the acknowledgment with a fixed sender", async () => {
-    sendMail.mockResolvedValue({ accepted: ["recipient@example.test"] });
-    expect(await sendContactEmails(input)).toEqual({ confirmationSent: true });
-    expect(sendMail.mock.calls[0]?.[0]).toMatchObject({
-      to: "shop@example.test",
-      replyTo: input.email,
-      from: { address: "sender@example.test" },
+    const send = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ status: "success", data: { msg_id: "accepted-id" } }),
     });
-    expect(sendMail.mock.calls[1]?.[0]).toMatchObject({ to: input.email });
-    expect(createTransport).toHaveBeenCalledWith(
-      expect.objectContaining({
-        requireTLS: true,
-        secure: false,
-        disableFileAccess: true,
-        disableUrlAccess: true,
-      }),
-    );
-    expect(close).toHaveBeenCalled();
+    vi.stubGlobal("fetch", send);
+    expect(await sendContactEmails(input)).toEqual({ confirmationSent: true });
+    expect(send).toHaveBeenCalledTimes(2);
+    expect(send.mock.calls[0]?.[0]).toBe("https://api.smtp.com/v4/messages");
+    expect(send.mock.calls[0]?.[1]).toMatchObject({
+      method: "POST",
+      headers: { "X-SMTPCOM-API": "test-api-key" },
+    });
+    const inquiry = JSON.parse(send.mock.calls[0]?.[1].body as string);
+    const acknowledgment = JSON.parse(send.mock.calls[1]?.[1].body as string);
+    expect(inquiry).toMatchObject({
+      channel: "test-channel",
+      recipients: { to: [{ address: "shop@example.test" }] },
+      originator: {
+        from: { address: "sender@example.test" },
+        reply_to: { address: input.email },
+      },
+      body: { parts: [{ type: "text/plain" }, { type: "text/html" }] },
+    });
+    expect(acknowledgment.recipients.to).toEqual([{ address: input.email }]);
   });
   it("never sends an acknowledgment if the shop rejects the email", async () => {
-    sendMail.mockResolvedValue({ accepted: [] });
-    await expect(sendContactEmails(input)).rejects.toThrow("SHOP_EMAIL_REJECTED");
-    expect(sendMail).toHaveBeenCalledTimes(1);
-    expect(close).toHaveBeenCalled();
+    const send = vi.fn().mockResolvedValue({ ok: false });
+    vi.stubGlobal("fetch", send);
+    await expect(sendContactEmails(input)).rejects.toThrow("CONTACT_API_REJECTED");
+    expect(send).toHaveBeenCalledTimes(1);
   });
   it("does not resubmit an inquiry after the acknowledgment fails", async () => {
     const log = vi.spyOn(console, "error").mockImplementation(() => {});
-    sendMail
-      .mockResolvedValueOnce({ accepted: ["shop@example.test"] })
-      .mockRejectedValueOnce(new Error("SMTP failed"));
+    const send = vi
+      .fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ status: "success", data: { msg_id: "accepted-id" } }),
+      })
+      .mockRejectedValueOnce(new Error("API failed"));
+    vi.stubGlobal("fetch", send);
     expect(await sendContactEmails(input)).toEqual({ confirmationSent: false });
-    expect(sendMail).toHaveBeenCalledTimes(2);
+    expect(send).toHaveBeenCalledTimes(2);
     log.mockRestore();
   });
   it("escapes HTML and keeps freeform message content out of customer emails", () => {
