@@ -75,9 +75,32 @@ describe("contact email", () => {
     expect(acknowledgment.recipients.to).toEqual([{ address: input.email }]);
   });
   it("never sends an acknowledgment if the shop rejects the email", async () => {
-    const send = vi.fn().mockResolvedValue({ ok: false });
+    const send = vi.fn().mockResolvedValue({ ok: false, status: 400 });
     vi.stubGlobal("fetch", send);
-    await expect(sendContactEmails(input)).rejects.toThrow("CONTACT_API_REJECTED");
+    await expect(sendContactEmails(input)).rejects.toThrow("CONTACT_API_REJECTED_400");
+    expect(send).toHaveBeenCalledTimes(1);
+  });
+  it("recognizes SMTP.com's live acceptance message and sends the customer acknowledgment", async () => {
+    const send = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        status: "success",
+        data: { message: "accepted, msg_id: 0b729cfa-bd94-40f6-b7ef-d38b27c148b7" },
+      }),
+    });
+    vi.stubGlobal("fetch", send);
+    expect(await sendContactEmails(input)).toEqual({ confirmationSent: true });
+    expect(send).toHaveBeenCalledTimes(2);
+  });
+  it.each([
+    { status: "error", data: { message: "accepted, msg_id: test-id" } },
+    { status: "success", data: { message: "accepted" } },
+    { status: "success", data: { message: "accepted, msg_id: " } },
+    { status: "success", data: { msg_id: " " } },
+  ])("does not claim delivery without a successful acceptance ID: %j", async (result) => {
+    const send = vi.fn().mockResolvedValue({ ok: true, json: async () => result });
+    vi.stubGlobal("fetch", send);
+    await expect(sendContactEmails(input)).rejects.toThrow("CONTACT_API_NOT_ACCEPTED");
     expect(send).toHaveBeenCalledTimes(1);
   });
   it("does not resubmit an inquiry after the acknowledgment fails", async () => {

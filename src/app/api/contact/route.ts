@@ -73,9 +73,17 @@ export async function POST(request: Request) {
   try {
     const result = await sendContactEmails(parsed.data);
     return respond({ ok: true, ...result }, 200);
-  } catch {
+  } catch (error) {
     // Do not put customer details or the API key in logs.
-    console.error("Contact inquiry email could not be delivered to the shop.");
+    console.error("Contact inquiry email could not be delivered to the shop.", {
+      reason:
+        error instanceof Error &&
+        /^CONTACT_(?:API_(?:REJECTED_\d{3}|UNAVAILABLE|INVALID_RESPONSE|NOT_ACCEPTED)|NOT_CONFIGURED)$/.test(
+          error.message,
+        )
+          ? error.message
+          : "CONTACT_DELIVERY_FAILED",
+    });
     return respond(
       {
         ok: false,

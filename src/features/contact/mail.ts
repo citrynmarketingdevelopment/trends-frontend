@@ -18,6 +18,16 @@ const mailConfig = z.object({
   from: z.email(),
 });
 
+const smtpAcceptance = z.object({
+  status: z.literal("success"),
+  data: z.union([
+    z.object({ msg_id: z.string().trim().min(1) }),
+    z.object({
+      message: z.string().regex(/^accepted,\s*msg_id:\s*[a-zA-Z0-9][a-zA-Z0-9._-]*\s*$/i),
+    }),
+  ]),
+});
+
 function readMailConfig() {
   return mailConfig.safeParse({
     apiKey: process.env.SMTP_API,
@@ -38,45 +48,43 @@ async function sendMessage(
   recipients: readonly string[],
   replyTo: string,
 ) {
-  const response = await fetch("https://api.smtp.com/v4/messages", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      "X-SMTPCOM-API": config.apiKey,
-    },
-    body: JSON.stringify({
-      channel: config.channel,
-      recipients: { to: recipients.map((address) => ({ address })) },
-      originator: {
-        from: { name: business.name, address: config.from },
-        reply_to: { address: replyTo },
+  let response: Response;
+  try {
+    response = await fetch("https://api.smtp.com/v4/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "X-SMTPCOM-API": config.apiKey,
       },
-      subject: email.subject,
-      body: {
-        parts: [
-          { type: "text/plain", charset: "UTF-8", content: email.text },
-          { type: "text/html", charset: "UTF-8", content: email.html },
-        ],
-      },
-    }),
-    signal: AbortSignal.timeout(15_000),
-  });
-  if (!response.ok) throw new Error("CONTACT_API_REJECTED");
-  const result: unknown = await response.json();
-  if (
-    !result ||
-    typeof result !== "object" ||
-    !("status" in result) ||
-    result.status !== "success" ||
-    !("data" in result) ||
-    !result.data ||
-    typeof result.data !== "object" ||
-    !("msg_id" in result.data) ||
-    typeof result.data.msg_id !== "string" ||
-    !result.data.msg_id
-  )
-    throw new Error("CONTACT_API_NOT_ACCEPTED");
+      body: JSON.stringify({
+        channel: config.channel,
+        recipients: { to: recipients.map((address) => ({ address })) },
+        originator: {
+          from: { name: business.name, address: config.from },
+          reply_to: { address: replyTo },
+        },
+        subject: email.subject,
+        body: {
+          parts: [
+            { type: "text/plain", charset: "UTF-8", content: email.text },
+            { type: "text/html", charset: "UTF-8", content: email.html },
+          ],
+        },
+      }),
+      signal: AbortSignal.timeout(15_000),
+    });
+  } catch {
+    throw new Error("CONTACT_API_UNAVAILABLE");
+  }
+  if (!response.ok) throw new Error(`CONTACT_API_REJECTED_${response.status}`);
+  let result: unknown;
+  try {
+    result = await response.json();
+  } catch {
+    throw new Error("CONTACT_API_INVALID_RESPONSE");
+  }
+  if (!smtpAcceptance.safeParse(result).success) throw new Error("CONTACT_API_NOT_ACCEPTED");
 }
 
 export async function sendContactEmails(input: ContactInput) {
