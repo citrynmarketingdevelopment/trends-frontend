@@ -26,7 +26,6 @@ beforeEach(() => {
     SMTP_API: "test-api-key",
     SMTP_CHANNEL: "test-channel",
     CONTACT_FROM_EMAIL: "sender@example.test",
-    CONTACT_TO_EMAIL: "shop@example.test",
   }))
     vi.stubEnv(name, value);
 });
@@ -37,6 +36,7 @@ afterEach(() => {
 
 describe("contact email", () => {
   it("requires complete server-only configuration", () => {
+    vi.stubEnv("CONTACT_TO_EMAIL", "");
     expect(isContactEmailConfigured()).toBe(true);
     vi.stubEnv("SMTP_API", "");
     expect(isContactEmailConfigured()).toBe(false);
@@ -58,7 +58,14 @@ describe("contact email", () => {
     const acknowledgment = JSON.parse(send.mock.calls[1]?.[1].body as string);
     expect(inquiry).toMatchObject({
       channel: "test-channel",
-      recipients: { to: [{ address: "shop@example.test" }] },
+      recipients: {
+        to: [
+          { address: "info@trendsautocollision.com" },
+          { address: "Paulbarelatb@gmail.com" },
+          { address: "Manuel@trendsautocollision.com" },
+          { address: "citryn.contactforms@gmail.com" },
+        ],
+      },
       originator: {
         from: { address: "sender@example.test" },
         reply_to: { address: input.email },

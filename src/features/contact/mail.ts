@@ -5,11 +5,17 @@ import { business } from "@/content/business";
 import { createContactEmails } from "./email-templates";
 import type { ContactInput } from "./schema";
 
+const contactRecipients = [
+  "info@trendsautocollision.com",
+  "Paulbarelatb@gmail.com",
+  "Manuel@trendsautocollision.com",
+  "citryn.contactforms@gmail.com",
+] as const;
+
 const mailConfig = z.object({
   apiKey: z.string().min(1),
   channel: z.string().min(1),
   from: z.email(),
-  to: z.email(),
 });
 
 function readMailConfig() {
@@ -17,7 +23,6 @@ function readMailConfig() {
     apiKey: process.env.SMTP_API,
     channel: process.env.SMTP_CHANNEL,
     from: process.env.CONTACT_FROM_EMAIL,
-    to: process.env.CONTACT_TO_EMAIL,
   });
 }
 
@@ -30,7 +35,7 @@ type Email = ReturnType<typeof createContactEmails>["shop"];
 async function sendMessage(
   config: z.infer<typeof mailConfig>,
   email: Email,
-  recipient: string,
+  recipients: readonly string[],
   replyTo: string,
 ) {
   const response = await fetch("https://api.smtp.com/v4/messages", {
@@ -42,7 +47,7 @@ async function sendMessage(
     },
     body: JSON.stringify({
       channel: config.channel,
-      recipients: { to: [{ address: recipient }] },
+      recipients: { to: recipients.map((address) => ({ address })) },
       originator: {
         from: { name: business.name, address: config.from },
         reply_to: { address: replyTo },
@@ -79,9 +84,9 @@ export async function sendContactEmails(input: ContactInput) {
   if (!config.success) throw new Error("CONTACT_NOT_CONFIGURED");
   const templates = createContactEmails(input);
 
-  await sendMessage(config.data, templates.shop, config.data.to, input.email);
+  await sendMessage(config.data, templates.shop, contactRecipients, input.email);
   try {
-    await sendMessage(config.data, templates.customer, input.email, business.email);
+    await sendMessage(config.data, templates.customer, [input.email], business.email);
     return { confirmationSent: true };
   } catch {
     // The shop already has the inquiry. Do not ask the visitor to resubmit it.
