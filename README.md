@@ -104,7 +104,7 @@ The public site includes Home, Services, five service detail pages, About Us, an
 
 All twelve marketing pages have unique search titles and descriptions, social metadata, and structured business/page data. Service pages also describe their individual services and breadcrumbs. Keyword assignments and the research sources are in [the Bakersfield keyword plan](docs/seo/bakersfield-keyword-plan.md); edit `src/content/seo.ts` to maintain the page targets. City-level search volumes are unverified, so service keyword priorities remain provisional until a Bakersfield-targeted dataset is available.
 
-The committed `.env.production` sets the public `NEXT_PUBLIC_SITE_ORIGIN=https://trendsautocollision.com` for production builds, enabling canonical URLs, sitemap entries, domain-based JSON-LD, and indexing. This file contains only the public domain; keep secrets in deployment settings or `.env.local`. Deployment environment variables override this file, so remove any empty override or set it to the same HTTPS origin before rebuilding. Vercel preview deployments remain blocked and noindex even when they inherit the production domain; builds without a valid origin also remain blocked.
+The committed `.env.production` sets the public `NEXT_PUBLIC_SITE_ORIGIN=https://trendsautocollision.com` for production builds, enabling canonical URLs, sitemap entries, domain-based JSON-LD, and indexing. This file contains only the public domain; keep secrets in deployment settings or `.env.local`. Hosting variables override this file, so the site-origin helper also defaults to the approved domain in production when the variable is missing or blank. Explicitly invalid origins are still rejected. Vercel preview deployments remain blocked and noindex even when they inherit the production domain. Build for the Production environment when deploying to the live domain; promoting a build made for Preview preserves its generated noindex metadata and empty sitemap.
 
 After deployment, check `/robots.txt` for `Allow: /` and `Sitemap: https://trendsautocollision.com/sitemap.xml`. The sitemap should contain twelve canonical marketing URLs, all returning HTTP 200. `/software` and `/showroom/revuelto` are intentional noindex previews and stay out of the sitemap. Submit `https://trendsautocollision.com/sitemap.xml` in Search Console after verifying ownership; keep the verification meta tag installed. This configuration does not register the site with Search Console or change Google Business Profile listings.
 
@@ -118,7 +118,7 @@ The endpoint checks the request origin, limits body size, validates and escapes 
 
 Email templates live in `src/features/contact/email-templates.ts`. The SMTP.com API request lives in `src/features/contact/mail.ts`. Customer emails describe inspection and follow-up without promising a booked appointment or a fixed turnaround time.
 
-`NEXT_PUBLIC_SITE_ORIGIN` must be the approved bare HTTPS origin in production. Until it is supplied, canonical and Open Graph URLs are omitted, the sitemap stays empty, and robots deny indexing so an incomplete preview cannot be mistaken for a launch artifact.
+`NEXT_PUBLIC_SITE_ORIGIN`, when supplied, must be a bare HTTPS origin in production. Missing or blank production configuration defaults to `https://trendsautocollision.com`. Unconfigured development builds, Vercel previews, and invalid explicit origins omit canonical URLs, keep the sitemap empty, and block indexing.
 
 ## Dependency security
 

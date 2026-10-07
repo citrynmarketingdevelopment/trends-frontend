@@ -15,7 +15,7 @@ afterEach(() => {
 });
 
 describe("SEO route configuration", () => {
-  it("fails closed when the approved production origin is absent", () => {
+  it("fails closed outside production when the origin is absent", () => {
     delete process.env.NEXT_PUBLIC_SITE_ORIGIN;
 
     expect(sitemap()).toEqual([]);
@@ -55,12 +55,29 @@ describe("SEO route configuration", () => {
   });
 
   it("keeps Vercel previews blocked even with the production domain configured", () => {
+    vi.stubEnv("NODE_ENV", "production");
     vi.stubEnv("VERCEL_ENV", "preview");
     process.env.NEXT_PUBLIC_SITE_ORIGIN = "https://trendsautocollision.com";
 
     expect(sitemap()).toEqual([]);
     expect(robots()).toEqual({
       rules: { disallow: "/", userAgent: "*" },
+    });
+  });
+
+  it("publishes the sitemap and allows crawling with an empty production hosting override", () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("VERCEL_ENV", "production");
+    vi.stubEnv("NEXT_PUBLIC_SITE_ORIGIN", "");
+
+    expect(sitemap()).toHaveLength(12);
+    expect(sitemap().every(({ url }) => url.startsWith("https://trendsautocollision.com/"))).toBe(
+      true,
+    );
+    expect(robots()).toEqual({
+      rules: { allow: "/", userAgent: "*" },
+      host: "https://trendsautocollision.com",
+      sitemap: "https://trendsautocollision.com/sitemap.xml",
     });
   });
 });
