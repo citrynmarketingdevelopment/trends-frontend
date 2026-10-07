@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import type { ReactNode } from "react";
 
 import { getSiteOrigin } from "@/lib/env/site-origin";
@@ -13,6 +14,9 @@ export const metadata: Metadata = {
     template: "%s | Trends Collision Center",
   },
   description: pageSeo.home.description,
+  verification: {
+    google: "R_Z0aRy_L_vi4wtAoMUKrHUHbS1l6a5N7PJ8gYghx4o",
+  },
   robots: siteOrigin ? { index: true, follow: true } : { index: false, follow: false },
   ...(siteOrigin
     ? {
@@ -38,6 +42,18 @@ export default function RootLayout({ children }: RootLayoutProps) {
           Skip to main content
         </a>
         {children}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-DQSJ4Z2RHS"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-DQSJ4Z2RHS');
+          `}
+        </Script>
       </body>
     </html>
   );
