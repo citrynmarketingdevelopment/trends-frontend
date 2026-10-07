@@ -2,7 +2,7 @@
 
 Production-oriented Next.js 16 foundation for the Trends Collision Center cinematic homepage.
 
-The public `/` route is a server-rendered marketing experience with optional 3D enhancement. Its readable SVG logo, process copy, service overview, FAQ, and repair-start guidance remain available without JavaScript or WebGL. The earlier Lamborghini prototype is preserved unchanged at `/showroom/revuelto`, excluded from the sitemap, disallowed in `robots.txt`, and marked `noindex, nofollow`.
+The public `/` route is a server-rendered marketing experience with optional 3D enhancement. Its readable SVG logo, process copy, service overview, FAQ, and repair-start guidance remain available without JavaScript or WebGL. The earlier Lamborghini prototype is preserved unchanged at `/showroom/revuelto`, excluded from the sitemap and marked `noindex, nofollow`. Crawling remains allowed so search engines can read that directive.
 
 ## Requirements
 
@@ -102,9 +102,11 @@ The public site includes Home, Services, five service detail pages, About Us, an
 
 ### Bakersfield SEO
 
-All nine marketing pages have local headings, unique search titles and descriptions, social metadata, and structured business/page data. Service pages also describe their individual services and breadcrumbs. Keyword assignments and the research sources are in [the Bakersfield keyword plan](docs/seo/bakersfield-keyword-plan.md); edit `src/content/seo.ts` to maintain the page targets. City-level search volumes are unverified, so service keyword priorities remain provisional until a Bakersfield-targeted dataset is available.
+All twelve marketing pages have unique search titles and descriptions, social metadata, and structured business/page data. Service pages also describe their individual services and breadcrumbs. Keyword assignments and the research sources are in [the Bakersfield keyword plan](docs/seo/bakersfield-keyword-plan.md); edit `src/content/seo.ts` to maintain the page targets. City-level search volumes are unverified, so service keyword priorities remain provisional until a Bakersfield-targeted dataset is available.
 
-Configure `NEXT_PUBLIC_SITE_ORIGIN` at production build time to enable canonical URLs, sitemap entries, domain-based JSON-LD, and indexing. Builds without a valid origin retain preview noindex protection. This configuration does not register the site with Search Console or change Google Business Profile listings.
+The committed `.env.production` sets the public `NEXT_PUBLIC_SITE_ORIGIN=https://trendsautocollision.com` for production builds, enabling canonical URLs, sitemap entries, domain-based JSON-LD, and indexing. This file contains only the public domain; keep secrets in deployment settings or `.env.local`. Deployment environment variables override this file, so remove any empty override or set it to the same HTTPS origin before rebuilding. Vercel preview deployments remain blocked and noindex even when they inherit the production domain; builds without a valid origin also remain blocked.
+
+After deployment, check `/robots.txt` for `Allow: /` and `Sitemap: https://trendsautocollision.com/sitemap.xml`. The sitemap should contain twelve canonical marketing URLs, all returning HTTP 200. `/software` and `/showroom/revuelto` are intentional noindex previews and stay out of the sitemap. Submit `https://trendsautocollision.com/sitemap.xml` in Search Console after verifying ownership; keep the verification meta tag installed. This configuration does not register the site with Search Console or change Google Business Profile listings.
 
 ### Activate contact emails
 

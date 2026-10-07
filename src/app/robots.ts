@@ -17,7 +17,7 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       allow: "/",
-      disallow: "/showroom/",
+      // Crawlers must reach demo pages to read their noindex metadata.
       userAgent: "*",
     },
     host: siteOrigin.origin,

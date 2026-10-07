@@ -14,6 +14,8 @@
 # local environment values
 .env*
 !.env.example
+# Public production domain only; never add secrets to this file.
+!.env.production
 
 # logs and local editor files
 *.log
@@ -27,4 +29,3 @@ next-env.d.ts
 # large Blender working files (exceed GitHub's 100MB limit)
 assets/brand/working/*.blend
 assets/brand/working/*.blend1
-

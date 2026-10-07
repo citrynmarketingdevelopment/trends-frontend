@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import robots from "./robots";
 import sitemap from "./sitemap";
@@ -6,6 +6,7 @@ import sitemap from "./sitemap";
 const originalSiteOrigin = process.env.NEXT_PUBLIC_SITE_ORIGIN;
 
 afterEach(() => {
+  vi.unstubAllEnvs();
   if (originalSiteOrigin === undefined) {
     delete process.env.NEXT_PUBLIC_SITE_ORIGIN;
   } else {
@@ -47,10 +48,19 @@ describe("SEO route configuration", () => {
       host: "https://example.com",
       rules: {
         allow: "/",
-        disallow: "/showroom/",
         userAgent: "*",
       },
       sitemap: "https://example.com/sitemap.xml",
+    });
+  });
+
+  it("keeps Vercel previews blocked even with the production domain configured", () => {
+    vi.stubEnv("VERCEL_ENV", "preview");
+    process.env.NEXT_PUBLIC_SITE_ORIGIN = "https://trendsautocollision.com";
+
+    expect(sitemap()).toEqual([]);
+    expect(robots()).toEqual({
+      rules: { disallow: "/", userAgent: "*" },
     });
   });
 });

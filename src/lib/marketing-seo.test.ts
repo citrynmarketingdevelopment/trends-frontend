@@ -127,4 +127,17 @@ describe("Bakersfield page SEO", () => {
     expect(json).not.toContain("<");
     expect(JSON.parse(json)).toEqual(payload);
   });
+
+  it("keeps Vercel previews unindexed when they inherit the production domain", () => {
+    vi.stubEnv("VERCEL_ENV", "preview");
+    vi.stubEnv("NEXT_PUBLIC_SITE_ORIGIN", "https://trendsautocollision.com");
+
+    expect(marketingMetadata("Title", "Description", "/")).toMatchObject({
+      robots: { index: false, follow: false },
+    });
+    expect(marketingMetadata("Title", "Description", "/").alternates).toBeUndefined();
+    expect(
+      marketingStructuredData({ path: "/", name: "Title", description: "Description" }),
+    ).toBeNull();
+  });
 });

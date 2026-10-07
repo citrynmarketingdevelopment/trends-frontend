@@ -1,6 +1,11 @@
 const localHosts = new Set(["127.0.0.1", "[::1]", "localhost"]);
 
 export function getSiteOrigin(): URL | undefined {
+  // Vercel previews also run production builds and load .env.production.
+  if (process.env.VERCEL_ENV === "preview") {
+    return undefined;
+  }
+
   const candidate = process.env.NEXT_PUBLIC_SITE_ORIGIN?.trim();
 
   if (!candidate) {
